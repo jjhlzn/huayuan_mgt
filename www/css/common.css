@@ -1,0 +1,16 @@
+[v-cloak] {
+    display:none 
+    !important;
+}
+
+button:focus  {
+    outline: none;
+}
+
+.dropdown:hover .dropdown-menu {
+    display: block;
+  }
+
+.table_header_bg {
+    background-color: #F8F8F8
+}

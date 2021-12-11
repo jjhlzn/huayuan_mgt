@@ -1,0 +1,29 @@
+{
+  "name": "manage_tool",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "axios": "^0.21.1",
+    "cookie-parser": "^1.4.5",
+    "dotenv": "^10.0.0",
+    "ejs": "^3.1.6",
+    "express": "^4.17.1",
+    "fast-xml-parser": "^3.19.0",
+    "javascript-time-ago": "^2.3.8",
+    "jsonwebtoken": "^8.5.1",
+    "moment": "^2.29.1",
+    "mssql": "^7.1.0",
+    "pretty-print-json": "^1.0.2",
+    "pug": "^3.0.2",
+    "soap": "^0.39.0",
+    "timeago.js": "^4.0.2",
+    "winston": "^3.3.3",
+    "xml-formatter": "^2.4.0"
+  }
+}
