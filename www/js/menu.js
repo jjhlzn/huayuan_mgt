@@ -6,24 +6,25 @@ Vue.component('left-menu', {
           {
             name: '销售库存',
             level: 0,
-            children: []
+            children: [],
+            prefix: '/products/',
+            link: '/products/list.html'
           },
           {
             name: '销售出库单',
             level: 0,
-            children: []
+            children: [],
+            prefix: '/orders/',
+            link: '/orders/list.html'
           },
           {
             name: '结算',
             level: 0,
-            children: []
+            children: [],
+            prefix: '/settlements/',
+            link: '/settlements/list.html'
           },
-          
-          {
-            name: '个人设置',
-            level: 0,
-            children: []
-          },
+         
         ]
       }
     },
@@ -105,7 +106,16 @@ Vue.component('left-menu', {
     },
     template: `
 
+
+
     <ul class="">
+      <li class="flex flex-row-reverse pr-4 md:hidden">
+        <button id="closeMenuButton" class="py-1 px-2 hover:bg-gray-200">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 " fill="none" viewBox="0 0 24 24" stroke="#ffffff">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </li>
 
       <li v-for="menuItem in menus" >
           <ul v-if="menuItem.children.length > 0">

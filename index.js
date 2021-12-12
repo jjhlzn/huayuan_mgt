@@ -26,12 +26,22 @@ app.get('/test.html', (req, res) => {
     res.sendFile(__dirname + '/www/test.html')
 })
 
+app.get('/products/list.html', (req, res) => {
+    res.sendFile(__dirname + '/www/products.html')
+})
+app.get('/orders/list.html', (req, res) => {
+    res.sendFile(__dirname + '/www/orders.html')
+})
+app.get('/settlements/list.html', (req, res) => {
+    res.sendFile(__dirname + '/www/settlements.html')
+})
+
 
 app.get('/index.html', function(req, res) {
-    res.render('index.pug')
+    res.sendFile(__dirname + '/www/products.html')
 });
 
-let users = [{userId: 'admin', password: '86547211', name: '管理员'}]
+let users = [{userId: 'admin', password: '123456', name: '管理员'}]
 
 app.post('/login', (req, res) => {
     const user = {userId: req.body.userId, password: req.body.password}

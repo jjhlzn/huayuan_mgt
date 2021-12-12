@@ -7,18 +7,15 @@ html
         block css
     body
         div(id='app' class="md:flex min-h-screen")
-            div(id="menu" class="w-60 pt-5 bg-gray-600 flex-shrink-0  \
+            div(id="menu" class="w-60 pt-2 md:pt-5 bg-gray-600 flex-shrink-0  \
                     absolute inset-y-0 left-0 transform -translate-x-full md:relative md:translate-x-0 transition duration-200 ease-in-out")
                 left-menu
-            div(class="flex-grow min-h-screen relative" style="background-color: #F0F2F5;")
+            div(class="flex-grow min-h-screen" style="background-color: #F0F2F5;")
                 user-header 
                 div(class="p-6 mb-16")
                     div(id="content" class="bg-white" )
                         block content
-                block footer
-                    div(id="footer" class="absolute h-20 text-sm font-light text-center text-gray-600 pt-6 "
-                        )
-                        = "@ 2021 Produced by Hengdian World Studio"
+                
 
     
         script(src='/js/js.cookie.min.js')
