@@ -29,6 +29,9 @@ app.get('/test.html', (req, res) => {
 app.get('/products/list.html', (req, res) => {
     res.sendFile(__dirname + '/www/products.html')
 })
+app.get('/orders/neworder.html', (req, res) => {
+    res.sendFile(__dirname + '/www/new_order.html')
+})
 app.get('/orders/list.html', (req, res) => {
     res.sendFile(__dirname + '/www/orders.html')
 })

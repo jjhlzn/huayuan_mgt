@@ -15,7 +15,9 @@ button:focus  {
     background-color: #F8F8F8
 }
 
-
+.content_background_color {
+    background-color: #F0F2F5;
+}
 
 
  table {

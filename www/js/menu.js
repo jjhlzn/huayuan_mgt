@@ -108,8 +108,8 @@ Vue.component('left-menu', {
 
 
 
-    <ul class="">
-      <li class="flex flex-row-reverse pr-4 md:hidden">
+    <ul class="" style="z-index: 1000">
+      <li class="flex flex-row-reverse pr-4 lg:hidden">
         <button id="closeMenuButton" class="py-1 px-2 hover:bg-gray-700">
           <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7 " fill="none" viewBox="0 0 24 24" stroke="#ffffff">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
