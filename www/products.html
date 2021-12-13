@@ -24,8 +24,43 @@
                 
             <div class="flex-grow p-6" style="background-color: #F0F2F5;">
                 
-                <div class="bg-white p-2">
-                    库存列表
+                <div class="bg-white p-2 overflow-auto">
+                    <table class="table-fixed w-400  md:min-w-full divide-y divide-gray-200 text-base text-center ">
+                        <tr>
+                            <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 -->
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                入库时间
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                商品名称
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                货号
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                规格
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                可售数量
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                采购单价
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                操作
+                            </th>
+                        </tr>
+
+                        <tr v-for="item in products">
+                            <td class="min-w-12">{{item.time}}</td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.code}}</td>
+                            <td>{{item.spec}}</td>
+                            <td>{{item.quantity}}</td>
+                            <td>{{item.price}}</td>
+                            <td></td>
+                        </tr>
+                    </table>
                 </div>
             
             </div>
@@ -42,6 +77,6 @@
     <script src="/js/js.cookie.min.js"></script>
     <script src="/js/menu.js"></script>
     <script src="/js/lib/header.js"></script>
-    <script src="/js/test.js"></script>
+    <script src="/js/products.js"></script>
 </body>
 </html>

@@ -52,7 +52,7 @@ Vue.component('user-header', {
 
         <div class="flex text-base font-medium text-white  py-2">
           <!-- log -->
-            <div class=" px-3 pt-0.3">
+            <div class=" px-3 pt-0.4">
                 <svg viewBox="0 0 200 200" class="w-6 h-6 " version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
                     <!-- Generator: Sketch 47.1 (45422) - http://www.bohemiancoding.com/sketch -->
                     <title>Group 28 Copy 5</title>
@@ -101,7 +101,7 @@ Vue.component('user-header', {
                 Design System
             </div>
 
-            <button id="menuButton" class=" hover:bg-gray-200 md:hidden">
+            <button id="menuButton" class=" hover:bg-gray-700 md:hidden">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-7 w-7" viewBox="0 0 20 20" fill="currentColor">
                     <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 10a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zM3 15a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1z" clip-rule="evenodd" />
                 </svg>

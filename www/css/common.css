@@ -14,3 +14,27 @@ button:focus  {
 .table_header_bg {
     background-color: #F8F8F8
 }
+
+
+
+
+ table {
+   
+    text-align: center;
+}
+table th {
+    border-top: 1px solid lightgrey;
+    border-bottom:  1px solid lightgrey;
+    background-color: #FAFAFA;
+  
+}
+
+table td {
+    
+    border-top: 1px solid lightgrey;
+    border-bottom:  1px solid lightgrey;
+    padding: 8px 0;
+}
+.editor_listing_table {
+    @apply w-full p-2 m-1;
+}
