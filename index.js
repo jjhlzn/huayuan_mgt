@@ -29,6 +29,9 @@ app.get('/test.html', (req, res) => {
 app.get('/products/list.html', (req, res) => {
     res.sendFile(__dirname + '/www/products.html')
 })
+app.get('/orders/select_products.html', (req, res) => {
+    res.sendFile(__dirname + '/www/select_products.html')
+})
 app.get('/orders/neworder.html', (req, res) => {
     res.sendFile(__dirname + '/www/new_order.html')
 })
@@ -69,7 +72,7 @@ app.post('/checktoken', auth, (req, res) => {
     res.send({status: 0})
 })
 
-const port = 7000
+const port = 7897
 
 app.use(express.static('www'))
 app.listen(port, () => logger.debug(`management app listening at ${port}`))

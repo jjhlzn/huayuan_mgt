@@ -11,7 +11,7 @@ Vue.component('left-menu', {
             link: '/products/list.html'
           },
           {
-            name: '销售出库单',
+            name: '出库单',
             level: 0,
             children: [],
             prefix: '/orders/',

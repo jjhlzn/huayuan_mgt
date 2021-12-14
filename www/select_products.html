@@ -7,7 +7,6 @@
 
     <link href="/css/tailwind.min.css?body=1" rel="stylesheet" />
     <link href="/css/common.css?body=1" rel="stylesheet" />
-    <link href="/css/element-ui.css?body=1" rel="stylesheet" />
 
     <title></title>
 </head>
@@ -27,10 +26,10 @@
             <div class="flex-grow content_background_color">
 
                 <!-- 标题-->
-                <p class="font-bold text-xl p-5 bg-white">{{title}}</p>
+                <p class="font-bold text-xl p-5 bg-white">挑选商品</p>
 
                 <!-- 查询表单-->
-                <div class="m-5 p-5 bg-white">
+                <div class=" m-5 p-5 bg-white">
                     <form>
                         <div class="flex">
                             <div class="w-1/2 lg:flex">
@@ -57,15 +56,11 @@
                 </div>
 
                 <!-- 列表 -->
-                <div class="m-5 p-5 bg-white overflow-x-auto">
-                    <div class="flex mb-4">
-                        <button  class=" h-8 px-4  text-sm text-white transition-colors 
-                        duration-150 rounded-sm focus:shadow-outline bg-blue-500 hover:bg-blue-600"
-                        v-on:click="clickNewOrder">新建出库单</button>
-                    </div>
-
+                <div class="m-5 p-5 bg-white overflow-x-auto"  >
                     <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                         <tr class="py-1">
+                            <th class="w-24 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                            </th>
                             <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 -->
                             <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
                                 入库时间
@@ -85,37 +80,35 @@
                             <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
                                 采购单价
                             </th>
-                            <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                操作
-                            </th>
+                            
                         </tr>
 
                         <tr v-for="item in products" class="hover:bg-gray-50 py-1">
+                            <td class="w-24">
+                                <a href="#" class="text-blue-500 hover:text-blue-900 visited:text-purple-600">添加</a>
+                            </td>
                             <td class="min-w-12">{{item.time}}</td>
                             <td>{{item.name}}</td>
                             <td>{{item.code}}</td>
                             <td>{{item.spec}}</td>
                             <td>{{item.quantity}}</td>
                             <td>{{item.price}}</td>
-                            <td>
-                                <a href="#"  class="text-blue-500 hover:text-blue-900 visited:text-purple-600">详情</a>
-                            </td>
+                            
                         </tr>
                     </table>
-
-                    <div class="pt-5 bg-white">
-                        <el-pagination background
-                                @current-change="handleCurrentChange"
-                                :current-page="currentPage"
-                                :page-size="pageSize"
-                                layout="total, prev, pager, next"
-                                :total="totalCount"></el-pagination>
-                    </div>
                 </div>
 
                 
-                
 
+                <div style="height: 50px;"> &nbsp; </div>
+                
+                <!-- 下一步按钮 -->
+                <div class="w-full" style="position: fixed; bottom: 0;">
+                    <button  class="w-full block h-10 px-5 m-2 text-sm text-white transition-colors 
+                            duration-150 rounded-sm focus:shadow-outline bg-blue-500 hover:bg-blue-600"
+                            v-on:click="clickFinish"
+                            > 商品选择完毕，下一步 </button>
+                </div>
 
             
             </div>
@@ -130,9 +123,8 @@
     <script type="text/javascript" src="/js/vue.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/js.cookie.min.js"></script>
-    <script src="/js/element-ui.js"></script>
     <script src="/js/menu.js"></script>
     <script src="/js/lib/header.js"></script>
-    <script src="/js/products.js"></script>
+    <script src="/js/select_products.js"></script>
 </body>
 </html>
