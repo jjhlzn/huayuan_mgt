@@ -4,34 +4,33 @@ var app = new Vue({
     data: {
         products: [
             {
-                time: '2021-10-01', 
-                name: '牙刷',
-                code: 'ABC',
-                spec: '12*10',
-                quantity: 100,
-                price: '98.5'
+                orderNo: '123456789ABC', 
+                customer: '谷歌',
+                sellDate: '2021-10-12',
+                seller: '张三',
+                
             },
             {
-                time: '2021-10-01', 
-                name: '牙刷',
-                code: 'ABC',
-                spec: '12*10',
-                quantity: 100,
-                price: '98.5'
+                orderNo: '123456789ABC', 
+                customer: '苹果',
+                sellDate: '2021-10-12',
+                seller: '李四',
+                
             },
             {
-                time: '2021-10-01', 
-                name: '牙刷',
-                code: 'ABC',
-                spec: '12*10',
-                quantity: 100,
-                price: '98.5'
-            }
+                orderNo: '123456789ABC', 
+                customer: '微软',
+                sellDate: '2021-10-12',
+                seller: '乔布斯',
+                
+            },
         ],
     },
 
     methods: {
-        
+        clickDetail: function(orderNo) {
+            window.location.href = "/orders/neworder.html"
+        }
     },
     mounted: function() {
 

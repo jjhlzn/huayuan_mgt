@@ -46,15 +46,14 @@
                             </th>
                         </tr>
 
-                        <tr v-for="item in products">
-                            <td class="min-w-12">{{item.time}}</td>
-                            <td>{{item.name}}</td>
-                            <td>{{item.code}}</td>
-                            <td>{{item.spec}}</td>
-                            <td>{{item.quantity}}</td>
-                            <td>{{item.price}}</td>
+                        <tr v-for="item in products" class="hover:bg-gray-200">
+                            <td>{{item.orderNo}}</td>
+                            <td>{{item.customer}}</td>
+                            <td>{{item.sellDate}}</td>
+                            <td>{{item.seller}}</td>
                             <td>
-                                <a href="#"  class="text-blue-500 hover:text-blue-900 visited:text-purple-600">添加</a>
+                                <a href="#"  class="text-blue-500 hover:text-blue-900 visited:text-purple-600"
+                                v-on:click="clickDetail(item.orderNo)">详情</a>
                             </td>
                         </tr>
                     </table>
