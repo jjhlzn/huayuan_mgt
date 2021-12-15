@@ -87,6 +87,7 @@ var app = new Vue({
            // this.fetchData()
         },
 
+
         clickNewOrder: function() {
             window.location.href = "/orders/select_products.html"
         }

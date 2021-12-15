@@ -11,7 +11,7 @@
     <title></title>
 </head>
 <body>
-    <div id="app" v-cloak class=" min-h-screen text-sm">
+    <div id="app" v-cloak class=" min-h-screen text-sm ">
 
         <user-header></user-header>
 
@@ -85,14 +85,31 @@
                         </div>
 
                         <div class="pt-4">
-                            <div class=" py-2">销售合同图片</div>
-                            <div class="w-full">
-                                <div class="w-20 relative border h-20 rounded-lg  border-2 border-gray-300 bg-gray-100 flex justify-center items-center">
-                                    <div class="absolute">
-                                        <div class="flex items-center ">  <span class="block text-gray-400 pb-2 text-5xl align-middle">+</span> </div>
-                                    </div> <input type="file" class="h-full w-full opacity-0" name="">
+                            <div class="py-2">销售合同图片</div>
+
+                            <div class="flex flex-wrap">
+                                <div class="m-2 relative " v-for="(item, index) in images">
+                                    <div class="w-20  border h-20 rounded-lg  border-2 border-gray-300 bg-gray-100 flex justify-center items-center">
+                                        <img :src="item" class="contract_image rounded-lg" >
+                                    </div>
+
+            
+                                    <svg v-on:click="deleteImage(index)" xmlns="http://www.w3.org/2000/svg" class="h-8 w-8 delete_image_icon fill-current text-red-600 "  viewBox="0 0 20 20" fill="currentColor">
+                                        <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                                    </svg>
                                 </div>
+
+                                
+                                <div class="m-2">
+                                    <div class="w-20 relative border h-20 rounded-lg  border-2 border-gray-300 bg-gray-100 flex justify-center items-center">
+                                        <div class="absolute">
+                                            <div class="flex items-center ">  <span class="block text-gray-400 pb-2 text-5xl align-middle">+</span> </div>
+                                        </div> <input type="file" class="h-full w-full opacity-0" name="">
+                                    </div>
+                                </div>
+                                
                             </div>
+                            
                         </div>
 
                         <div class="pt-8 flex justify-center items-center">
