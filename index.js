@@ -4,6 +4,7 @@ const jwt = require('jsonwebtoken');
 const logger = require('./lib/logger')('index.js')
 const fs = require('fs')
 var cookieParser = require('cookie-parser')
+const service = require('./service')
 
 const moment = require('moment')
 const auth = require('./middleware/auth')
@@ -70,6 +71,21 @@ app.post('/login', (req, res) => {
 
 app.post('/checktoken', auth, (req, res) => {
     res.send({status: 0})
+})
+
+app.all('/getproducts', async (req, res) => {
+    
+    let result = await service.getProducts(req.body)
+
+    setTimeout(function(){
+        res.send(JSON.stringify({
+            status: 0,
+            message: '',
+            products: result.products,
+            totalCount: result.products.length
+        }))
+    }, 1000)
+   
 })
 
 const port = 7897

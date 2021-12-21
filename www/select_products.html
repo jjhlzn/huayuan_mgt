@@ -6,7 +6,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/tailwind.min.css?body=1" rel="stylesheet" />
+    <link href="/css/loading.css?body=1" rel="stylesheet" />
     <link href="/css/common.css?body=1" rel="stylesheet" />
+    <link href="/css/element-ui.css?body=1" rel="stylesheet" />
 
     <title></title>
 </head>
@@ -56,7 +58,7 @@
                 </div>
 
                 <!-- 列表 -->
-                <div class="m-5 p-5 bg-white overflow-x-auto"  >
+                <div id="contentDiv" class="m-5 p-5 bg-white overflow-x-auto relative"  >
                     <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                         <tr class="py-1">
                             <th class="w-24 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
@@ -85,7 +87,7 @@
 
                         <tr v-for="item in products" class="hover:bg-gray-50 py-1">
                             <td class="w-24">
-                                <a href="#" class="text-blue-500 hover:text-blue-900 visited:text-purple-600">添加</a>
+                                <a href="#" class="text-blue-500 hover:text-blue-900 visited:text-purple-600" v-on:click="addToOrder(item.id)">添加</a>
                             </td>
                             <td class="min-w-12">{{item.time}}</td>
                             <td>{{item.name}}</td>
@@ -95,10 +97,29 @@
                             <td>{{item.price}}</td>
                             
                         </tr>
-                    </table>
-                </div>
 
-                
+                        <tr>
+                            <td colspan="7" v-if="totalCount == 0 && !loading">
+                                <div>
+                                    无任何数据
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+                    <div class="pt-5 bg-white">
+                        <el-pagination background
+                                @current-change="handleCurrentChange"
+                                :current-page="currentPage"
+                                :page-size="pageSize"
+                                layout="total, prev, pager, next"
+                                :total="totalCount"></el-pagination>
+                    </div>
+
+                    <div id="loading" class="bg-gray-300 bg-opacity-50" style="height: 100%; width: 100%;">
+                        <div class="lds-ring"> <div></div> <div></div> <div></div> <div></div> </div>
+                    </div>
+                </div>
 
                 <div style="height: 50px;"> &nbsp; </div>
                 
@@ -124,6 +145,7 @@
     <script src="/js/axios.min.js"></script>
     <script src="/js/js.cookie.min.js"></script>
     <script src="/js/menu.js"></script>
+    <script src="/js/element-ui.js"></script>
     <script src="/js/lib/header.js"></script>
     <script src="/js/select_products.js"></script>
 </body>

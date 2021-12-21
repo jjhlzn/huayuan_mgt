@@ -2,7 +2,8 @@
 Vue.component('user-header', {
     data: function() {
         return {
-            user: {}
+            user: {},
+            menuShow: false,
         }
     },
     methods: {
@@ -17,12 +18,19 @@ Vue.component('user-header', {
             this.user = JSON.parse(user)
         }
 
+        let that = this
         $('#menuButton').click(function() {
             console.log('menu click')
-            $('#menu').toggleClass('-translate-x-full')
+            $('#menu').toggleClass('-translate-x-full') 
+            $('#contentDiv').toggleClass('relative')
+
         })
         $('#closeMenuButton').click(function() {
             $('#menu').toggleClass('-translate-x-full')
+            setTimeout(function() {
+                $('#contentDiv').toggleClass('relative')
+            }, 500)
+            
         })
         $('#cartButton').click(function() {
             window.location.href = "/orders/neworder.html"

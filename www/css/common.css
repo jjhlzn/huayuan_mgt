@@ -53,3 +53,18 @@ table td {
 .editor_listing_table {
     @apply w-full p-2 m-1;
 }
+
+#header {
+    position: fixed;
+    top: 0;
+    z-index: 1000;
+}
+
+
+#loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    display: none;
+}

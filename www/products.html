@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <link href="/css/tailwind.min.css?body=1" rel="stylesheet" />
+    <link href="/css/loading.css?body=1" rel="stylesheet" />
     <link href="/css/common.css?body=1" rel="stylesheet" />
     <link href="/css/element-ui.css?body=1" rel="stylesheet" />
 
@@ -35,7 +36,7 @@
                         <div class="flex">
                             <div class="w-1/2 lg:flex">
                                 <label class="text-sm py-1 block pr-2">关键字</label>
-                                <input type="text" placeholder="请输入关键字" class="w-5/6  appearance-none border border-gray-200 rounded h-8 py-1.5 px-2 text-sm text-gray-700 leading-tight
+                                <input type="text" v-model="params.keyword" placeholder="请输入关键字" class="w-5/6  appearance-none border border-gray-200 rounded h-8 py-1.5 px-2 text-sm text-gray-700 leading-tight
                                                  focus:outline-none focus:bg-white focus:border-blue-500" />
                             </div>
 
@@ -43,10 +44,10 @@
                                 <label class="text-sm py-1 block pr-2" >&nbsp;</label>
                                 <div>
                                     <button class=" h-8 px-4  text-sm text-gray-600 transition-colors border border-gray-400
-                                duration-150 rounded-sm focus:shadow-outline bg-white hover:bg-gray-100">重置</button>
+                                duration-150 rounded-sm focus:shadow-outline bg-white hover:bg-gray-100" @click="clickReset">重置</button>
 
                                 <button class=" h-8 px-4  text-sm text-white transition-colors 
-                                duration-150 rounded-sm focus:shadow-outline bg-blue-500 hover:bg-blue-600">查询</button>
+                                duration-150 rounded-sm focus:shadow-outline bg-blue-500 hover:bg-blue-600" @click="clickSearch">查询</button>
                                 </div>
                                 
                             </div>
@@ -57,13 +58,14 @@
                 </div>
 
                 <!-- 列表 -->
-                <div class="m-5 p-5 bg-white overflow-x-auto">
+                <div id="contentDiv" class="m-5 p-5 bg-white overflow-x-auto relative">
                     <div class="flex mb-4">
                         <button  class=" h-8 px-4  text-sm text-white transition-colors 
                         duration-150 rounded-sm focus:shadow-outline bg-blue-500 hover:bg-blue-600"
                         v-on:click="clickNewOrder">新建出库单</button>
                     </div>
 
+                    
                     <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                         <tr class="py-1">
                             <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 -->
@@ -101,7 +103,17 @@
                                 <a href="#"  class="text-blue-500 hover:text-blue-900 visited:text-purple-600">详情</a>
                             </td>
                         </tr>
+
+                        <tr>
+                            <td colspan="7" v-if="totalCount == 0 && !loading">
+                                <div>
+                                    无任何数据
+                                </div>
+                            </td>
+                        </tr>
                     </table>
+
+
 
                     <div class="pt-5 bg-white">
                         <el-pagination background
@@ -111,12 +123,16 @@
                                 layout="total, prev, pager, next"
                                 :total="totalCount"></el-pagination>
                     </div>
+
+                    <div id="loading" class="bg-gray-300 bg-opacity-50" style="height: 100%; width: 100%;">
+                        <div class="lds-ring"> <div></div> <div></div> <div></div> <div></div> </div>
+                    </div>
+                    
+                    
                 </div>
 
                 
-                
-
-
+            
             
             </div>
         </div>
