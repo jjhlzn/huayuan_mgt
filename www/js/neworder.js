@@ -1,3 +1,4 @@
+
 var query = parse_query_string(window.location.search.substr(1, window.location.search.length - 1))
 var id = query.id
 var ids = []
@@ -7,8 +8,7 @@ var app = new Vue({
     data: {
         title: '商品库存',
         clientName: '',
-        products: [
-        ],
+        products: [],
         images: [],
         id: id
     },
@@ -29,6 +29,10 @@ var app = new Vue({
         },
 
         loadProducts: function(ids) {
+            if (!ids || ids.length == 0) {
+                return
+            }
+
             var that = this
             axios.post('/getproducts', {ids: ids})
                 .then(function(response)  {
@@ -37,6 +41,26 @@ var app = new Vue({
                     if (data.status == 0){
                         that.products = data.products
                     }
+                })
+                .catch(function(error){
+                    console.error(error)
+                })
+        },
+
+        loadOrder: function(id) {
+            if (!id) {
+                return
+            }
+            var that = this
+            axios.post('/getorder', {id: id})
+                .then( function(response) {
+                    var data = response.data
+                    console.log(data)
+                    if (data.status == 0) {
+                        var order = data.order
+                        that.products = order.products
+                        that.clientName = order.clientName
+                        that.images = order.images.map(function(item) { return {url: '/uploads/'+item.imageUrl, serverFileName: item.imageUrl}})                    }
                 })
                 .catch(function(error){
                     console.error(error)
@@ -112,14 +136,15 @@ var app = new Vue({
                     return false
                 }
             }
-            
-            //提交订单
-            axios.post('/updateorder', {
+            var params = {
                 id: that.id, 
                 products: that.products,
                 images: that.images.map(item => item.serverFileName),
                 clientName: that.clientName,
-            }).then(function (response) {
+            }
+            console.log(params)
+            //提交订单
+            axios.post('/updateorder', params ).then(function (response) {
                 var data = response.data
                 console.log(data)
                 if (data.status == 0) {
@@ -135,5 +160,6 @@ var app = new Vue({
     }, 
     mounted: function() {
         this.loadProducts(ids)
+        this.loadOrder(this.id)
     }
 })

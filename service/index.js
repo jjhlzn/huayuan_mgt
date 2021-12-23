@@ -219,45 +219,109 @@ async function addOrUpdateOrder(order) {
     let sql = ``
     let now = moment().format('YYYY-MM-DD HH:mm:ss')
     try {
+        let pool = await db_pool.getPool(db_config)
         if (order.id) {
-            sql = `update yw_ckgl_cc `
+            sql = `update yw_ckgl_cc set  gnkhmc = '${order.clientName}' where ckdh = '${order.id}'`
+            await pool.query(sql)
+
+            //更新商品
+            sql =  `delete from yw_ckgl_cc_cmd where ckdh = '${order.id}' `
+            await pool.query(sql)
+
+            //更新图片
+            sql = `delete from yw_ckgl_cc_images where ckdh = '${order.id}'`
+            await pool.query(sql)
+
         } else {
             let id = makeOrderId()
+            order.id = id
             //插入主表
             sql = `insert into yw_ckgl_cc (ckdh, zdr, zdrq, xshth, gnkhmc, [state])
                   values ('${id}', '111', '${now}', '${id}', '${order.clientName}', '0')`
-            let pool = await db_pool.getPool(db_config)
+            
             logger.info(sql)
             await pool.query(sql)
-            //插入商品
-            let products = order.products
-            for(var i = 0; i < products.length; i++) {
-                let p = products[i]
-                sql = `
-                insert into yw_ckgl_cc_cmd 
-                (spbm, hgbm, sphh, spzwmc, spywmc, spgg, sldw, hsje, hsdj, ckdh, cxh)
-                values ('${p.spbm}', '${p.hgbm}', '${p.sphh}', '${p.name}', '${p.spywmc}', '${p.spgg}', '${p.sldw}', 0, '${p.price}', '${id}', '${i}')`
-                logger.info(sql)
-                await pool.query(sql)
-            }
-            //插入合同图片
-            let images = order.images
-            for(var i = 0; i < images.length; i++) {
-                let image = images[i]
-                sql = `insert into yw_ckgl_jc_images 
-                       (id, rkdh, imageurl) values ('${uuidv4()}', '${id}', '${image.serverFileName}')`
-                logger.info(sql)
-                await pool.query(sql)
-            }
-
             
         }
-        return true;
+
+        //插入商品
+        let products = order.products
+        for(var i = 0; i < products.length; i++) {
+            let p = products[i]
+            sql = `
+            insert into yw_ckgl_cc_cmd 
+            (spbm, hgbm, sphh, spzwmc, spywmc, spgg, sldw, hsje, hsdj, ckdh, ckxh, cxh)
+            values ('${p.spbm}', '${p.hgbm}', '${p.sphh}', '${p.name}', '${p.spywmc}', '${p.spgg}', '${p.sldw}', 0, '${p.price}', '${order.id}', 
+                '${p.buyQuantity}', '${i}')`
+            logger.info(sql)
+            await pool.query(sql)
+        }
+        //插入合同图片
+        let images = order.images
+        for(var i = 0; i < images.length; i++) {
+            let image = images[i]
+            sql = `insert into yw_ckgl_cc_images 
+                   (id, ckdh, imageurl) values ('${uuidv4()}', '${order.id}', '${image}')`
+            logger.info(sql)
+            await pool.query(sql)
+        }
+        return order.id
     } catch(error) {
         logger.error(error)
-        return false
+        return ''
     }
     
+}
+
+async function getOrderById(id) {
+    try {
+        let sql = `SELECT yw_ckgl_cc.ckdh,   --销售合同号
+                yw_ckgl_cc.zdr,   
+                yw_ckgl_cc.zdrq,   
+                yw_ckgl_cc.ywxz,   ---生成的时候默认（国外出库）
+                yw_ckgl_cc.ckxz,   ---生成的时候默认（国外出库）
+                yw_ckgl_cc.cklx,   ---生成的时候默认（国外出库）
+                yw_ckgl_cc.cklx2,   ---生成的时候默认（国外出库）
+                yw_ckgl_cc.xshth,   --订单号
+                yw_ckgl_cc.gnkhbm,   --客户编码（空）
+                yw_ckgl_cc.gnkhmc as clientName,   --客户名称
+                yw_ckgl_cc.gnkhxx,   --客户信息
+                yw_ckgl_cc.ywy,   --业务员
+                yw_ckgl_cc.bm,   --部门
+                yw_ckgl_cc.cfck,   --存放仓库
+                yw_ckgl_cc.ckje,   --销售金额
+                yw_ckgl_cc.state,   --状态
+                yw_ckgl_cc.ckrq,    
+                yw_ckgl_cc.bz,   --备注
+                yw_ckgl_cc.jw_flag   --Y
+        FROM yw_ckgl_cc
+        WHERE ckdh = '${id}' `
+        logger.info(sql)
+        let pool = await db_pool.getPool(db_config)
+        let orders = (await pool.query(sql)).recordset
+        if (orders.length == 0) {
+            return null
+        }
+        let order = orders[0]
+
+        //加载商品
+        sql = `select spbm, hgbm, sphh, spzwmc as name, spywmc, spgg, sldw, hsje, hsdj as price, ckxh as buyQuantity,
+                    ckdh, cxh from yw_ckgl_cc_cmd where ckdh = '${id}' order by cxh`
+        logger.info(sql)
+        let products = (await pool.query(sql)).recordset
+        order.products = products
+
+        //加载图片
+        sql = `select imageUrl from yw_ckgl_cc_images where ckdh = '${id}' order by addtime`
+        logger.info(sql)
+        let images = (await pool.query(sql)).recordset
+        order.images = images
+
+        return order
+    } catch(error) {
+        logger.error(error)
+        return null
+    }
 }
 
 function makeOrderId() {
@@ -270,5 +334,6 @@ module.exports = {
     searchProducts: searchProducts,
     loadProducts: loadProducts,
     addOrUpdateOrder: addOrUpdateOrder,
-    searchOrders: searchOrders
+    searchOrders: searchOrders,
+    getOrderById: getOrderById
 }

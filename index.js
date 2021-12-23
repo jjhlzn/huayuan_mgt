@@ -8,7 +8,7 @@ const path = require('path')
 const multer = require('multer')
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
-      cb(null, 'uploads/')
+      cb(null, 'www/uploads/')
     },
     filename: function (req, file, cb) {
       cb(null, Date.now() + path.extname(file.originalname)) //Appending extension
@@ -118,10 +118,12 @@ app.post('/upload', upload.single('photo'), async (req, res) => {
 
 app.post('/updateorder', auth, async (req, res) => {
     let order = req.body
+    console.log(order)
     let result = await service.addOrUpdateOrder(order)
     res.send(JSON.stringify({
         status: result ? 0 : -1, 
-        message: ''
+        message: '',
+        id: result
     }))
 })
 
@@ -133,6 +135,16 @@ app.all('/searchorders', auth, async (req, res) => {
         orders: result.orders,
         totalCount: result.totalCount
     })) 
+})
+
+app.all('/getorder', auth, async (req, res) => {
+    let id = req.body.id
+    let order = await service.getOrderById(id)
+    res.send(JSON.stringify({ 
+        status: order != null ? 0 : -1,
+        message: '',
+        order: order
+    }))
 })
 
 
