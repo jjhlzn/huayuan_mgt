@@ -3,6 +3,20 @@ const app = express()
 const jwt = require('jsonwebtoken');
 const logger = require('./lib/logger')('index.js')
 const fs = require('fs')
+const path = require('path')
+
+const multer = require('multer')
+const storage = multer.diskStorage({
+    destination: function (req, file, cb) {
+      cb(null, 'uploads/')
+    },
+    filename: function (req, file, cb) {
+      cb(null, Date.now() + path.extname(file.originalname)) //Appending extension
+    }
+})
+const upload = multer({ storage: storage })
+
+
 var cookieParser = require('cookie-parser')
 const service = require('./service')
 
@@ -73,20 +87,55 @@ app.post('/checktoken', auth, (req, res) => {
     res.send({status: 0})
 })
 
-app.all('/getproducts', async (req, res) => {
-    
-    let result = await service.getProducts(req.body)
-
-    setTimeout(function(){
-        res.send(JSON.stringify({
-            status: 0,
-            message: '',
-            products: result.products,
-            totalCount: result.products.length
-        }))
-    }, 1000)
-   
+app.all('/searchproducts', auth, async (req, res) => {
+    let result = await service.searchProducts(req.body.params)
+    res.send(JSON.stringify({
+        status: 0,
+        message: '',
+        products: result.products,
+        totalCount: result.totalCount
+    }))
 })
+
+app.all('/getproducts', auth, async (req, res) => {
+    let ids = req.body.ids
+    let products = await service.loadProducts(ids)
+    res.send(JSON.stringify({
+        status: 0,
+        message: '',
+        products: products
+    }))
+})
+
+app.post('/upload', upload.single('photo'), async (req, res) => {
+    if(req.file) {
+        res.send(JSON.stringify(req.file))
+        logger.info(JSON.stringify(req.file))
+    } else {
+        throw 'error';
+    }
+});
+
+app.post('/updateorder', auth, async (req, res) => {
+    let order = req.body
+    let result = await service.addOrUpdateOrder(order)
+    res.send(JSON.stringify({
+        status: result ? 0 : -1, 
+        message: ''
+    }))
+})
+
+app.all('/searchorders', auth, async (req, res) => {
+    let result = await service.searchOrders(req.body.params)
+    res.send(JSON.stringify({
+        status: 0,
+        message: '',
+        orders: result.orders,
+        totalCount: result.totalCount
+    })) 
+})
+
+
 
 const port = 7897
 

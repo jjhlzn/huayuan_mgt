@@ -2,97 +2,91 @@
 var app = new Vue({
     el: '#app',
     data: {
-        totalCount: 1008,
+        totalCount: 0,
         requests: [],
-        pageSize: 20,
+        pageSize: 10,
         currentPage: 1,
         params: {},
-        products: [
-            {
-                orderNo: '123456789ABC', 
-                customer: '谷歌',
-                sellDate: '2021-10-12',
-                seller: '张三',
-                
-            },
-            {
-                orderNo: '123456789ABC', 
-                customer: '苹果',
-                sellDate: '2021-10-12',
-                seller: '李四',
-                
-            },
-            {
-                orderNo: '123456789ABC', 
-                customer: '微软',
-                sellDate: '2021-10-12',
-                seller: '乔布斯',
-                
-            },
-            {
-                orderNo: '123456789ABC', 
-                customer: '谷歌',
-                sellDate: '2021-10-12',
-                seller: '张三',
-                
-            },
-            {
-                orderNo: '123456789ABC', 
-                customer: '苹果',
-                sellDate: '2021-10-12',
-                seller: '李四',
-                
-            },
-            {
-                orderNo: '123456789ABC', 
-                customer: '微软',
-                sellDate: '2021-10-12',
-                seller: '乔布斯',
-                
-            },
-            {
-                orderNo: '123456789ABC', 
-                customer: '谷歌',
-                sellDate: '2021-10-12',
-                seller: '张三',
-                
-            },
-            {
-                orderNo: '123456789ABC', 
-                customer: '苹果',
-                sellDate: '2021-10-12',
-                seller: '李四',
-                
-            },
-            {
-                orderNo: '123456789ABC', 
-                customer: '微软',
-                sellDate: '2021-10-12',
-                seller: '乔布斯',
-                
-            },
-        ],
+        orders: [],
+        loading: true
     },
 
     methods: {
-        clickDetail: function(orderNo) {
-            
+        clickDetail: function(id) {
+            window.location.href = "/orders/neworder.html?id="+id
         },
-        clickModify: function(orderNo) {
-            window.location.href = "/orders/neworder.html"
+        clickModify: function(id) {
+            window.location.href = "/orders/neworder.html?id="+id
         },
         handleCurrentChange: function(pageNo) {
             console.log(pageNo)
             this.currentPage = pageNo
-           // this.fetchData()
+            this.fetchData()
         },
 
 
         clickNewOrder: function() {
             window.location.href = "/orders/select_products.html"
+        },
+
+        fetchData: function() {
+            //showLoading();
+            var that = this
+            var queryObj = this.getQueryObj()
+            console.log(JSON.stringify(queryObj))
+            showLoading()
+            that.loading = true
+            axios.post("/searchorders", {params: queryObj})
+                .then( function(jsonResp) {
+                    //console.log("success");
+                    var data = jsonResp.data
+                    console.log(data)
+                    hideLoading()
+                    that.loading = false
+                    if (data.status == 0) {
+                        that.orders = data.orders
+                        that.totalCount = data.totalCount
+                    } else {
+                        console.error("response status is FAIL");
+                        alert("服务器返回失败")
+                    }
+                })
+                .catch(function(error) {
+                    console.error(error)
+                })
+        },
+
+        getQueryObj: function() {
+            var queryObject = { }
+            queryObject.pageNo = this.currentPage
+            queryObject.pageSize = this.pageSize
+            queryObject.keyword = this.params.keyword
+            return queryObject;
+        },
+
+        clickSearch: function(e) {
+            console.log("send search request")
+            this.fetchData()
+            e.preventDefault()
+        },
+        clickReset: function(e) {
+            console.log("send reset")
+            this.params.keyword = ''
+            e.preventDefault()
         }
+        
     },
     mounted: function() {
-
+        this.fetchData()
     }
 })
+
+function showLoading() {
+    $('#loading').show()
+    //app.data.loading = true
+}
+
+function hideLoading() {
+    $('#loading').hide()
+    //app.data.loading = false
+}

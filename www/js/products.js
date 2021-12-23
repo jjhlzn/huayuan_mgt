@@ -7,7 +7,7 @@ var app = new Vue({
         title: '商品库存',
         totalCount: 0,
         requests: [],
-        pageSize: 20,
+        pageSize: 10,
         currentPage: 1,
         params: {},
         products: [],
@@ -18,6 +18,7 @@ var app = new Vue({
         handleCurrentChange: function(pageNo) {
             console.log(pageNo)
             this.currentPage = pageNo
+ 
             this.fetchData()
         },
 
@@ -32,7 +33,7 @@ var app = new Vue({
             console.log(JSON.stringify(queryObj))
             showLoading()
             that.loading = true
-            axios.post("/getproducts", {params: queryObj})
+            axios.post("/searchproducts", {params: queryObj})
                 .then( function(jsonResp) {
                     //console.log("success");
                     var data = jsonResp.data

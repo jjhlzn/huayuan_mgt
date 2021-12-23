@@ -17,7 +17,7 @@
 
         <user-header></user-header>
 
-        <div class="lg:flex w-full content_background_color" style="position: absolute; top: 44px; bottom: 0; width: 100%;">
+        <div class="lg:flex w-full content_background_color" style="margin-top: 44px;">
 
             <div id="menu" class="w-60 pt-2 bg-gray-600 flex-shrink-0 
                             absolute inset-y-0 left-0 transform -translate-x-full lg:relative lg:translate-x-0 transition duration-200 ease-in-out">
@@ -25,7 +25,7 @@
             </div>
                 
             <!-- 内容 -->
-            <div class="flex-grow content_background_color">
+            <div class="flex-grow content_background_color min-h-screen">
 
                 <!-- 标题-->
                 <p class="font-bold text-xl p-5 bg-white">挑选商品</p>
@@ -59,6 +59,9 @@
 
                 <!-- 列表 -->
                 <div id="contentDiv" class="m-5 p-5 bg-white overflow-x-auto relative"  >
+                    <div class="pb-4">
+                        已选择<span class="px-2 text-blue-700">{{selectedProducts.length}}</span>个商品
+                    </div>
                     <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                         <tr class="py-1">
                             <th class="w-24 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
@@ -87,7 +90,8 @@
 
                         <tr v-for="item in products" class="hover:bg-gray-50 py-1">
                             <td class="w-24">
-                                <a href="#" class="text-blue-500 hover:text-blue-900 visited:text-purple-600" v-on:click="addToOrder(item.id)">添加</a>
+                                <button  class="text-blue-500 hover:text-blue-900 " v-if="!item.selected" v-on:click="addToOrder(item.id)">添加</button>
+                                <button  class="text-red-500 hover:text-red-900 " v-if="item.selected" v-on:click="removeFromOrder(item.id)">删除</button>
                             </td>
                             <td class="min-w-12">{{item.time}}</td>
                             <td>{{item.name}}</td>

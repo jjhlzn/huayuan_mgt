@@ -7,11 +7,12 @@ var app = new Vue({
         title: '商品库存',
         totalCount: 0,
         requests: [],
-        pageSize: 20,
+        pageSize: 10,
         currentPage: 1,
         params: {},
         products: [],
-        loading: true
+        loading: true,
+        selectedProducts: []
     },
 
     methods: {
@@ -32,7 +33,7 @@ var app = new Vue({
             console.log(JSON.stringify(queryObj))
             showLoading()
             that.loading = true
-            axios.post("/getproducts", {params: queryObj})
+            axios.post("/searchproducts", {params: queryObj})
                 .then( function(jsonResp) {
                     //console.log("success");
                     var data = jsonResp.data
@@ -72,6 +73,39 @@ var app = new Vue({
         },
         clickFinish: function() {
             window.location.href = "/orders/neworder.html"
+        },
+
+        addToOrder: function(id) {
+            this.selectedProducts.push(id)
+            var products = this.products
+            var list = []
+            for(var i = 0; i < products.length; i++) {
+                if (products[i].id == id) {
+                    products[i].selected = true
+                }
+                list.push(products[i])
+            }
+            this.products = list
+            console.log(this.selectedProducts)
+        },
+
+        removeFromOrder: function(id) {
+            console.log(this.selectedProducts)
+            console.log("remove " + id)
+            const index = this.selectedProducts.indexOf(id)
+            if (index > -1) {
+                this.selectedProducts.splice(index, 1);
+                console.info("delete success")
+            }
+            var products = this.products
+            var list = []
+            for(var i = 0; i < products.length; i++) {
+                if (products[i].id == id) {
+                    products[i].selected = false
+                }
+                list.push(products[i])
+            }
+            this.products = list
         }
     },
     mounted: function() {

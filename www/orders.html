@@ -84,17 +84,17 @@
                             </th>
                         </tr>
 
-                        <tr v-for="item in products" class="hover:bg-gray-200">
-                            <td>{{item.orderNo}}</td>
-                            <td>{{item.customer}}</td>
+                        <tr v-for="item in orders" class="hover:bg-gray-200">
+                            <td>{{item.ckdh}}</td>
+                            <td>{{item.gnkhmc}}</td>
                             <td>{{item.sellDate}}</td>
                             <td>{{item.seller}}</td>
                             <td>
                                 <a href="#"  class="text-blue-500 hover:text-blue-900 visited:text-purple-600 mr-3"
-                                v-on:click="clickDetail(item.orderNo)">详情</a>
+                                v-on:click="clickDetail(item.ckdh)">详情</a>
 
                                 <a href="#"  class="text-blue-500 hover:text-blue-900 visited:text-purple-600"
-                                v-on:click="clickModify(item.orderNo)">修改</a>
+                                v-on:click="clickModify(item.ckdh)">修改</a>
                             </td>
                         </tr>
                     </table>

@@ -23,12 +23,16 @@ Vue.component('user-header', {
             console.log('menu click')
             $('#menu').toggleClass('-translate-x-full') 
             $('#contentDiv').toggleClass('relative')
+            //$('.orderImage').toggleClass('relative')
+            //$('.orderImage').toggle()
 
         })
         $('#closeMenuButton').click(function() {
             $('#menu').toggleClass('-translate-x-full')
             setTimeout(function() {
                 $('#contentDiv').toggleClass('relative')
+               // $('.orderImage').toggleClass('relative')
+               // $('.orderImage').toggle()
             }, 500)
             
         })
