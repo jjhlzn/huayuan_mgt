@@ -1,4 +1,5 @@
 
+
 var app = new Vue({
     el: '#app',
     data: {
@@ -17,6 +18,28 @@ var app = new Vue({
         },
         clickModify: function(id) {
             window.location.href = "/orders/neworder.html?id="+id
+        },
+        clickDelete: function(id) {
+            var that = this
+            if (window.confirm("Do you want delet this order?")) {
+                axios.post('/deleteorder', {id: id})
+                .then(function(response) {
+                    var data = response.data
+                    console.log(data)
+                    if (data.status == 0) {
+                        var list = []
+                        for(var i  = 0; i < that.orders.length; i++) {
+                            var order = that.orders[i]
+                            if (order.ckdh != id) {
+                                list.push(order)
+                            }
+                        }
+                        that.orders = list
+                    }
+                })
+            }
+
+            
         },
         handleCurrentChange: function(pageNo) {
             console.log(pageNo)
@@ -72,6 +95,7 @@ var app = new Vue({
         clickReset: function(e) {
             console.log("send reset")
             this.params.keyword = ''
+            this.fetchData()
             e.preventDefault()
         }
         

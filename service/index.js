@@ -112,6 +112,8 @@ function makeSearchOrdersSql(queryobj) {
                 yw_ckgl_cc.ckje,   --销售金额
                 yw_ckgl_cc.state,   --状态
                 yw_ckgl_cc.ckrq,    
+                seller, 
+                convert(varchar, sellDate, 23) as sellDate,
                 yw_ckgl_cc.bz,   --备注
                 yw_ckgl_cc.jw_flag   --Y
             FROM yw_ckgl_cc
@@ -168,6 +170,7 @@ async function loadProducts(ids) {
                             yw_ckgl_jc_cmd.rktzdh_cxh = b.rktzdh_cxh),0)
                 and  yw_ckgl_jc.rkdh + '_' + CONVERT(varchar(10), yw_ckgl_jc_cmd.rkxh) in ${idsCaluse}    `
         let sql = `select yw_ckgl_jc.rkdh + '_' + CONVERT(varchar(10), yw_ckgl_jc_cmd.rkxh)  as id,
+         yw_ckgl_jc.rkdh + '_' + CONVERT(varchar(10), yw_ckgl_jc_cmd.rkxh)  as productId,
         yw_ckgl_jc.rkdh,   --入库单号
           convert(varchar, yw_ckgl_jc.rkrq, 23) as time,   --入库日期
         yw_ckgl_jc.ywy,   --业务员
@@ -200,7 +203,7 @@ async function loadProducts(ids) {
         FROM yw_ckgl_jc,   
             yw_ckgl_jc_cmd
         where ${whereClause}  `
-        logger.debug(sql)
+        //logger.debug(sql)
         let pool = await db_pool.getPool(db_config)
         let products = (await pool.query(sql)).recordset
         products.forEach(product => {
@@ -221,7 +224,7 @@ async function addOrUpdateOrder(order) {
     try {
         let pool = await db_pool.getPool(db_config)
         if (order.id) {
-            sql = `update yw_ckgl_cc set  gnkhmc = '${order.clientName}' where ckdh = '${order.id}'`
+            sql = `update yw_ckgl_cc set  gnkhmc = '${order.clientName}', seller = '${order.seller}', sellDate = '${order.sellDate}' where ckdh = '${order.id}'`
             await pool.query(sql)
 
             //更新商品
@@ -236,8 +239,9 @@ async function addOrUpdateOrder(order) {
             let id = makeOrderId()
             order.id = id
             //插入主表
-            sql = `insert into yw_ckgl_cc (ckdh, zdr, zdrq, xshth, gnkhmc, [state])
-                  values ('${id}', '111', '${now}', '${id}', '${order.clientName}', '0')`
+
+            sql = `insert into yw_ckgl_cc (ckdh, zdr, zdrq, xshth, gnkhmc, seller, sellDate, [state])
+                  values ('${id}', '111', '${now}', '${id}', '${order.clientName}', '${order.seller}', '${order.sellDate.substring(0, 10)}', '0')`
             
             logger.info(sql)
             await pool.query(sql)
@@ -250,9 +254,10 @@ async function addOrUpdateOrder(order) {
             let p = products[i]
             sql = `
             insert into yw_ckgl_cc_cmd 
-            (spbm, hgbm, sphh, spzwmc, spywmc, spgg, sldw, hsje, hsdj, ckdh, ckxh, cxh)
+            (spbm, hgbm, sphh, spzwmc, spywmc, spgg, sldw, hsje, hsdj, ckdh, ckxh, cxh, productId)
             values ('${p.spbm}', '${p.hgbm}', '${p.sphh}', '${p.name}', '${p.spywmc}', '${p.spgg}', '${p.sldw}', 0, '${p.price}', '${order.id}', 
-                '${p.buyQuantity}', '${i}')`
+                '${p.buyQuantity}', '${i}', '${p.productId}')`
+            logger.debug("product.id:" + p.productId)
             logger.info(sql)
             await pool.query(sql)
         }
@@ -292,6 +297,8 @@ async function getOrderById(id) {
                 yw_ckgl_cc.ckje,   --销售金额
                 yw_ckgl_cc.state,   --状态
                 yw_ckgl_cc.ckrq,    
+                seller,
+                convert(varchar, sellDate, 23) as sellDate,
                 yw_ckgl_cc.bz,   --备注
                 yw_ckgl_cc.jw_flag   --Y
         FROM yw_ckgl_cc
@@ -306,14 +313,15 @@ async function getOrderById(id) {
 
         //加载商品
         sql = `select spbm, hgbm, sphh, spzwmc as name, spywmc, spgg, sldw, hsje, hsdj as price, ckxh as buyQuantity,
-                    ckdh, cxh from yw_ckgl_cc_cmd where ckdh = '${id}' order by cxh`
-        logger.info(sql)
+                    ckdh, cxh, productId from yw_ckgl_cc_cmd where ckdh = '${id}' order by cxh`
+       // logger.info(sql)
         let products = (await pool.query(sql)).recordset
         order.products = products
+        order.products.forEach(product => product.id = product.ckdh + '_' + product.cxh)
 
         //加载图片
         sql = `select imageUrl from yw_ckgl_cc_images where ckdh = '${id}' order by addtime`
-        logger.info(sql)
+       // logger.info(sql)
         let images = (await pool.query(sql)).recordset
         order.images = images
 
@@ -321,6 +329,18 @@ async function getOrderById(id) {
     } catch(error) {
         logger.error(error)
         return null
+    }
+}
+
+async function deleteOrder(id) {
+    try {
+        let sql = `delete from yw_ckgl_cc where ckdh = '${id}'`
+        let pool = await db_pool.getPool(db_config)
+        await pool.query(sql)
+        return true
+    } catch(error) {
+        logger.error(error)
+        return false
     }
 }
 
@@ -335,5 +355,6 @@ module.exports = {
     loadProducts: loadProducts,
     addOrUpdateOrder: addOrUpdateOrder,
     searchOrders: searchOrders,
-    getOrderById: getOrderById
+    getOrderById: getOrderById,
+    deleteOrder: deleteOrder,
 }

@@ -1,13 +1,23 @@
 
+
 var query = parse_query_string(window.location.search.substr(1, window.location.search.length - 1))
 var id = query.id
-var ids = []
+var selectedStr = query.selectedproducts || ''
+var ids = selectedStr.split('___')
+var fromaddproducts = query.fromaddproducts
+console.log('id:', id)
+console.log('selected products:', ids)
 
 var app = new Vue({
     el: '#app',
+    components: {
+        vuejsDatepicker
+    },
     data: {
         title: '商品库存',
         clientName: '',
+        seller: '',
+        sellDate: '',
         products: [],
         images: [],
         id: id
@@ -15,7 +25,8 @@ var app = new Vue({
 
     methods: {
         goToSelectProduct: function() {
-            window.location.href = "/orders/select_products.html"
+            var selectedProducts = this.products.map(function(product) {return product.productId})
+            window.location.href = "/orders/select_products.html?id="+this.id+"&selectedproducts="+selectedProducts.join('___')
         },
         deleteImage: function(index) {
             //alert("remove image " + index )
@@ -28,39 +39,41 @@ var app = new Vue({
             this.images = list
         },
 
-        loadProducts: function(ids) {
-            if (!ids || ids.length == 0) {
-                return
-            }
-
+        loadData: function(id, productIds) {
             var that = this
-            axios.post('/getproducts', {ids: ids})
-                .then(function(response)  {
-                    var data = response.data
-                    console.log(data)
-                    if (data.status == 0){
-                        that.products = data.products
-                    }
-                })
-                .catch(function(error){
-                    console.error(error)
-                })
-        },
-
-        loadOrder: function(id) {
-            if (!id) {
-                return
+            var url = '/getorder'
+            if (fromaddproducts) {
+                if (id) {
+                    url = '/getorderandproducts'
+                } else {
+                    url = '/getproducts'
+                }
+                
+            }  else {
+                if (id) {
+                    url = '/getorder'
+                } else {
+                    url = '/getproducts'
+                }
+                
             }
-            var that = this
-            axios.post('/getorder', {id: id})
+            console.log(url)
+            axios.post(url, {id: id, productIds: productIds})
                 .then( function(response) {
                     var data = response.data
                     console.log(data)
                     if (data.status == 0) {
-                        var order = data.order
-                        that.products = order.products
-                        that.clientName = order.clientName
-                        that.images = order.images.map(function(item) { return {url: '/uploads/'+item.imageUrl, serverFileName: item.imageUrl}})                    }
+                        if (url != '/getproducts') {
+                            var order = data.order
+                            that.products = order.products
+                            that.clientName = order.clientName
+                            that.sellDate = order.sellDate
+                            that.seller = order.seller
+                            that.images = order.images.map(function(item) { return {url: '/uploads/'+item.imageUrl, serverFileName: item.imageUrl}})     
+                        } else {
+                            that.products = data.products
+                        }
+                   }
                 })
                 .catch(function(error){
                     console.error(error)
@@ -85,6 +98,18 @@ var app = new Vue({
             }
         },
 
+        deleteItem: function(productId) {
+            var products = this.products
+            var list = []
+            for(var i = 0; i <products.length; i++) {
+                var product = products[i]
+                if (product.id != productId) {
+                    list.push(product)
+                }
+            }
+            this.products = list
+        },
+
         uploadImage: function(url, file) {
             var that = this
             var formData = new FormData();
@@ -105,6 +130,8 @@ var app = new Vue({
                     console.error(error)
                 })
         },
+
+        
 
         submitOrder: function() {
             var that = this
@@ -128,6 +155,16 @@ var app = new Vue({
                 }
             }
 
+            if (!this.seller) {
+                alert('必须填写销售员')
+                return false
+            }
+
+            if (!this.sellDate) {
+                alert('必须填写销售日期')
+                return false
+            }
+
             //验证图片是否已经上传
             var images = this.images
             for(var i = 0; i < images.length; i++) {
@@ -141,6 +178,8 @@ var app = new Vue({
                 products: that.products,
                 images: that.images.map(item => item.serverFileName),
                 clientName: that.clientName,
+                seller: that.seller,
+                sellDate: that.sellDate
             }
             console.log(params)
             //提交订单
@@ -149,17 +188,32 @@ var app = new Vue({
                 console.log(data)
                 if (data.status == 0) {
                     that.id = data.id
-                    alert('create order successful!')
+                    that.products.forEach(function (product) {product.hasInOrder = true})
+                    //that.rebindProducts()
+                    var products = that.products.map(function (product) {return product.productId})
+                    window.location.href = "/orders/neworder.html?id=" + that.id + "&selectedproducts="+products.join('___')
+                    alert('operate successful!')
                 } else {
-                    alert('create order fail!')
+                    alert('operate fail!')
                 }
             })
 
             
+        },
+
+        rebindProducts() {
+            var newProducts = []
+            for(var i = 0; i < this.products.length; i++) {
+                newProducts.push(this.products[i])
+            }
+            this.products = newProducts
         }
     }, 
+
     mounted: function() {
-        this.loadProducts(ids)
-        this.loadOrder(this.id)
+        //this.loadProducts(ids)
+        console.log('before load data')
+        this.loadData(this.id, ids)
     }
 })
+

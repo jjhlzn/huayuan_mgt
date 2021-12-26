@@ -98,7 +98,7 @@ app.all('/searchproducts', auth, async (req, res) => {
 })
 
 app.all('/getproducts', auth, async (req, res) => {
-    let ids = req.body.ids
+    let ids = req.body.ids || req.body.productIds
     let products = await service.loadProducts(ids)
     res.send(JSON.stringify({
         status: 0,
@@ -118,7 +118,7 @@ app.post('/upload', upload.single('photo'), async (req, res) => {
 
 app.post('/updateorder', auth, async (req, res) => {
     let order = req.body
-    console.log(order)
+    //console.log(order)
     let result = await service.addOrUpdateOrder(order)
     res.send(JSON.stringify({
         status: result ? 0 : -1, 
@@ -140,6 +140,9 @@ app.all('/searchorders', auth, async (req, res) => {
 app.all('/getorder', auth, async (req, res) => {
     let id = req.body.id
     let order = await service.getOrderById(id)
+    if (order){
+        order.products.forEach(product => product.hasInOrder = true)
+    }
     res.send(JSON.stringify({ 
         status: order != null ? 0 : -1,
         message: '',
@@ -147,7 +150,66 @@ app.all('/getorder', auth, async (req, res) => {
     }))
 })
 
+app.post('/deleteorder', auth, async (req, res) => {
+    let id = req.body.id
+    let result = await service.deleteOrder(id)
+    res.send(JSON.stringify({
+        status: result ? 0 : -1,
+        message: ''
+    }))
+})
 
+//该请求获取订单和商品，如果出库单的商品和所请求的商品有重合，则设置商品的数量
+app.all('/getorderandproducts', auth, async (req, res) => {
+    let productIds = req.body.productIds
+    logger.info(JSON.stringify(productIds))
+    let products = await service.loadProducts(productIds)
+    console.log("products.length: ", products.length)
+    //console.log(products)
+    let id = req.body.id
+    let order = await service.getOrderById(id)
+    let newList = []
+    //console.log(order)
+    if (order != null){
+        let products2 = order.products
+        products2.forEach((product) => product.hasInOrder = true)
+
+        for(var i = 0; i < products.length; i++) {
+            if (isInList(products[i].productId, products2)) {
+                newList.push(getProduct(products[i].productId, products2))
+            }
+        }
+
+        for(var i = 0; i < products.length; i++) {
+            if (!isInList(products[i].productId, products2)) {
+                newList.push(products[i])
+            }
+        }
+        order.products = newList
+    }
+    res.send(JSON.stringify({ 
+        status: order != null ? 0 : -1,
+        message: '',
+        order: order
+    }))
+})
+
+function isInList(id, products) {
+    for(var i = 0; i < products.length; i++) { 
+        if (products[i].productId == id) {
+            return true
+        }
+    }
+    return false
+}
+
+function getProduct(id, products) {
+    for(var i = 0; i < products.length; i++) { 
+        if (products[i].productId == id) {
+            return products[i]
+        }
+    }
+}
 
 const port = 7897
 

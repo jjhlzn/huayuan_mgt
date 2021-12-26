@@ -69,6 +69,7 @@ var app = new Vue({
         clickReset: function(e) {
             console.log("send reset")
             this.params.keyword = ''
+            this.fetchData()
             e.preventDefault()
         }
     },

@@ -1,4 +1,9 @@
-
+var query = parse_query_string(window.location.search.substr(1, window.location.search.length - 1))
+var id = query.id || ''
+var selectedStr = query.selectedproducts || ''
+var ids = selectedStr.split('___')
+console.log('id:', id)
+console.log('selected products:', ids)
 
 var app = new Vue({
     el: '#app',
@@ -12,7 +17,8 @@ var app = new Vue({
         params: {},
         products: [],
         loading: true,
-        selectedProducts: []
+        id: id,
+        selectedProducts: ids
     },
 
     methods: {
@@ -41,6 +47,7 @@ var app = new Vue({
                     hideLoading()
                     that.loading = false
                     if (data.status == 0) {
+                        that.setSelected(data.products)
                         that.products = data.products
                         that.totalCount = data.totalCount
                     } else {
@@ -62,9 +69,10 @@ var app = new Vue({
         },
 
         clickSearch: function(e) {
+            e.preventDefault()
             console.log("send search request")
             this.fetchData()
-            e.preventDefault()
+            
         },
         clickReset: function(e) {
             console.log("send reset")
@@ -72,7 +80,18 @@ var app = new Vue({
             e.preventDefault()
         },
         clickFinish: function() {
-            window.location.href = "/orders/neworder.html"
+            var selectedProducts = this.selectedProducts
+
+            window.location.href = "/orders/neworder.html?fromaddproducts=true&id=" + this.id + "&selectedproducts="+selectedProducts.join('___')
+        },
+
+        setSelected: function(products) {
+            var selectedProducts = this.selectedProducts
+            for(var i = 0; i < products.length; i++) {
+                if (selectedProducts.indexOf(products[i].id) != -1) {
+                    products[i].selected = true
+                }
+            }
         },
 
         addToOrder: function(id) {
