@@ -40,6 +40,7 @@ function makeSearchProductsSql(queryobj) {
             yw_ckgl_jc_cmd.sjrksl as quantity, --入库数量
             yw_ckgl_jc_cmd.sldw,    --单位
             yw_ckgl_jc_cmd.hsje,   --金额
+
             yw_ckgl_jc_cmd.hsdj as price,   ---单价
             yw_ckgl_jc_cmd.rkxh,  --入库序号
             yw_ckgl_jc_cmd.mxdbh, --明细单编号
@@ -76,7 +77,12 @@ async function searchProducts(params) {
         let pool = await db_pool.getPool(db_config)
         let products = (await pool.query(sqlstrs[0])).recordset
         let totalCount = (await pool.query(sqlstrs[1])).recordset[0]['totalCount']
-        
+        products.forEach(product => {
+            if (!product.hsje) {
+                product.hsje = 0
+            }
+             product.hsje = product.hsje.toFixed(0)
+        })
         return {
             products: products,
             totalCount: totalCount
@@ -188,6 +194,7 @@ async function loadProducts(ids) {
         yw_ckgl_jc_cmd.sjrksl as quantity, --入库数量
         yw_ckgl_jc_cmd.sldw,    --单位
         yw_ckgl_jc_cmd.hsje,   --金额
+
         yw_ckgl_jc_cmd.hsdj as price,   ---单价
         yw_ckgl_jc_cmd.rkxh,  --入库序号
         yw_ckgl_jc_cmd.mxdbh, --明细单编号
