@@ -164,7 +164,7 @@
                             <button class="block h-8 px-5 m-2 text-sm text-white transition-colors 
                                 duration-150 rounded-sm focus:shadow-outline bg-blue-500 hover:bg-blue-600" v-on:click="saveOrder"> 保 存 </button>
 
-                            <button v-if="state == '新制'" class="block h-8 px-5 m-2 text-sm text-white transition-colors 
+                            <button v-if="state == '新制' && id" class="block h-8 px-5 m-2 text-sm text-white transition-colors 
                                 duration-150 rounded-sm focus:shadow-outline bg-green-500 hover:bg-green-600" v-on:click="chukuOrder"> 出 库 </button>
 
                             <button v-if="state == '出库'" class="block h-8 px-5 m-2 text-sm text-white transition-colors 

@@ -99,6 +99,9 @@ function makeSearchOrdersSql(queryobj) {
     if (queryobj.keyword) {
         whereClause += `  and gnkhmc+ckdh like '%${queryobj.keyword}%' `
     }
+    if (queryobj.state) {
+        whereClause += ` and [state] = '${queryobj.state}'`
+    }
     const skipCount = queryobj.pageSize * (queryobj.pageNo - 1)
 
     const sqlstr = `select top ${queryobj.pageSize}  
@@ -371,6 +374,19 @@ async function deleteOrder(id) {
     }
 }
 
+async function settleOrder(id) {
+    try {
+        //let sql = `delete from yw_ckgl_cc where ckdh = '${id}'`
+        let sql = `update yw_ckgl_cc set [state] = '已结算' where ckdh = '${id}' and [state] = '出库'`
+        let pool = await db_pool.getPool(db_config)
+        await pool.query(sql)
+        return true
+    } catch(error) {
+        logger.error(error)
+        return false
+    }
+}
+
 function makeOrderId() {
     let id = moment().format('YYMMDDHHMMSS') + Math.floor(Math.random() * 10)
     return id
@@ -384,4 +400,5 @@ module.exports = {
     searchOrders: searchOrders,
     getOrderById: getOrderById,
     deleteOrder: deleteOrder,
+    settleOrder:  settleOrder
 }

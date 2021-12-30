@@ -159,6 +159,15 @@ app.post('/deleteorder', auth, async (req, res) => {
     }))
 })
 
+app.post('/settleorder', auth, async (req, res) => {
+    let id = req.body.id
+    let result = await service.settleOrder(id)
+    res.send(JSON.stringify({
+        status: result ? 0 : -1,
+        message: ''
+    })) 
+})
+
 //该请求获取订单和商品，如果出库单的商品和所请求的商品有重合，则设置商品的数量
 app.all('/getorderandproducts', auth, async (req, res) => {
     let productIds = req.body.productIds
