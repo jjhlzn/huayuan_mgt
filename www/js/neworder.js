@@ -17,10 +17,11 @@ var app = new Vue({
         title: '商品库存',
         clientName: '',
         seller: '',
-        sellDate: '',
+        sellDate: moment().format('YYYY-MM-DD'),
         products: [],
         images: [],
-        id: id
+        id: id,
+        state: '新制'
     },
 
     methods: {
@@ -69,6 +70,8 @@ var app = new Vue({
                             that.clientName = order.clientName
                             that.sellDate = order.sellDate
                             that.seller = order.seller
+                            that.id = order.ckdh
+                            that.state = order.state
                             that.images = order.images.map(function(item) { return {url: '/uploads/'+item.imageUrl, serverFileName: item.imageUrl}})     
                         } else {
                             that.products = data.products
@@ -131,9 +134,25 @@ var app = new Vue({
                 })
         },
 
-        
+       
 
-        submitOrder: function() {
+        returnOrder: function() {
+            this.submitOrder('新制')
+        },
+
+        chukuOrder: function() {
+            this.submitOrder('出库')
+        },
+
+        jiesuanOrder: function() {
+            this.submitOrder('已结算')
+        },
+        
+        saveOrder: function() {
+            this.submitOrder()
+        },
+
+        submitOrder: function(newState) {
             var that = this
 
             //客户名称必须有
@@ -149,11 +168,27 @@ var app = new Vue({
                     return false
                 }
 
+                if (!isNumeric(products[i].price)) {
+                    alert('价格必须是数字')
+                    return false
+                }
+
                 if (!products[i].buyQuantity) {
                     alert('必须填写数量')
                     return false
                 }
+
+                if (!isInteger(products[i].buyQuantity)) {
+                    alert('数量必须是整数')
+                    return false
+                }
+
+                if (products[i].buyQuantity <= 0) {
+                    alert('quantity must be greater than zero')
+                    return false
+                }
             }
+
 
             if (!this.seller) {
                 alert('必须填写销售员')
@@ -173,13 +208,17 @@ var app = new Vue({
                     return false
                 }
             }
+
+
+
             var params = {
                 id: that.id, 
                 products: that.products,
                 images: that.images.map(item => item.serverFileName),
                 clientName: that.clientName,
                 seller: that.seller,
-                sellDate: that.sellDate
+                sellDate: that.sellDate,
+                state: newState ? newState : this.state,
             }
             console.log(params)
             //提交订单
@@ -187,6 +226,10 @@ var app = new Vue({
                 var data = response.data
                 console.log(data)
                 if (data.status == 0) {
+                    //服务器保存成功，更新新状态
+                    if (newState) {
+                        that.state = newState
+                    }
                     that.id = data.id
                     that.products.forEach(function (product) {product.hasInOrder = true})
                     //that.rebindProducts()
@@ -217,3 +260,14 @@ var app = new Vue({
     }
 })
 
+function isNumeric(str) {
+    //if (typeof str != "string") return false // we only process strings!  
+    return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+           !isNaN(parseFloat(str)) // ...and ensure strings of whitespace fail
+}
+
+function isInteger(str) {
+    //if (typeof str != "string") return false // we only process strings!  
+    return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+           !isNaN(parseInt(str)) // ...and ensure strings of whitespace fail
+}
