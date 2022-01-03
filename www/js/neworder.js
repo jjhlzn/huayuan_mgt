@@ -21,6 +21,7 @@ var app = new Vue({
         products: [],
         images: [],
         id: id,
+        xshth: '',
         state: '新制'
     },
 
@@ -72,6 +73,7 @@ var app = new Vue({
                             that.seller = order.seller
                             that.id = order.ckdh
                             that.state = order.state
+                            that.xshth = order.xshth
                             that.images = order.images.map(function(item) { return {url: '/uploads/'+item.imageUrl, serverFileName: item.imageUrl}})     
                         } else {
                             that.products = data.products
@@ -161,6 +163,11 @@ var app = new Vue({
                 return false
             }
 
+            if (!this.xshth) {
+                alert('必须填写订单号')
+                return false
+            }
+
             var products = this.products
             for(var i = 0; i < products.length; i++) {
                 if (!products[i].price) {
@@ -218,6 +225,7 @@ var app = new Vue({
                 clientName: that.clientName,
                 seller: that.seller,
                 sellDate: that.sellDate,
+                xshth: that.xshth,
                 state: newState ? newState : this.state,
             }
             console.log(params)

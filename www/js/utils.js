@@ -19,3 +19,13 @@ function parse_query_string(query) {
     }
     return query_string;
 }
+
+function checkLogin() {
+    var token = Cookies.get('token')
+    if (!token || token === 'null') {
+        window.location.href = '/login.html'
+    }
+}
+
+
+checkLogin()

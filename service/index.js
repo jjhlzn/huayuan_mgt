@@ -5,6 +5,7 @@ const { v4: uuidv4 } = require('uuid');
 const logger = require('../lib/logger')('service/index.js')
 const _ = require('underscore')
 const moment = require('moment')
+const md5 = require('md5')
 
 function makeSearchProductsSql(queryobj) {
     var whereClause = ` ( yw_ckgl_jc.rkdh = yw_ckgl_jc_cmd.rkdh ) and   
@@ -252,7 +253,7 @@ async function addOrUpdateOrder(order) {
         }
 
         if (order.id) {
-            sql = `update yw_ckgl_cc set ckje = ${totalAmount}, gnkhmc = '${order.clientName}', seller = '${order.seller}', sellDate = '${order.sellDate}',
+            sql = `update yw_ckgl_cc set ckje = ${totalAmount}, xshth = '${order.xshth}', gnkhmc = '${order.clientName}', seller = '${order.seller}', sellDate = '${order.sellDate}',
                           [state] = '${order.state}' where ckdh = '${order.id}'`
             await pool.query(sql)
 
@@ -270,7 +271,7 @@ async function addOrUpdateOrder(order) {
             //插入主表
 
             sql = `insert into yw_ckgl_cc (ckdh, zdr, zdrq, xshth, gnkhmc, seller, sellDate, [state], ckje)
-                  values ('${id}', '111', '${now}', '${id}', '${order.clientName}', '${order.seller}', '${order.sellDate.substring(0, 10)}', '新制', ${totalAmount})`
+                  values ('${id}', '111', '${now}', '${order.xshth}', '${order.clientName}', '${order.seller}', '${order.sellDate.substring(0, 10)}', '新制', ${totalAmount})`
             
             logger.info(sql)
             await pool.query(sql)
@@ -387,6 +388,50 @@ async function settleOrder(id) {
     }
 }
 
+
+async function login(username, password) {
+    try {
+        //let sql = `delete from yw_ckgl_cc where ckdh = '${id}'`
+        logger.debug(`username = ${username}, password = ${password}`)
+        let passwordHash = md5(password).toUpperCase()
+        let sql = `select e_no as userId, varchar2 as password, name from rs_employee
+                    where e_no = '${username}' and varchar2 = '${passwordHash}' `
+        logger.debug(sql)
+        let pool = await db_pool.getPool(db_config)
+        let result = (await pool.query(sql)).recordset
+        //console.log(result)
+        if (result.length == 0) {
+            return null
+        }
+        return result[0]
+    } catch(error) {
+        logger.error(error)
+        return null
+    }
+}
+
+async function changePassword(username, password, newPassword) {
+    try {
+        //let sql = `delete from yw_ckgl_cc where ckdh = '${id}'`
+        let passwordHash = md5(password).toUpperCase()
+        let sql = `select * from rs_employee where e_no = '${username}' and varchar2 = '${passwordHash}' `
+        console.log(sql)
+        let pool = await db_pool.getPool(db_config)
+        let result = (await pool.query(sql)).recordset
+        if (result.length == 0) {
+            return 'origin password is wrong'
+        }
+
+        let newPasswordHash = md5(newPassword).toUpperCase()
+        sql = `update rs_employee set varchar2 = '${newPasswordHash}' where e_no = '${username}'`
+        await pool.query(sql)
+        return ''
+    } catch(error) {
+        logger.error(error)
+        return ''
+    }
+}
+
 function makeOrderId() {
     let id = moment().format('YYMMDDHHMMSS') + Math.floor(Math.random() * 10)
     return id
@@ -400,5 +445,7 @@ module.exports = {
     searchOrders: searchOrders,
     getOrderById: getOrderById,
     deleteOrder: deleteOrder,
-    settleOrder:  settleOrder
+    settleOrder:  settleOrder,
+    changePassword,
+    login
 }

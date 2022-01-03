@@ -56,31 +56,43 @@ app.get('/orders/list.html', (req, res) => {
 app.get('/settlements/list.html', (req, res) => {
     res.sendFile(__dirname + '/www/settlements.html')
 })
+app.get('/settings.html', (req, res) => {
+    res.sendFile(__dirname + '/www/settings.html')
+})
 
 
 app.get('/index.html', function(req, res) {
     res.sendFile(__dirname + '/www/products.html')
 });
 
-let users = [{userId: 'admin', password: '123456', name: '管理员'}]
+//let users = [{userId: 'admin', password: '123456', name: '管理员'}]
 
-app.post('/login', (req, res) => {
+app.post('/login', async (req, res) => {
     const user = {userId: req.body.userId, password: req.body.password}
 
-    let foundUser = users.find(item => item.userId == user.userId)
+    //let foundUser = users.find(item => item.userId == user.userId)
+    let foundUser = await service.login(req.body.userId, req.body.password)
+    //console.log(foundUser)
     if (foundUser) {
-        if (foundUser.password != user.password) {
-            logger.debug(user.userId + " password wrong")
-            return res.send({status: -1, errorMessage: '用户名或密码错误'})
-        }
         var privateKey = fs.readFileSync('private.key').toString()
         let payload = { userId: user.userId }
         var token = jwt.sign(payload, privateKey, {expiresIn: 60 * 60 * 24 * 7});
-        return res.send({status: 0, errorMessage: '', token: token, userInfo: {name: foundUser.name}})
+        return res.send({status: 0, errorMessage: '', token: token, userInfo: {name: foundUser.name, userId: foundUser.userId}})
     } else {
         logger.debug(user.userId + " can't found")
         res.send({status: -1, errorMessage: '用户名或密码错误'})
     }
+})
+
+app.post('/changepassword', auth, async(req, res) => {
+    const {userId, password, newPassword} = req.body
+    let message = await service.changePassword(userId, password, newPassword)
+    
+    res.send(JSON.stringify({
+        status: message ? '-1' : 0,
+        message: message
+    }))
+    
 })
 
 app.post('/checktoken', auth, (req, res) => {
@@ -167,6 +179,9 @@ app.post('/settleorder', auth, async (req, res) => {
         message: ''
     })) 
 })
+
+
+
 
 //该请求获取订单和商品，如果出库单的商品和所请求的商品有重合，则设置商品的数量
 app.all('/getorderandproducts', auth, async (req, res) => {

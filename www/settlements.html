@@ -28,7 +28,7 @@
             <div class="flex-grow content_background_color">
 
                 <!-- 标题-->
-                <p class="font-bold text-xl p-5 bg-white">出库单列表</p>
+                <p class="font-bold text-xl p-5 bg-white">结算单列表</p>
 
                 <!-- 查询表单-->
                 <div class="m-5 p-5 bg-white">
@@ -44,7 +44,7 @@
                                 <label class="w-12 block text-sm text-center py-1 block pr-2">状态</label>
                                 <select v-model="params.state" class="w-1/3 block appearance-none  text-gray-600 bg-white border border-gray-200  px-1 py-1 rounded  
                                             leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
-                                    <option value="出库">出库</option> 
+                                    <option value="出库">未结算</option> 
                                     <option value="已结算">已结算</option> 
                                     <option value="">所有</option> 
                                 </select>
@@ -98,7 +98,7 @@
                             <td>{{item.gnkhmc}}</td>
                             <td>{{item.sellDate}}</td>
                             <td>{{item.seller}}</td>
-                            <td>{{item.state}}</td>
+                            <td>{{item.state == '出库' ? '未结算' : item.state}}</td>
                             <td>
                                 
 
