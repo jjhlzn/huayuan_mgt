@@ -27,10 +27,12 @@
             <div class="flex-grow p-6 content_background_color">
                 
                 <div class=" p-4  bg-white">
-                    <p class="pb-4 font-bold text-lg">新增出库单</p>
+                    <p class="pb-4 font-bold text-lg">出库单</p>
 
                     <div class="overflow-x-auto ">
                         
+                        <button class="my-2 bg-transparent hover:bg-blue-500 text-blue-500 h-6 px-2 transition-colors duration-150 border border-blue-500 rounded
+                                 focus:shadow-outline hover:bg-blue-500 hover:text-blue-100 text-sm" v-on:click="goToSelectProduct">添加商品</button>
 
                         <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                             <tr>
@@ -71,15 +73,75 @@
 
                         </table>
 
-                        <div>
-                            <button class="block h-8 px-5 m-2 text-sm text-white transition-colors 
-                                 duration-150 rounded-sm focus:shadow-outline bg-blue-500 hover:bg-blue-600"
-                                 v-on:click="goToSelectProduct"> 添加商品 </button>
-                        </div>
+                        
+                    </div>
+
+                    <!-- 付款明细 -->
+                    <div class="overflow-x-auto mt-8" v-if="id != ''">
+                        <button class="my-2 bg-transparent hover:bg-blue-500 text-blue-500 h-6 px-2 transition-colors duration-150 border border-blue-500 rounded
+                                 focus:shadow-outline hover:bg-blue-500 hover:text-blue-100 text-sm" v-on:click="newItemClick">新增付款</button>
+
+                        <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
+                            <tr>
+                                <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 --> 
+                                <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    付款日期
+                                </th>
+                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    提单号
+                                </th>
+                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    金额
+                                </th>
+                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    
+                                </th>
+                                
+                            </tr>
+
+                            <tr v-for="(item, index) in order.payments">
+                                <td>{{item.addtime}}</td>
+
+                                <td v-if="!item.edit">
+                                    {{item.tdh}}
+                                </td>
+                                <td v-if="item.edit">
+                                    <input type="text" style="width: 70%;" v-model="item.tdh"
+                                        class="appearance-none border border-gray-200 rounded w-full py-2 px-4 text-gray-700
+                                         leading-tight focus:outline-none focus:bg-white focus:border-blue-500" />
+                                </td>
+                           
+
+                                <td v-if="!item.edit">
+                                    {{item.amount}}
+                                </td>
+                                <td v-if="item.edit">
+                                    <input type="text" style="width: 70%;" v-model="item.amount"
+                                        class="appearance-none border border-gray-200 rounded w-full py-2 px-4 text-gray-700
+                                         leading-tight focus:outline-none focus:bg-white focus:border-blue-500" />
+                                </td>
+                           
+                                <td class="px-1 py-2" v-if="!item.edit">
+                                    <a class="text-blue-700 hover:text-blue-900 mr-4 visited:text-blue-700" 
+                                                    v-on:click="pressEdit(index)">编辑</a> 
+                                    <a class="text-red-700 hover:text-red-900"
+                                                    v-on:click="deleteItem(index)">删除</a>
+                           
+                                </td>                 
+                                <td class="px-1 py-2" v-if="item.edit">
+                                    <a class="text-blue-700 hover:text-blue-900 mr-4 visited:text-blue-700"
+                                                        v-on:click="confirmEdit(index)">确定</a>
+                                    <a class="text-gray-700 hover:text-gray-900" v-on:click="cancelEdit(index)">取消</a>
+                                </td>
+                                
+                            </tr>
+
+
+                        </table>
                     </div>
 
                     <div>
-                        <div class="pt-4">
+                        <div class="pt-8">
                             <div class=" lg:flex">
                                 <div class="lg:w-1/2">
                                     <div class=" py-2">订单号</div>
@@ -114,7 +176,7 @@
                             </div>
                         </div>
 
-                        <div class="pt-4">
+                        <div class="pt-4 hidden">
                             <div class=" lg:flex">
                                 <div class="lg:w-1/2">
                                     <div class=" py-2">状态</div>
@@ -158,19 +220,13 @@
                         </div>
 
                         <div class="pt-8 flex justify-center items-center">
-                            <button v-if="state == '出库'" class="block h-8 px-5 m-2 text-sm text-white transition-colors 
-                                duration-150 rounded-sm focus:shadow-outline bg-red-500 hover:bg-red-600" v-on:click="returnOrder"> 退 回 </button>
+  
 
                             <button class="block h-8 px-5 m-2 text-sm text-white transition-colors 
                                 duration-150 rounded-sm focus:shadow-outline bg-blue-500 hover:bg-blue-600" v-on:click="saveOrder"> 保 存 </button>
 
-                            <button v-if="state == '新制' && id" class="block h-8 px-5 m-2 text-sm text-white transition-colors 
-                                duration-150 rounded-sm focus:shadow-outline bg-green-500 hover:bg-green-600" v-on:click="chukuOrder"> 出 库 </button>
 
-                            <button v-if="state == '出库'" class="block h-8 px-5 m-2 text-sm text-white transition-colors 
-                                duration-150 rounded-sm focus:shadow-outline bg-blue-500 hover:bg-blue-600" v-on:click="jiesuanOrder"> 结 算 </button>
-
-
+                            
  
                         </div>
                     </div>

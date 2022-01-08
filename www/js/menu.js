@@ -4,6 +4,13 @@ Vue.component('left-menu', {
         expanded: false,
         menus: [
           {
+            name: '入库单',
+            level: 0,
+            children: [],
+            prefix: '/inboundorders/',
+            link: '/inboundorders/list.html'
+          },
+          {
             name: '销售库存',
             level: 0,
             children: [],
@@ -18,11 +25,11 @@ Vue.component('left-menu', {
             link: '/orders/list.html'
           },
           {
-            name: '结算',
+            name: '毛利表',
             level: 0,
             children: [],
-            prefix: '/settlements/',
-            link: '/settlements/list.html'
+            prefix: '/maolibiao/',
+            link: '/maolibiao/list.html'
           },
          
         ]

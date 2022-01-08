@@ -40,7 +40,12 @@ app.get('/test.html', (req, res) => {
     //res.send('Hello world')
     res.sendFile(__dirname + '/www/test.html')
 })
-
+app.get('/inboundorders/list.html', (req, res) => {
+    res.sendFile(__dirname + '/www/inboundorders.html')
+})
+app.get('/inboundorders/order.html', (req, res) => {
+    res.sendFile(__dirname + '/www/inbound_order.html')
+})
 app.get('/products/list.html', (req, res) => {
     res.sendFile(__dirname + '/www/products.html')
 })
@@ -53,8 +58,8 @@ app.get('/orders/neworder.html', (req, res) => {
 app.get('/orders/list.html', (req, res) => {
     res.sendFile(__dirname + '/www/orders.html')
 })
-app.get('/settlements/list.html', (req, res) => {
-    res.sendFile(__dirname + '/www/settlements.html')
+app.get('/maolibiao/list.html', (req, res) => {
+    res.sendFile(__dirname + '/www/maolibiao.html')
 })
 app.get('/settings.html', (req, res) => {
     res.sendFile(__dirname + '/www/settings.html')
@@ -147,6 +152,45 @@ app.all('/searchorders', auth, async (req, res) => {
         orders: result.orders,
         totalCount: result.totalCount
     })) 
+})
+
+app.all('/searchinboundorders', auth, async (req, res) => {
+    let result = await service.searchInboundOrders(req.body.params)
+    res.send(JSON.stringify({
+        status: 0,
+        message: '',
+        orders: result.orders,
+        totalCount: result.totalCount
+    }))
+})
+
+app.post('/getinboundorder', auth, async (req, res) => {
+    let id = req.body.id
+    let order = await service.getInboundOrderById(id)
+    res.send(JSON.stringify({ 
+        status: order != null ? 0 : -1,
+        message: '',
+        order: order
+    }))
+})
+
+app.post('/updatepayment', auth, async (req, res) => {
+    let payment = req.body
+    let id = await service.addOrUpdatePayment(payment)
+    res.send(JSON.stringify({
+        status: 0,
+        message: '',
+        id: id
+    }))
+})
+
+app.post('/deletepayment', auth, async (req, res) => {
+    let id = req.body.id
+    await service.deletePayment(id)
+    res.send(JSON.stringify({
+        status: 0,
+        message: ''
+    }))
 })
 
 app.all('/getorder', auth, async (req, res) => {

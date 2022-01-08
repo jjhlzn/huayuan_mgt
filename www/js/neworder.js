@@ -22,7 +22,8 @@ var app = new Vue({
         images: [],
         id: id,
         xshth: '',
-        state: '新制'
+        state: '新制',
+        order: {}
     },
 
     methods: {
@@ -67,6 +68,7 @@ var app = new Vue({
                     if (data.status == 0) {
                         if (url != '/getproducts') {
                             var order = data.order
+                            that.order = order
                             that.products = order.products
                             that.clientName = order.clientName
                             that.sellDate = order.sellDate
@@ -258,6 +260,91 @@ var app = new Vue({
                 newProducts.push(this.products[i])
             }
             this.products = newProducts
+        },
+
+
+
+        pressEdit: function (seq) {
+            console.log('handle press edit');
+            var items = this.order.payments
+            var newItems = []
+            for(var i = 0; i < items.length; i++) {
+                var item = items[i];
+                if (i == seq) {
+                    item.edit = true
+                }
+                newItems.push(item)
+            }
+            this.order.payments = newItems
+        },
+        confirmEdit: function(seq) {
+            let that = this
+            var item = this.order.payments[seq]
+            axios.post('/updatepayment', item)
+                .then(function (response) {
+                    console.log(response)
+                    var success = response.data.status == 0
+                    if (!success) {
+                        alert('操作失败')
+                        return
+                    }
+                    var id = response.data.id
+                    var items = that.order.payments
+                    var newItems = []
+                    for(var i = 0; i < items.length; i++) {
+                        var item = items[i];
+                        if (i == seq) {
+                            item.edit = false
+                            item.id = id
+                        }
+                        newItems.push(item)
+                    }
+                    app.order.payments = newItems
+            })
+            
+        },
+        cancelEdit: function(seq) {
+            if (this.order.payments[seq].id) {
+                var items = this.order.payments
+                var newItems = []
+                for(var i = 0; i < items.length; i++) {
+                    var item = items[i];
+                    if (i == seq) {
+                        item.edit = false
+                    }
+                    newItems.push(item)
+                }
+                this.order.payments = newItems
+            } else {
+                //this.deleteItem(seq)
+                app.order.payments.splice(seq, 1);
+            }
+        },
+        deleteItem: function(seq) {
+            var item = this.order.payments[seq]
+            if (confirm('确定删除吗')) {
+                    axios.post('/deletepayment', {id: item.id})
+                        .then(function (response) {
+                            console.log(response)
+                            var success = response.data.status == 0
+                            if (!success) {
+                                alert('操作失败')
+                                return
+                            }
+                            app.order.payments.splice(seq, 1);
+                })
+            }
+        },
+        newItemClick: function() {
+            var item = {
+                id: '',
+                dh: this.id,
+                addtime: moment().format('YYYY-MM-DD'),
+                amount: 0,
+                tdh: '',
+                edit: true,
+            }
+            this.order.payments.push(item)
         }
     }, 
 

@@ -230,6 +230,46 @@ async function loadProducts(ids) {
     }
 }
 
+function makeSearchInboundOrdersSql(queryobj) {
+    var whereClause = ` 1 = 1  `
+    if (queryobj.keyword) {
+        whereClause += `  and jhdwmc+rkdh like '%${queryobj.keyword}%' `
+    }
+    const skipCount = queryobj.pageSize * (queryobj.pageNo - 1)
+
+    const sqlstr = `select top ${queryobj.pageSize}  
+                rkdh, 
+                jhdwmc, 
+                convert(varchar, rkrq, 23) as rkrq
+            FROM yw_ckgl_jc
+            where ${whereClause} 
+            and rkdh not in (select top ${skipCount} rkdh from yw_ckgl_jc where ${whereClause} order by rkrq )
+            order by rkrq`
+    //logger.info(sqlstr)
+    const statSqlstr = `select count(1) as totalCount from yw_ckgl_jc where ${whereClause}
+                       `
+    //console.log(sqlstr)
+    //console.log(statSqlstr)
+    return [sqlstr, statSqlstr]
+}
+
+async function searchInboundOrders(params) {
+    console.log(params)
+    try {
+        let sqlstrs = makeSearchInboundOrdersSql(params)
+        let pool = await db_pool.getPool(db_config)
+        let orders = (await pool.query(sqlstrs[0])).recordset
+        let totalCount = (await pool.query(sqlstrs[1])).recordset[0]['totalCount']
+        
+        return {
+            orders: orders,
+            totalCount: totalCount
+        }
+    } catch (error) {
+        logger.error(error)
+        return {message: '出错了', orders: [], totalCount: 0}
+    } 
+}
 
 async function addOrUpdateOrder(order) {
     let sql = ``
@@ -355,6 +395,11 @@ async function getOrderById(id) {
         let images = (await pool.query(sql)).recordset
         order.images = images
 
+        //加载收款信息
+        sql = `select id, dh, amount, tdh, convert(varchar, addtime, 23) as addtime from yw_payments 
+                where dh = '${id}' order by addtime`
+        order.payments = (await pool.query(sql)).recordset
+
         return order
     } catch(error) {
         logger.error(error)
@@ -388,6 +433,80 @@ async function settleOrder(id) {
     }
 }
 
+async function getInboundOrderById(id) {
+    try {
+        let sql = `select rkdh, jhdwmc, convert(varchar, rkrq, 20) as rkrq from yw_ckgl_jc where rkdh = '${id}'`
+        logger.debug(sql)
+        let pool = await db_pool.getPool(db_config)
+        let orders = (await pool.query(sql)).recordset
+        if (orders.length == 0) {
+            return null
+        }
+        let order = orders[0]
+        //加载productions
+        sql = `select 
+        yw_ckgl_jc_cmd.spbm,   ---商品编码
+        yw_ckgl_jc_cmd.hgbm,  --海关编码
+        yw_ckgl_jc_cmd.sphh,  --商品货号
+        yw_ckgl_jc_cmd.sphh_kh,    --商品客户货号 
+        yw_ckgl_jc_cmd.spzwmc as name,   --商品中文名称
+        yw_ckgl_jc_cmd.spywmc ,   --商品英文名称
+        yw_ckgl_jc_cmd.spgg as spec,   --商品规格
+        yw_ckgl_jc_cmd.sjrksl as quantity, --入库数量
+        yw_ckgl_jc_cmd.sldw,    --单位
+        yw_ckgl_jc_cmd.hsje,   --金额
+
+        yw_ckgl_jc_cmd.hsdj as price,   ---单价
+        yw_ckgl_jc_cmd.hsdj,
+        yw_ckgl_jc_cmd.rkxh  --入库序号
+        from yw_ckgl_jc_cmd where rkdh = '${id}'`
+        order.products = (await pool.query(sql)).recordset
+
+        //加载payments
+        sql = `select id, dh, amount, convert(varchar, addtime, 23) as addtime from yw_payments where dh = '${id}' order by addtime`
+        order.payments = (await pool.query(sql)).recordset
+
+        return order
+    } catch(error) {
+        logger.error(error)
+        return null
+    }
+}
+
+async function addOrUpdatePayment(payment) {
+    try {
+        let sql = ``
+        payment.tdh = payment.tdh || ''
+        if (!payment.id) {
+            payment.id = uuidv4()
+            sql = `insert into yw_payments (id, dh, amount, tdh) values ('${payment.id}', '${payment.dh}', '${payment.amount}', '${payment.tdh}')`
+        } else {
+            sql = `update yw_payments set amount = ${payment.amount}, addtime = '${moment().format('YYYY-MM-DD HH:mm:ss')}',
+                    tdh = '${payment.tdh}'
+             where id = '${payment.id}'`
+        }
+        logger.debug(sql)
+        let pool = await db_pool.getPool(db_config)
+        await pool.query(sql)
+        return payment.id
+    } catch(error) {
+        logger.error(error)
+        return ''
+    }
+}
+
+async function deletePayment(id) {
+    try {
+        let sql = `delete from yw_payments where id = '${id}'`
+        let pool = await db_pool.getPool(db_config)
+        await pool.query(sql)
+        return true
+
+    } catch (error) {
+        logger.error(error)
+        return false
+    }
+}
 
 async function login(username, password) {
     try {
@@ -447,5 +566,9 @@ module.exports = {
     deleteOrder: deleteOrder,
     settleOrder:  settleOrder,
     changePassword,
-    login
+    login,
+    searchInboundOrders,
+    addOrUpdatePayment,
+    deletePayment,
+    getInboundOrderById
 }
