@@ -41,6 +41,8 @@ function makeSearchProductsSql(queryobj) {
             yw_ckgl_jc_cmd.sjrksl as quantity, --入库数量
             yw_ckgl_jc_cmd.sldw,    --单位
             yw_ckgl_jc_cmd.hsje,   --金额
+            yw_ckgl_jc_cmd.sjrksl,
+            yw_ckgl_jc_cmd.ycksl,
 
             yw_ckgl_jc_cmd.hsdj as price,   ---单价
             yw_ckgl_jc_cmd.hsdj,
@@ -63,6 +65,8 @@ function makeSearchProductsSql(queryobj) {
                  yw_ckgl_jc.rkrq from
 			          yw_ckgl_jc, yw_ckgl_jc_cmd where ${whereClause} ) as middleTable order by rkrq )
             order by yw_ckgl_jc.rkrq`
+
+    console.log(sqlstr)
     //logger.info(sqlstr)
     const statSqlstr = `select count(1) as totalCount from yw_ckgl_jc, yw_ckgl_jc_cmd where ${whereClause}
                        `
@@ -126,7 +130,10 @@ function makeSearchOrdersSql(queryobj) {
                 seller, 
                 convert(varchar, sellDate, 23) as sellDate,
                 yw_ckgl_cc.bz,   --备注
-                yw_ckgl_cc.jw_flag   --Y
+                yw_ckgl_cc.jw_flag,   --Y
+
+                (select sum(wxzj) from yw_ckgl_cc_cmd where yw_ckgl_cc_cmd.ckdh = yw_ckgl_cc.ckdh) as sellAmount,
+                (select sum(amount) from yw_payments where yw_payments.dh = yw_ckgl_cc.ckdh) as payAmount
             FROM yw_ckgl_cc
             where ${whereClause} 
             and ckdh not in (select top ${skipCount} ckdh from yw_ckgl_cc where ${whereClause} order by zdrq )
@@ -146,6 +153,11 @@ async function searchOrders(params) {
         let pool = await db_pool.getPool(db_config)
         let orders = (await pool.query(sqlstrs[0])).recordset
         let totalCount = (await pool.query(sqlstrs[1])).recordset[0]['totalCount']
+
+        orders.forEach( order => {
+            order.sellAmount = order.sellAmount || 0
+            order.payAmount = order.payAmount || 0
+        })
         
         return {
             orders: orders,
@@ -192,6 +204,7 @@ async function loadProducts(ids) {
         yw_ckgl_jc_cmd.spbm,   ---商品编码
         yw_ckgl_jc_cmd.hgbm,  --海关编码
         yw_ckgl_jc_cmd.sphh,  --商品货号
+        yw_ckgl_jc_cmd.spgg,
         yw_ckgl_jc_cmd.sphh_kh,    --商品客户货号 
         yw_ckgl_jc_cmd.spzwmc as name,   --商品中文名称
         yw_ckgl_jc_cmd.spywmc ,   --商品英文名称
@@ -239,7 +252,10 @@ function makeSearchInboundOrdersSql(queryobj) {
 
     const sqlstr = `select top ${queryobj.pageSize}  
                 rkdh, 
-                jhdwmc, 
+                mxdbh,
+                dhbh,
+                jhdwmc,
+                rkje, 
                 convert(varchar, rkrq, 23) as rkrq
             FROM yw_ckgl_jc
             where ${whereClause} 
@@ -260,7 +276,10 @@ async function searchInboundOrders(params) {
         let pool = await db_pool.getPool(db_config)
         let orders = (await pool.query(sqlstrs[0])).recordset
         let totalCount = (await pool.query(sqlstrs[1])).recordset[0]['totalCount']
-        
+        orders.forEach( order => {
+            order.rkje = order.rkje.toFixed(1) * 10 / 10
+            
+        })
         return {
             orders: orders,
             totalCount: totalCount
@@ -322,11 +341,13 @@ async function addOrUpdateOrder(order) {
         let products = order.products
         for(var i = 0; i < products.length; i++) {
             let p = products[i]
+            p.sphh = p.sphh || ''
             sql = `
             insert into yw_ckgl_cc_cmd 
             (spbm, hgbm, sphh, spzwmc, spywmc, spgg, sldw, hsje, hsdj, wxdj, wxzj, ckdh, ckxh, cxh, productId)
             values ('${p.spbm}', '${p.hgbm}', '${p.sphh}', '${p.name}', '${p.spywmc}', '${p.spgg}', '${p.sldw}', '${p.hsdj * p.buyQuantity}', ${p.hsdj},'${p.price}', ${p.amount} ,'${order.id}', 
                 '${p.buyQuantity}', '${i}', '${p.productId}')`
+            
             logger.debug("product.id:" + p.productId)
             logger.info(sql)
             await pool.query(sql)
@@ -382,7 +403,7 @@ async function getOrderById(id) {
         let order = orders[0]
 
         //加载商品
-        sql = `select spbm, hgbm, sphh, spzwmc as name, spywmc, spgg, sldw, hsje, hsdj, wxdj as price, ckxh as buyQuantity,
+        sql = `select spbm, hgbm, sphh,  spzwmc as name, spywmc, spgg, sldw, hsje, hsdj, wxdj as price, ckxh as buyQuantity,
                     ckdh, cxh, productId from yw_ckgl_cc_cmd where ckdh = '${id}' order by cxh`
        // logger.info(sql)
         let products = (await pool.query(sql)).recordset

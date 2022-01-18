@@ -135,7 +135,7 @@ app.post('/upload', upload.single('photo'), async (req, res) => {
 
 app.post('/updateorder', auth, async (req, res) => {
     let order = req.body
-    //console.log(order)
+     console.log(JSON.stringify(order))
     let result = await service.addOrUpdateOrder(order)
     res.send(JSON.stringify({
         status: result ? 0 : -1, 
