@@ -169,6 +169,84 @@ async function searchOrders(params) {
     } 
 }
 
+function makeSearchMaolibiaosSql(queryobj) {
+    var whereClause = ` 1 = 1 and yw_ckgl_cc.ckdh=yw_ckgl_cc_cmd.ckdh `
+    var orderClause = ` order by  yw_ckgl_cc.ckdh, yw_ckgl_cc_cmd.spbm `
+    if (queryobj.keyword) {
+        whereClause += `  and yw_ckgl_cc.ckdh+yw_ckgl_cc.gnkhmc like '%${queryobj.keyword}%' `
+    }
+
+    const skipCount = queryobj.pageSize * (queryobj.pageNo - 1)
+
+    const sqlstr = `SELECT top ${queryobj.pageSize} yw_ckgl_cc.ckdh+'_'+yw_ckgl_cc_cmd.spbm as id,
+                        yw_ckgl_cc.ckdh,   --销售合同号
+                        yw_ckgl_cc.zdr,   
+                        yw_ckgl_cc.zdrq,   
+                        yw_ckgl_cc.ywxz,   ---生成的时候默认（国外出库）
+                        yw_ckgl_cc.ckxz,   ---生成的时候默认（国外出库）
+                        yw_ckgl_cc.cklx,   ---生成的时候默认（国外出库）
+                        yw_ckgl_cc.cklx2,   ---生成的时候默认（国外出库）
+                        yw_ckgl_cc.xshth,   --订单号
+                        yw_ckgl_cc.gnkhbm,   --客户编码（空）
+                        yw_ckgl_cc.gnkhmc,   --客户名称
+                        yw_ckgl_cc.gnkhxx,   --客户信息
+                        yw_ckgl_cc.ywy,   --业务员
+                        yw_ckgl_cc.bm,   --部门
+                        yw_ckgl_cc.cfck,   --存放仓库
+                        yw_ckgl_cc.ckje,   --销售金额
+                        yw_ckgl_cc.state,   --状态
+                        yw_ckgl_cc.ckrq,    
+                        yw_ckgl_cc.bz,   --备注
+                        yw_ckgl_cc.jw_flag,   --Y
+                        yw_ckgl_cc_cmd.spbm,   ---商品编码
+                        yw_ckgl_cc_cmd.hgbm,  --海关编码
+                        yw_ckgl_cc_cmd.sphh,  --商品货号
+                        yw_ckgl_cc_cmd.sphh_kh,    --商品客户货号
+                        yw_ckgl_cc_cmd.spzwmc,   --商品中文名称
+                        yw_ckgl_cc_cmd.spywmc,   --商品英文名称
+                        yw_ckgl_cc_cmd.spgg,   --商品规格
+                        yw_ckgl_cc_cmd.sjccsl,    --数量
+                        yw_ckgl_cc_cmd.sldw,    --单位
+                        yw_ckgl_cc_cmd.hsdj,   ---入库单价
+                        yw_ckgl_cc_cmd.hsdj,   ---单价
+                        yw_ckgl_cc_cmd.mxdbh, --明细单编号
+                        yw_ckgl_cc_cmd.mxd_spid, --明细单ID
+                        yw_ckgl_cc_cmd.wxhth, --外销合同号
+                        yw_ckgl_cc_cmd.wxht_spid, --外销合同ID
+                        yw_ckgl_cc_cmd.wxdj, --销售单价
+                        yw_ckgl_cc_cmd.wxzj, --销售金额      
+                    ml=wxzj-hsdj*sjccsl---毛利
+                    FROM yw_ckgl_cc,yw_ckgl_cc_cmd
+                    WHERE ${whereClause} and  (yw_ckgl_cc.ckdh+'_'+yw_ckgl_cc_cmd.spbm) not in (
+                        select top ${skipCount} yw_ckgl_cc.ckdh+'_'+yw_ckgl_cc_cmd.spbm as id 
+                        from yw_ckgl_cc,yw_ckgl_cc_cmd WHERE ${whereClause} ${orderClause}) 
+                    ${orderClause}`
+    logger.info(sqlstr)
+    const statSqlstr = `select count(1) as totalCount from yw_ckgl_cc,yw_ckgl_cc_cmd where ${whereClause}
+                       `
+    //console.log(sqlstr)
+    //console.log(statSqlstr)
+    return [sqlstr, statSqlstr]
+}
+
+async function searchMaolibiaos(params) {
+    console.log(params)
+    try {
+        let sqlstrs = makeSearchMaolibiaosSql(params)
+        let pool = await db_pool.getPool(db_config)
+        let orders = (await pool.query(sqlstrs[0])).recordset
+        let totalCount = (await pool.query(sqlstrs[1])).recordset[0]['totalCount']
+        
+        return {
+            orders: orders,
+            totalCount: totalCount
+        }
+    } catch (error) {
+        logger.error(error)
+        return {message: '出错了', orders: [], totalCount: 0}
+    } 
+}
+
 async function loadProducts(ids) {
     if (!ids || (ids && ids.length == 0)) {
         return []
@@ -580,12 +658,14 @@ function makeOrderId() {
 
 module.exports = {
     searchProducts: searchProducts,
+    searchMaolibiaos,
     loadProducts: loadProducts,
     addOrUpdateOrder: addOrUpdateOrder,
     searchOrders: searchOrders,
     getOrderById: getOrderById,
     deleteOrder: deleteOrder,
     settleOrder:  settleOrder,
+    
     changePassword,
     login,
     searchInboundOrders,

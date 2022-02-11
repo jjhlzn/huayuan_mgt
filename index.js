@@ -164,6 +164,16 @@ app.all('/searchinboundorders', auth, async (req, res) => {
     }))
 })
 
+app.all('/searchmaolibiaos', auth, async (req, res) => {
+    let result = await service.searchMaolibiaos(req.body.params)
+    res.send(JSON.stringify({
+        status: 0,
+        message: '',
+        orders: result.orders,
+        totalCount: result.totalCount
+    }))
+})
+
 app.post('/getinboundorder', auth, async (req, res) => {
     let id = req.body.id
     let order = await service.getInboundOrderById(id)

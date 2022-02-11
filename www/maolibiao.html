@@ -68,7 +68,77 @@
                 
                 <!-- 列表 -->
                 <div class="m-5 p-5 bg-white overflow-x-auto">
+                    <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
+                        <tr>
+                            <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 -->
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-32">
+                                销售合同号
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                订单号
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                客户名称
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                业务员
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                明细单编号
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                商品货号
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                商品规格
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                数量
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                入库单价
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                入库金额
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                销售单价
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                销售金额
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                毛利
+                            </th>
+                        </tr>
 
+                        <tr v-for="item in orders" class="hover:bg-gray-200">
+                            <td>{{item.ckdh}}</td>
+                            <td>{{item.xshth}}</td>
+                            <td>{{item.gnkhmc}}</td>
+                            <td>{{item.ywy}}</td>
+                            <td>{{item.mxdbh}}</td>
+                            <td>{{item.sphh}}</td>
+                            <td>{{item.spgg}}</td>
+                            <td>{{item.sjccsl}}</td>
+                            <td>{{item.hsdj}}</td>
+                            <td>{{item.hsdj * item.sldw}}</td>
+                            <td>{{item.wxdj}}</td>
+                            <td>{{item.wxzj}}</td>
+                            <td>{{item.ml}}</td>
+                            
+                        </tr>
+                    </table>
+
+                    
+                    <div class="pt-5 bg-white">
+                        <el-pagination background
+                                @current-change="handleCurrentChange"
+                                :current-page="currentPage"
+                                :page-size="pageSize"
+                                layout="total, prev, pager, next"
+                                :total="totalCount"></el-pagination>
+                    </div>
 
                    
                 </div>
