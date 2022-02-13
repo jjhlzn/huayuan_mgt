@@ -28,7 +28,7 @@
             <div class="flex-grow content_background_color">
 
                 <!-- 标题-->
-                <p class="font-bold text-xl p-5 bg-white">毛利表</p>
+                <p class="font-bold text-xl p-5 bg-white">商品毛利表</p>
 
                 <!-- 查询表单-->
                 <div class="m-5 p-5 bg-white">
@@ -79,6 +79,9 @@
                                 明细单编号
                             </th>
                             <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                商品名称
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
                                 商品货号
                             </th>
                             <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
@@ -102,6 +105,9 @@
                             <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
                                 毛利
                             </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                毛利率
+                            </th>
                         </tr>
 
                         <tr v-for="item in orders" class="hover:bg-gray-200">
@@ -110,6 +116,7 @@
                             <td>{{item.gnkhmc}}</td>
                             <td>{{item.ywy}}</td>
                             <td>{{item.mxdbh}}</td>
+                            <td>{{item.spzwmc}}</td>
                             <td>{{item.sphh}}</td>
                             <td>{{item.spgg}}</td>
                             <td>{{item.sjccsl}}</td>
@@ -118,6 +125,7 @@
                             <td>{{item.wxdj}}</td>
                             <td>{{item.wxzj}}</td>
                             <td>{{item.ml}}</td>
+                            <td>{{item.mll + '%'}}</td>
                             
                         </tr>
                     </table>

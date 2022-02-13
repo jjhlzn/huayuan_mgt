@@ -28,29 +28,21 @@
             <div class="flex-grow content_background_color">
 
                 <!-- 标题-->
-                <p class="font-bold text-xl p-5 bg-white">入库单列表</p>
+                <p class="font-bold text-xl p-5 bg-white">订单毛利表</p>
 
                 <!-- 查询表单-->
                 <div class="m-5 p-5 bg-white">
                     <form>
-                        <div class="flex">
-                            <div class="w-1/2 lg:flex">
-                                <label class="text-sm py-1 block pr-2">关键字</label>
+                        <div class="lg:flex">
+                            <div class="flex-grow lg:flex">
+                                <label class="w-16 text-sm py-1 block pr-2">关键字</label>
                                 <input type="text" v-model="params.keyword" placeholder="请输入关键字" class="w-5/6  appearance-none border border-gray-200 rounded h-8 py-1.5 px-2 text-sm text-gray-700 leading-tight
                                                     focus:outline-none focus:bg-white focus:border-blue-500" />
                             </div>
 
-                            <div class="flex-grow lg:w-1/3 lg:flex">
-                                <label class="w-12 block text-sm text-center py-1 block pr-2">状态</label>
-                                <select v-model="params.payState" class="w-20 block appearance-none  text-gray-600 bg-white border border-gray-200  px-1 py-1 rounded  
-                                            leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
-                                    <option value="">全部</option> 
-                                    <option value="已付">已付</option> 
-                                    <option value="未付">未付</option> 
-                                </select>
-                            </div>
+                           
 
-                            <div class="w-1/2 lg:flex ml-2">
+                            <div class="lg:w-1/4 lg:flex">
                                 <label class="text-sm py-1 block pr-2" >&nbsp;</label>
                                 <div>
                                     
@@ -68,55 +60,48 @@
                 
                 <!-- 列表 -->
                 <div class="m-5 p-5 bg-white overflow-x-auto">
-
-                    <div class="flex mb-4">
-                        <button class="my-2 bg-transparent hover:bg-blue-500 text-blue-500 h-8 px-2 transition-colors duration-150 border border-blue-500 rounded
-                                 focus:shadow-outline hover:bg-blue-500 hover:text-blue-100 text-sm" v-on:click="clickNewOrder">新建出库单</button>
-                    </div>
-
                     <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                         <tr>
                             <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 -->
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                入库单号
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-32">
+                                销售合同号
                             </th>
                             <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                明细单编号
+                                订单号
                             </th>
                             <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                提单号
+                                客户名称
                             </th>
                             <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                采购公司
+                                业务员
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                入库日期
-                            </th>
+
                             <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
                                 入库金额
                             </th>
+                           
                             <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                已付金额
+                                销售金额
                             </th>
-                            <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                操作
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                毛利
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                毛利率
                             </th>
                         </tr>
 
                         <tr v-for="item in orders" class="hover:bg-gray-200">
-                            <td>{{item.rkdh}}</td>
-                            <td>{{item.mxdbh}}</td>
-                            <td>{{item.dhbh}}</td>
-                            <td>{{item.jhdwmc}}</td>
-                            <td>{{item.rkrq}}</td>
-                            <td>{{item.rkje}}</td>
-                            <td>{{item.payAmount}}</td>
-                            <td>
-                                
-
-                                <a href="#"  class="text-blue-500 hover:text-blue-900 visited:text-purple-600 "
-                                v-on:click="clickDetail(item.rkdh)">详情</a>
-                            </td>
+                            <td>{{item.ckdh}}</td>
+                            <td>{{item.xshth}}</td>
+                            <td>{{item.gnkhmc}}</td>
+                            <td>{{item.ywy}}</td>
+                           
+                            <td>{{item.rkAmount}}</td>
+                            <td>{{item.ckAmount}}</td>
+                            <td>{{item.ckAmount - item.rkAmount}}</td>
+                            <td>{{item.mll + '%'}}</td>
+                            
                         </tr>
                     </table>
 
@@ -129,6 +114,8 @@
                                 layout="total, prev, pager, next"
                                 :total="totalCount"></el-pagination>
                     </div>
+
+                   
                 </div>
             
             </div>
@@ -147,6 +134,6 @@
     <script src="/js/menu.js"></script>
     <script src="/js/lib/header.js"></script>
     <script src="/js/utils.js"></script>
-    <script src="/js/inboundorders.js"></script>
+    <script src="/js/ordermaolibiao.js"></script>
 </body>
 </html>

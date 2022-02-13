@@ -27,9 +27,28 @@ Vue.component('left-menu', {
           {
             name: '毛利表',
             level: 0,
-            children: [],
+            children: [
+              {
+                name: '商品毛利表',
+                level: 0,
+                children: [
+                  
+                ],
+                prefix: '/maolibiao/list.html',
+                link: '/maolibiao/list.html'
+              },
+              {
+                name: '订单毛利表',
+                level: 0,
+                children: [
+                  
+                ],
+                prefix: '/maolibiao/orderlist.html',
+                link: '/maolibiao/orderlist.html'
+              },
+            ],
             prefix: '/maolibiao/',
-            link: '/maolibiao/list.html'
+            link: '#'
           },
          
         ]

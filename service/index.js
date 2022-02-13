@@ -207,6 +207,7 @@ function makeSearchMaolibiaosSql(queryobj) {
                         yw_ckgl_cc.ckrq,    
                         yw_ckgl_cc.bz,   --备注
                         yw_ckgl_cc.jw_flag,   --Y
+
                         yw_ckgl_cc_cmd.spbm,   ---商品编码
                         yw_ckgl_cc_cmd.hgbm,  --海关编码
                         yw_ckgl_cc_cmd.sphh,  --商品货号
@@ -244,6 +245,89 @@ async function searchMaolibiaos(params) {
         let pool = await db_pool.getPool(db_config)
         let orders = (await pool.query(sqlstrs[0])).recordset
         let totalCount = (await pool.query(sqlstrs[1])).recordset[0]['totalCount']
+
+        orders.forEach( order =>  {
+            let rkAmount = order.hsdj * order.sjccsl
+            if (rkAmount != 0) {
+                order.mll = (order.ml / rkAmount * 100).toFixed(2)
+            } else {
+                order.mll = 100
+            }
+        })
+        
+        return {
+            orders: orders,
+            totalCount: totalCount
+        }
+    } catch (error) {
+        logger.error(error)
+        return {message: '出错了', orders: [], totalCount: 0}
+    } 
+}
+
+function makeSearchOrderMaolibiaosSql(queryobj) {
+    var whereClause = ` 1 = 1 and yw_ckgl_cc.state !='已删除'  `
+    var orderClause = ` order by  yw_ckgl_cc.ckdh `
+    if (queryobj.keyword) {
+        whereClause += `  and yw_ckgl_cc.ckdh+yw_ckgl_cc.gnkhmc like '%${queryobj.keyword}%' `
+    }
+
+    const skipCount = queryobj.pageSize * (queryobj.pageNo - 1)
+
+    const sqlstr = `SELECT top ${queryobj.pageSize}
+                        yw_ckgl_cc.ckdh,   --销售合同号
+                        yw_ckgl_cc.zdr,   
+                        yw_ckgl_cc.zdrq,   
+                        yw_ckgl_cc.ywxz,   ---生成的时候默认（国外出库）
+                        yw_ckgl_cc.ckxz,   ---生成的时候默认（国外出库）
+                        yw_ckgl_cc.cklx,   ---生成的时候默认（国外出库）
+                        yw_ckgl_cc.cklx2,   ---生成的时候默认（国外出库）
+                        yw_ckgl_cc.xshth,   --订单号
+                        yw_ckgl_cc.gnkhbm,   --客户编码（空）
+                        yw_ckgl_cc.gnkhmc,   --客户名称
+                        yw_ckgl_cc.gnkhxx,   --客户信息
+                        yw_ckgl_cc.ywy,   --业务员
+                        yw_ckgl_cc.bm,   --部门
+                        yw_ckgl_cc.cfck,   --存放仓库
+                        yw_ckgl_cc.ckje,   --销售金额
+                        yw_ckgl_cc.state,   --状态
+                        yw_ckgl_cc.ckrq,    
+                        yw_ckgl_cc.bz,   --备注
+                        yw_ckgl_cc.jw_flag,   --Y
+
+                        isNULL((select sum( isNULL(hsdj,0) * sjccsl) from yw_ckgl_cc_cmd where yw_ckgl_cc_cmd.ckdh = yw_ckgl_cc.ckdh),0) as rkAmount,
+						isNULL((select sum(wxzj) from yw_ckgl_cc_cmd where yw_ckgl_cc_cmd.ckdh = yw_ckgl_cc.ckdh),0) as ckAmount
+
+                    FROM yw_ckgl_cc
+                    WHERE ${whereClause} and  yw_ckgl_cc.ckdh not in (
+                        select top ${skipCount} yw_ckgl_cc.ckdh
+                        from yw_ckgl_cc WHERE ${whereClause} ${orderClause}) 
+                    ${orderClause}`
+    logger.info(sqlstr)
+    const statSqlstr = `select count(1) as totalCount from yw_ckgl_cc where ${whereClause}
+                       `
+    //console.log(sqlstr)
+    //console.log(statSqlstr)
+    return [sqlstr, statSqlstr]
+}
+
+async function searchOrderMaolibiaos(params) {
+    console.log(params)
+    try {
+        let sqlstrs = makeSearchOrderMaolibiaosSql(params)
+        let pool = await db_pool.getPool(db_config)
+        let orders = (await pool.query(sqlstrs[0])).recordset
+        let totalCount = (await pool.query(sqlstrs[1])).recordset[0]['totalCount']
+
+        orders.forEach( order =>  {
+            
+            if (order.rkAmount != 0) {
+                let ml = order.ckAmount - order.rkAmount
+                order.mll = (ml / order.rkAmount * 100).toFixed(2)
+            } else {
+                order.mll = 100
+            }
+        })
         
         return {
             orders: orders,
@@ -352,7 +436,8 @@ function makeSearchInboundOrdersSql(queryobj) {
                 dhbh,
                 jhdwmc,
                 rkje, 
-                convert(varchar, rkrq, 23) as rkrq
+                convert(varchar, rkrq, 23) as rkrq,
+                isNull((select sum(amount) from yw_payments where dh = yw_ckgl_jc.rkdh), 0) as payAmount
             FROM yw_ckgl_jc
             where ${whereClause} 
             and rkdh not in (select top ${skipCount} rkdh from yw_ckgl_jc where ${whereClause} order by rkrq )
@@ -677,6 +762,7 @@ function makeOrderId() {
 module.exports = {
     searchProducts: searchProducts,
     searchMaolibiaos,
+    searchOrderMaolibiaos,
     loadProducts: loadProducts,
     addOrUpdateOrder: addOrUpdateOrder,
     searchOrders: searchOrders,

@@ -61,6 +61,9 @@ app.get('/orders/list.html', (req, res) => {
 app.get('/maolibiao/list.html', (req, res) => {
     res.sendFile(__dirname + '/www/maolibiao.html')
 })
+app.get('/maolibiao/orderlist.html', (req, res) => {
+    res.sendFile(__dirname + '/www/ordermaolibiao.html')
+})
 app.get('/settings.html', (req, res) => {
     res.sendFile(__dirname + '/www/settings.html')
 })
@@ -166,6 +169,17 @@ app.all('/searchinboundorders', auth, async (req, res) => {
 
 app.all('/searchmaolibiaos', auth, async (req, res) => {
     let result = await service.searchMaolibiaos(req.body.params)
+    res.send(JSON.stringify({
+        status: 0,
+        message: '',
+        orders: result.orders,
+        totalCount: result.totalCount
+    }))
+})
+
+
+app.all('/searchordermaolibiaos', auth, async (req, res) => {
+    let result = await service.searchOrderMaolibiaos(req.body.params)
     res.send(JSON.stringify({
         status: 0,
         message: '',
