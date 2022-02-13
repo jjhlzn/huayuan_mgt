@@ -65,10 +65,10 @@ app.get('/settings.html', (req, res) => {
     res.sendFile(__dirname + '/www/settings.html')
 })
 
-
+/*
 app.get('/index.html', function(req, res) {
     res.sendFile(__dirname + '/www/products.html')
-});
+});*/
 
 //let users = [{userId: 'admin', password: '123456', name: '管理员'}]
 

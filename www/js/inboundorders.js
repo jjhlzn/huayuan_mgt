@@ -7,21 +7,18 @@ var app = new Vue({
         requests: [],
         pageSize: 10,
         currentPage: 1,
-        params: {},
+        params: {
+            payState: '',
+        },
         orders: [],
         loading: true
     },
 
     methods: {
+
         clickDetail: function(id) {
-            window.location.href = "/orders/neworder.html?id="+id
-        },
-        clickModify: function(id) {
-            window.location.href = "/orders/neworder.html?id="+id
-        },
-        clickDetail: function(id) {
-            var that = this
-            window.location.href = "/inboundorders/order.html?id="+id
+            window.open("/inboundorders/order.html?id="+id, "_blank")
+            //window.location.href = 
         },
         handleCurrentChange: function(pageNo) {
             console.log(pageNo)
@@ -66,6 +63,7 @@ var app = new Vue({
             queryObject.pageNo = this.currentPage
             queryObject.pageSize = this.pageSize
             queryObject.keyword = this.params.keyword
+            queryObject.payState =  this.params.payState
             return queryObject;
         },
 

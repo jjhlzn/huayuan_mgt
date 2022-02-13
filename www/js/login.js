@@ -22,7 +22,7 @@ var app = new Vue({
                     var userInfo = resp.data.userInfo
                     Cookies.set('token', token)
                     Cookies.set('user', JSON.stringify(userInfo))
-                    window.location.href = "/index.html"
+                    window.location.href = "/products/list.html"
                 } else {
                     that.login_error = true
                     that.errorMessage =  resp.data.errorMessage
@@ -37,7 +37,7 @@ var app = new Vue({
             if (token) {
                 //check token is 
                 axios.post('/checktoken').then(function(resp) {
-                    window.location.href = "/index.html"
+                    window.location.href = "/products/list.html"
                 }).catch(function(err) {
                 
                 })

@@ -40,7 +40,17 @@
                                                     focus:outline-none focus:bg-white focus:border-blue-500" />
                             </div>
 
-                            <div class="w-1/2 lg:flex">
+                            <div class="flex-grow lg:w-1/3 lg:flex">
+                                <label class="w-12 block text-sm text-center py-1 block pr-2">状态</label>
+                                <select v-model="params.payState" class="w-20 block appearance-none  text-gray-600 bg-white border border-gray-200  px-1 py-1 rounded  
+                                            leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
+                                    <option value="">全部</option> 
+                                    <option value="已付">已付</option> 
+                                    <option value="未付">未付</option> 
+                                </select>
+                            </div>
+
+                            <div class="w-1/2 lg:flex ml-2">
                                 <label class="text-sm py-1 block pr-2" >&nbsp;</label>
                                 <div>
                                     

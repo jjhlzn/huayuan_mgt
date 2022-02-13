@@ -104,8 +104,17 @@ function makeSearchOrdersSql(queryobj) {
     if (queryobj.keyword) {
         whereClause += `  and gnkhmc+ckdh like '%${queryobj.keyword}%' `
     }
-    if (queryobj.state) {
-        whereClause += ` and [state] = '${queryobj.state}'`
+    if (queryobj.payState) {
+        if (queryobj.payState == '已收') {
+
+            whereClause += ` and ABS( 
+                           isNull((select sum(wxzj) from yw_ckgl_cc_cmd where yw_ckgl_cc_cmd.ckdh = yw_ckgl_cc.ckdh),0)
+                         - isNull((select sum(amount) from yw_payments where yw_payments.dh = yw_ckgl_cc.ckdh),0)) <= 0.0001  `
+        } else {
+            whereClause += ` and ABS( 
+                isNull((select sum(wxzj) from yw_ckgl_cc_cmd where yw_ckgl_cc_cmd.ckdh = yw_ckgl_cc.ckdh),0)
+              - isNull((select sum(amount) from yw_payments where yw_payments.dh = yw_ckgl_cc.ckdh),0)) > 0.0001 `
+        }
     }
     const skipCount = queryobj.pageSize * (queryobj.pageNo - 1)
 
@@ -132,13 +141,13 @@ function makeSearchOrdersSql(queryobj) {
                 yw_ckgl_cc.bz,   --备注
                 yw_ckgl_cc.jw_flag,   --Y
 
-                (select sum(wxzj) from yw_ckgl_cc_cmd where yw_ckgl_cc_cmd.ckdh = yw_ckgl_cc.ckdh) as sellAmount,
-                (select sum(amount) from yw_payments where yw_payments.dh = yw_ckgl_cc.ckdh) as payAmount
+                isNULL((select sum(wxzj) from yw_ckgl_cc_cmd where yw_ckgl_cc_cmd.ckdh = yw_ckgl_cc.ckdh),0) as sellAmount,
+                isNULL((select sum(amount) from yw_payments where yw_payments.dh = yw_ckgl_cc.ckdh),0) as payAmount
             FROM yw_ckgl_cc
             where ${whereClause} 
             and ckdh not in (select top ${skipCount} ckdh from yw_ckgl_cc where ${whereClause} order by zdrq )
             order by zdrq`
-    //logger.info(sqlstr)
+    logger.info(sqlstr)
     const statSqlstr = `select count(1) as totalCount from yw_ckgl_cc where ${whereClause}
                        `
     //console.log(sqlstr)
@@ -170,7 +179,7 @@ async function searchOrders(params) {
 }
 
 function makeSearchMaolibiaosSql(queryobj) {
-    var whereClause = ` 1 = 1 and yw_ckgl_cc.ckdh=yw_ckgl_cc_cmd.ckdh `
+    var whereClause = ` 1 = 1 and yw_ckgl_cc.state !='已删除'  and yw_ckgl_cc.ckdh=yw_ckgl_cc_cmd.ckdh `
     var orderClause = ` order by  yw_ckgl_cc.ckdh, yw_ckgl_cc_cmd.spbm `
     if (queryobj.keyword) {
         whereClause += `  and yw_ckgl_cc.ckdh+yw_ckgl_cc.gnkhmc like '%${queryobj.keyword}%' `
@@ -208,7 +217,6 @@ function makeSearchMaolibiaosSql(queryobj) {
                         yw_ckgl_cc_cmd.sjccsl,    --数量
                         yw_ckgl_cc_cmd.sldw,    --单位
                         yw_ckgl_cc_cmd.hsdj,   ---入库单价
-                        yw_ckgl_cc_cmd.hsdj,   ---单价
                         yw_ckgl_cc_cmd.mxdbh, --明细单编号
                         yw_ckgl_cc_cmd.mxd_spid, --明细单ID
                         yw_ckgl_cc_cmd.wxhth, --外销合同号
@@ -326,6 +334,16 @@ function makeSearchInboundOrdersSql(queryobj) {
     if (queryobj.keyword) {
         whereClause += `  and jhdwmc+rkdh like '%${queryobj.keyword}%' `
     }
+
+    if (queryobj.payState) {
+        if (queryobj.payState == '已付') {
+
+            whereClause += ` and ABS(rkje - isNull((select sum(amount) from yw_payments where dh = rkdh),0)) <= 0.0001 and rkje > 0 `
+        } else {
+            whereClause += ` and ABS(rkje - isNull((select sum(amount) from yw_payments where dh = rkdh),0)) > 0.0001 `
+        }
+    }
+
     const skipCount = queryobj.pageSize * (queryobj.pageNo - 1)
 
     const sqlstr = `select top ${queryobj.pageSize}  
@@ -339,7 +357,7 @@ function makeSearchInboundOrdersSql(queryobj) {
             where ${whereClause} 
             and rkdh not in (select top ${skipCount} rkdh from yw_ckgl_jc where ${whereClause} order by rkrq )
             order by rkrq`
-    //logger.info(sqlstr)
+    logger.info(sqlstr)
     const statSqlstr = `select count(1) as totalCount from yw_ckgl_jc where ${whereClause}
                        `
     //console.log(sqlstr)
@@ -422,8 +440,8 @@ async function addOrUpdateOrder(order) {
             p.sphh = p.sphh || ''
             sql = `
             insert into yw_ckgl_cc_cmd 
-            (spbm, hgbm, sphh, spzwmc, spywmc, spgg, sldw, hsje, hsdj, wxdj, wxzj, ckdh, ckxh, cxh, productId)
-            values ('${p.spbm}', '${p.hgbm}', '${p.sphh}', '${p.name}', '${p.spywmc}', '${p.spgg}', '${p.sldw}', '${p.hsdj * p.buyQuantity}', ${p.hsdj},'${p.price}', ${p.amount} ,'${order.id}', 
+            (spbm, hgbm, sphh, spzwmc, spywmc, spgg, sldw, hsje, hsdj, wxdj, wxzj, ckdh, sjccsl, cxh, productId)
+            values ('${p.spbm}', '${p.hgbm}', '${p.sphh}', '${p.name}', '${p.spywmc}', '${p.spgg}', '${p.sldw}', '${p.hsdj * p.buyQuantity}', ${p.hsdj},'${p.price}', ${p.price * p.buyQuantity} ,'${order.id}', 
                 '${p.buyQuantity}', '${i}', '${p.productId}')`
             
             logger.debug("product.id:" + p.productId)
@@ -481,7 +499,7 @@ async function getOrderById(id) {
         let order = orders[0]
 
         //加载商品
-        sql = `select spbm, hgbm, sphh,  spzwmc as name, spywmc, spgg, sldw, hsje, hsdj, wxdj as price, ckxh as buyQuantity,
+        sql = `select spbm, hgbm, sphh,  spzwmc as name, spywmc, spgg, sldw, hsje, hsdj, wxdj as price, sjccsl as buyQuantity,
                     ckdh, cxh, productId from yw_ckgl_cc_cmd where ckdh = '${id}' order by cxh`
        // logger.info(sql)
         let products = (await pool.query(sql)).recordset

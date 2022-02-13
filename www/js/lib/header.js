@@ -79,7 +79,7 @@ Vue.component('user-header', {
         <div class="flex text-base font-medium text-white">
 
             <div class="px-14 py-2 hidden lg:block">
-                Design System
+                管理系统
             </div>
 
             <button id="menuButton" class=" px-4 hover:bg-gray-700 lg:hidden py-2">

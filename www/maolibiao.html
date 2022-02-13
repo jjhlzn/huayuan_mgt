@@ -40,15 +40,7 @@
                                                     focus:outline-none focus:bg-white focus:border-blue-500" />
                             </div>
 
-                            <div class="flex-grow lg:w-1/3 lg:flex">
-                                <label class="w-12 block text-sm text-center py-1 block pr-2">状态</label>
-                                <select v-model="params.state" class="w-1/3 block appearance-none  text-gray-600 bg-white border border-gray-200  px-1 py-1 rounded  
-                                            leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
-                                    <option value="出库">未结算</option> 
-                                    <option value="已结算">已结算</option> 
-                                    <option value="">所有</option> 
-                                </select>
-                            </div>
+                           
 
                             <div class="lg:w-1/4 lg:flex">
                                 <label class="text-sm py-1 block pr-2" >&nbsp;</label>
@@ -122,7 +114,7 @@
                             <td>{{item.spgg}}</td>
                             <td>{{item.sjccsl}}</td>
                             <td>{{item.hsdj}}</td>
-                            <td>{{item.hsdj * item.sldw}}</td>
+                            <td>{{item.hsdj * item.sjccsl}}</td>
                             <td>{{item.wxdj}}</td>
                             <td>{{item.wxzj}}</td>
                             <td>{{item.ml}}</td>
