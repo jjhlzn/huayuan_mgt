@@ -98,6 +98,9 @@
                             <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
                                 已付金额
                             </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                未付金额
+                            </th>
                             <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
                                 操作
                             </th>
@@ -111,6 +114,7 @@
                             <td>{{item.rkrq}}</td>
                             <td>{{item.rkje}}</td>
                             <td>{{item.payAmount}}</td>
+                            <td>{{item.rkje - item.payAmount}}</td>
                             <td>
                                 
 
