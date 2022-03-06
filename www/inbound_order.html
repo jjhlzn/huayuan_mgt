@@ -10,128 +10,130 @@
 
     <title></title>
 </head>
-<body>
-    <div id="app" v-cloak class=" min-h-screen text-sm ">
+<body class="cont_bg content_background_color">
+    <div id="app" v-cloak>
 
         <user-header></user-header>
 
         <!--  -->
-        <div class="lg:flex w-full" style="position: absolute; top: 44px; bottom: 0; width: 100%;">
+        <div class="lg:flex w-full content_background_color min-h-screen  pt-12" >
 
             <div id="menu" class="w-60 pt-2 bg-gray-600 flex-shrink-0 
                             absolute inset-y-0 left-0 transform -translate-x-full lg:relative lg:translate-x-0 transition duration-200 ease-in-out">
                 <left-menu></left-menu>
             </div>
                 
-            <!-- content -->
-            <div class="flex-grow p-6 content_background_color">
+            <!-- 内容 -->
+            <div class="flex-grow flex flex-col content_background_color h-full">
                 
-                <div class="p-4 bg-white">
-                    <p class="pb-4 font-bold text-lg">入库单</p>
+                    <p class="font-bold text-xl p-5 bg-white">入库单</p>
 
-                    <!-- 入库单信息-->
-                    <div>
-                        <div class="lg:flex lg:flex-wrap">
-                            <div class="flex w-full lg:w-1/2 py-2  items-center">
-                                <div class="w-24 pr-2 text-right text-gray-700">入库单号:</div>
-                                <div>{{order.rkdh}}</div>
+                    <div class="m-5 p-5 bg-white">
+                         <!-- 入库单信息-->
+                        <div>
+                            <div class="lg:flex lg:flex-wrap">
+                                <div class="flex w-full lg:w-1/2 py-2  items-center">
+                                    <div class="w-24 pr-2 text-right text-gray-700">入库单号:</div>
+                                    <div>{{order.rkdh}}</div>
+                                </div>
+                                <div class="flex w-full lg:w-1/2 py-2 ">
+                                    <div class="w-24 pr-2 text-right text-gray-700">采购公司:</div>
+                                    <div>{{order.jhdwmc}}</div>
+                                </div>
+                                <div class="flex w-full lg:w-1/2 py-2">
+                                    <div class="w-24 pr-2 text-right text-gray-700">入库时间:</div>
+                                    <div>{{order.rkrq}}</div>
+                                </div>
                             </div>
-                            <div class="flex w-full lg:w-1/2 py-2 ">
-                                <div class="w-24 pr-2 text-right text-gray-700">采购公司:</div>
-                                <div>{{order.jhdwmc}}</div>
-                            </div>
-                            <div class="flex w-full lg:w-1/2 py-2">
-                                <div class="w-24 pr-2 text-right text-gray-700">入库时间:</div>
-                                <div>{{order.rkrq}}</div>
-                            </div>
+                        
                         </div>
-                       
-                    </div>
 
-                    <!-- 商品列表 -->
-                    <div class="overflow-x-auto mt-4">
-                        <div class="py-2 font-bold">商品列表</div>
-                        <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
-                            <tr>
-                                <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 --> 
-                                <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    商品名称
-                                </th>
-                 
-                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    销售单价
-                                </th>
-                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    数量
-                                </th>
-                                
-                                
-                            </tr>
-
-                            <tr v-for="item in order.products">
-                                <td>{{item.name}}({{item.sphh}})</td>
-                           
-                                <td> {{item.price}} </td>
-                                <td> {{item.quantity}} </td>
-                                
-                                
-                            </tr>
-
-
-                        </table>
-                    </div>
-
-                    <!-- 付款明细 -->
-                    <div class="overflow-x-auto mt-8">
-                        <button class="my-2 bg-transparent hover:bg-blue-500 text-blue-500 h-6 px-2 transition-colors duration-150 border border-blue-500 rounded
-                                 focus:shadow-outline hover:bg-blue-500 hover:text-blue-100 text-sm" v-on:click="newItemClick">新增付款</button>
-
-                        <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
-                            <tr>
-                                <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 --> 
-                                <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    付款日期
-                                </th>
-                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    金额
-                                </th>
-                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                        <!-- 商品列表 -->
+                        <div class="overflow-x-auto mt-4">
+                            <div class="py-2 font-bold">商品列表</div>
+                            <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
+                                <tr>
+                                    <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 --> 
+                                    <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                        商品名称
+                                    </th>
+                    
+                                    <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                        销售单价
+                                    </th>
+                                    <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                        数量
+                                    </th>
                                     
-                                </th>
-                                
-                            </tr>
+                                    
+                                </tr>
 
-                            <tr v-for="(item, index) in order.payments">
-                                <td>{{item.addtime}}</td>
-                           
-
-                                <td v-if="!item.edit">
-                                    {{item.amount}}
-                                </td>
-                                <td v-if="item.edit">
-                                    <input type="text" style="width: 70%;" v-model="item.amount"
-                                        class="appearance-none border border-gray-200 rounded w-full py-2 px-4 text-gray-700
-                                         leading-tight focus:outline-none focus:bg-white focus:border-blue-500" />
-                                </td>
-                           
-                                <td class="px-1 py-2" v-if="!item.edit">
-                                    <a class="text-blue-700 hover:text-blue-900 mr-4 visited:text-blue-700" 
-                                                    v-on:click="pressEdit(index)">编辑</a> 
-                                    <a class="text-red-700 hover:text-red-900"
-                                                    v-on:click="deleteItem(index)">删除</a>
-                           
-                                </td>                 
-                                <td class="px-1 py-2" v-if="item.edit">
-                                    <a class="text-blue-700 hover:text-blue-900 mr-4 visited:text-blue-700"
-                                                        v-on:click="confirmEdit(index)">确定</a>
-                                    <a class="text-gray-700 hover:text-gray-900" v-on:click="cancelEdit(index)">取消</a>
-                                </td>
-                                
-                            </tr>
+                                <tr v-for="item in order.products">
+                                    <td>{{item.name}}({{item.sphh}})</td>
+                            
+                                    <td> {{item.price}} </td>
+                                    <td> {{item.quantity}} </td>
+                                    
+                                    
+                                </tr>
 
 
-                        </table>
-                    </div>
+                            </table>
+                        </div>
+
+                        <!-- 付款明细 -->
+                        <div class="overflow-x-auto mt-8">
+                            <button class="my-2 bg-transparent hover:bg-blue-500 text-blue-500 h-6 px-2 transition-colors duration-150 border border-blue-500 rounded
+                                    focus:shadow-outline hover:bg-blue-500 hover:text-blue-100 text-sm" v-on:click="newItemClick">新增付款</button>
+
+                            <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
+                                <tr>
+                                    <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 --> 
+                                    <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                        付款日期
+                                    </th>
+                                    <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                        金额
+                                    </th>
+                                    <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                        
+                                    </th>
+                                    
+                                </tr>
+
+                                <tr v-for="(item, index) in order.payments">
+                                    <td>{{item.addtime}}</td>
+                            
+
+                                    <td v-if="!item.edit">
+                                        {{item.amount}}
+                                    </td>
+                                    <td v-if="item.edit">
+                                        <input type="text" style="width: 70%;" v-model="item.amount"
+                                            class="appearance-none border border-gray-200 rounded w-full py-2 px-4 text-gray-700
+                                            leading-tight focus:outline-none focus:bg-white focus:border-blue-500" />
+                                    </td>
+                            
+                                    <td class="px-1 py-2" v-if="!item.edit">
+                                        <a class="text-blue-700 hover:text-blue-900 mr-4 visited:text-blue-700" 
+                                                        v-on:click="pressEdit(index)">编辑</a> 
+                                        <a class="text-red-700 hover:text-red-900"
+                                                        v-on:click="deleteItem(index)">删除</a>
+                            
+                                    </td>                 
+                                    <td class="px-1 py-2" v-if="item.edit">
+                                        <a class="text-blue-700 hover:text-blue-900 mr-4 visited:text-blue-700"
+                                                            v-on:click="confirmEdit(index)">确定</a>
+                                        <a class="text-gray-700 hover:text-gray-900" v-on:click="cancelEdit(index)">取消</a>
+                                    </td>
+                                    
+                                </tr>
+
+
+                            </table>
+                        </div>
+                   
+                   
 
                     
                 </div>

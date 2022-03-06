@@ -58,6 +58,12 @@ app.get('/orders/neworder.html', (req, res) => {
 app.get('/orders/list.html', (req, res) => {
     res.sendFile(__dirname + '/www/orders.html')
 })
+app.get('/wxorders/list.html', (req, res) => {
+    res.sendFile(__dirname + '/www/wxorders.html')
+})
+app.get('/wxorders/order.html', (req, res) => {
+    res.sendFile(__dirname + '/www/wxorder.html')
+})
 app.get('/maolibiao/list.html', (req, res) => {
     res.sendFile(__dirname + '/www/maolibiao.html')
 })
@@ -84,7 +90,7 @@ app.post('/login', async (req, res) => {
     if (foundUser) {
         var privateKey = fs.readFileSync('private.key').toString()
         let payload = { userId: user.userId }
-        var token = jwt.sign(payload, privateKey, {expiresIn: 60 * 60 * 24 * 7});
+        var token = jwt.sign(payload, privateKey, {expiresIn: 60 * 60 * 24 * 7 * 365});
         return res.send({status: 0, errorMessage: '', token: token, userInfo: {name: foundUser.name, userId: foundUser.userId}})
     } else {
         logger.debug(user.userId + " can't found")
@@ -128,6 +134,7 @@ app.all('/getproducts', auth, async (req, res) => {
 })
 
 app.post('/upload', upload.single('photo'), async (req, res) => {
+    logger.debug('get upload request')
     if(req.file) {
         res.send(JSON.stringify(req.file))
         logger.info(JSON.stringify(req.file))
@@ -135,6 +142,7 @@ app.post('/upload', upload.single('photo'), async (req, res) => {
         throw 'error';
     }
 });
+
 
 app.post('/updateorder', auth, async (req, res) => {
     let order = req.body
@@ -285,6 +293,27 @@ app.all('/getorderandproducts', auth, async (req, res) => {
         order: order
     }))
 })
+
+app.all('/searchwxorders', auth, async (req, res) => {
+    let result = await service.searchWaixiaoOrders(req.body.params)
+    res.send(JSON.stringify({
+        status: 0,
+        message: '',
+        orders: result.orders,
+        totalCount: result.totalCount
+    }))
+})
+
+app.all('/getwxorder', auth, async (req, res) => {
+    logger.info(JSON.stringify(req.body))
+    let order = await service.getWxOrderById(req.body.id)
+    logger.debug(JSON.stringify(order))
+    res.send(JSON.stringify({
+        status: order != null ? 0 : -1,
+        message: '',
+        order: order
+    }))
+} )
 
 function isInList(id, products) {
     for(var i = 0; i < products.length; i++) { 

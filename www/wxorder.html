@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/tailwind.min.css?body=1" rel="stylesheet" />
+    <link href="/css/common.css?body=1" rel="stylesheet" />
+
+    <title></title>
+</head>
+<body class="cont_bg content_background_color">
+    <div id="app" v-cloak>
+
+        <user-header></user-header>
+
+        <!--  -->
+        <div class="lg:flex w-full content_background_color min-h-screen  pt-12" >
+
+            <div id="menu" class="w-60 pt-2 bg-gray-600 flex-shrink-0 
+                            absolute inset-y-0 left-0 transform -translate-x-full lg:relative lg:translate-x-0 transition duration-200 ease-in-out">
+                <left-menu></left-menu>
+            </div>
+                
+            <!-- 内容 -->
+            <div class="flex-grow flex flex-col content_background_color h-full">
+                
+                    <p class="font-bold text-xl p-5 bg-white">外销合同</p>
+
+         
+                    <div class="mx-5 mt-5 p-5 bg-white">
+                        <div class="">
+                            <div class=" lg:flex">
+                                <div class="lg:w-1/2">
+                                    <div class=" py-2">S/C No</div>
+                                    <input type="text" placeholder="" v-model="order.wxhth" 
+                                        class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" disabled/>
+                                </div>
+
+                                <div class="lg:w-1/2">
+                                    <div class=" py-2">Buyer</div>
+                                    <input type="text" placeholder="" v-model="order.buyer"
+                                        class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" disabled/>
+
+                                </div>
+
+                                
+                            </div>
+                        </div>
+
+                        <div class="pt-4">
+                            <div class=" lg:flex">
+                                <div class="lg:w-1/2">
+                                    <div class=" py-2">Prcie Term</div>
+                                    <input type="text" placeholder="" v-model="order.jgtk"
+                                        class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" disabled/>
+
+                                </div>
+
+                                <div class="lg:w-1/2">
+                                    <div class=" py-2">Buyer's No</div>
+                                    <input type="text" placeholder="" v-model="order.po_no"
+                                        class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" disabled/>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="pt-4">
+                            <div class=" lg:flex">
+                                <div class="lg:w-1/2">
+                                    <div class=" py-2">Date</div>
+                                    <input type="text" placeholder="" v-model="order.qyrq"
+                                        class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" disabled/>
+
+                                </div>
+
+                               
+                            </div>
+                        </div>
+
+                        
+                    </div>
+
+                    <div class="overflow-x-auto bg-white mx-5 p-5">
+                        <div class="py-2 text-sm">商品列表:</div>
+                        <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
+                            <tr>
+                                <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 --> 
+                                <th class="px-2  text-center font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    订单号
+                                </th>
+
+                                <th class="px-2  text-center font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    商品名称
+                                </th>
+
+                                <th class="px-2  text-center font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    规格
+                                </th>
+                 
+                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    描述
+                                </th>
+                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    公司货号
+                                </th>
+                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    客户货号
+                                </th>
+                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    数量
+                                </th>
+                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    数量单位
+                                </th>
+                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    单价
+                                </th>
+                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    总价
+                                </th>
+                            </tr>
+
+                            <tr v-for="item in order.products">
+                                
+                                <td> {{ item.po_no }}</td>
+                                <td> {{ item.spywmc }}</td>
+                                <td> {{ item.spgg }}</td>
+                                <td> {{ item.spms }}</td>
+                                <td> {{ item.sphh }}</td>
+                                <td> {{ item.sphh_kh }}</td>
+                                <td> {{ item.jjsl }}</td>
+                                <td> {{ item.jjdw }}</td>
+                                <td> {{ item.wxdj }}</td>
+                                <td> {{ item.wxzj }}</td>
+                            </tr>
+
+
+                        </table>
+
+                        
+                    </div>
+     
+            </div>
+        </div>
+
+    
+            
+    </div>
+    <script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="/js/vue.js"></script>
+    <script type="text/javascript" src="/js/vuejs-datepicker.min.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/js.cookie.min.js"></script>
+    <script src="/js/menu.js"></script>
+    <script src="/js/lib/moment.min.js"></script>
+    <script src="/js/lib/header.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/js/wxorder.js"></script>
+</body>
+</html>

@@ -178,6 +178,111 @@ async function searchOrders(params) {
     } 
 }
 
+
+function makeSearchWaiXiaoOrdersSql(queryobj) {
+    var whereClause = ` 1=1 and bb_flag='Y' `
+    if (queryobj.keyword) {
+        whereClause += `  and wxhth like '%${queryobj.keyword}%' `
+    }
+    const skipCount = queryobj.pageSize * (queryobj.pageNo - 1)
+
+    const sqlstr = `select top ${queryobj.pageSize}  
+                    wxhth,---外销合同号
+                    convert(varchar, qyrq, 23) as 	qyrq,---签约日期
+                    zje,---金额
+                    wbbb,---币别
+                    convert(varchar, Zyqx, 23) as 	zyqx --装运期限
+                    From yw_contract
+            where ${whereClause} 
+            and wxhth not in (select top ${skipCount} wxhth from yw_contract where ${whereClause})
+           `
+    logger.info(sqlstr)
+    const statSqlstr = `select count(1) as totalCount from yw_contract where ${whereClause}
+                       `
+    //console.log(sqlstr)
+    //console.log(statSqlstr)
+    return [sqlstr, statSqlstr]
+}
+
+async function searchWaixiaoOrders(params) {
+    console.log(params)
+    try {
+        let sqlstrs = makeSearchWaiXiaoOrdersSql(params)
+        let pool = await db_pool.getPool(db_config)
+        let orders = (await pool.query(sqlstrs[0])).recordset
+        let totalCount = (await pool.query(sqlstrs[1])).recordset[0]['totalCount']
+
+        orders.forEach( order => {
+            order.sellAmount = order.sellAmount || 0
+            order.payAmount = order.payAmount || 0
+        })
+        
+        return {
+            orders: orders,
+            totalCount: totalCount
+        }
+    } catch (error) {
+        logger.error(error)
+        return {message: '出错了', orders: [], totalCount: 0}
+    } 
+}
+
+async function getWxOrderById(id) {
+    let sql = `select yw_contract.khms as buyer, jgtk, po_no,  convert(varchar, qyrq, 23) as qyrq, wxhth, bbh from yw_contract where wxhth = '${id}'`
+    logger.debug(sql)
+    try {
+        let pool = await db_pool.getPool(db_config)
+        let orders = (await pool.query(sql)).recordset
+        if (orders.length > 0) {
+            let order = orders[0]
+            await loadProductsWithWxorder(order)
+            return order
+        } else {
+            return null
+        }
+    } catch (error) {
+        logger.error(error)
+        logger.error(error.stack)
+    }
+}
+
+async function loadProductsWithWxorder(order) {
+    let sql = `SELECT yw_contract_cmd.wxhth,   
+                yw_contract_cmd.bbh,   
+                yw_contract_cmd.po_no,----订单号,    
+                yw_contract_cmd.hgbm,   
+                yw_contract_cmd.spbm,   
+                yw_contract_cmd.spywmc,---商品名称,   
+                yw_contract_cmd.spgg,---规格,   
+                yw_contract_cmd.spms,----描述,   
+                yw_contract_cmd.sphh,----公司货号,   
+                yw_contract_cmd.sphh_kh,---客户货号,   
+                yw_contract_cmd.sphh_gc,   
+                yw_contract_cmd.sphh_dybz,   
+                yw_contract_cmd.lable,   
+                yw_contract_cmd.spcolor,   
+                yw_contract_cmd.spsl,   
+                yw_contract_cmd.sldw,   
+                yw_contract_cmd.jjsl,---数量,   
+                yw_contract_cmd.jjjs,   
+                yw_contract_cmd.jjdw,---数量单位,   
+                yw_contract_cmd.wxdj,---单价,   
+                yw_contract_cmd.wxdj_dz,   
+                yw_contract_cmd.wxzj---总价,    
+            FROM yw_contract_cmd 
+                where wxhth = '${order.wxhth}' and bbh=${order.bbh}
+            `
+    try {
+        let pool = await db_pool.getPool(db_config)
+        let products = (await pool.query(sql)).recordset
+        order.products = products
+        return order
+    } catch (error) {
+        logger.error(error)
+        logger.error(error.stack)
+    }
+}
+
 function makeSearchMaolibiaosSql(queryobj) {
     var whereClause = ` 1 = 1 and yw_ckgl_cc.state !='已删除'  and yw_ckgl_cc.ckdh=yw_ckgl_cc_cmd.ckdh `
     var orderClause = ` order by  yw_ckgl_cc.ckdh, yw_ckgl_cc_cmd.spbm `
@@ -769,6 +874,9 @@ module.exports = {
     getOrderById: getOrderById,
     deleteOrder: deleteOrder,
     settleOrder:  settleOrder,
+
+    searchWaixiaoOrders,
+    getWxOrderById,
     
     changePassword,
     login,

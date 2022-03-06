@@ -25,6 +25,13 @@ Vue.component('left-menu', {
             link: '/orders/list.html'
           },
           {
+            name: '外销合同表',
+            level: 0,
+            children: [],
+            prefix: '/wxorders',
+            link: '/wxorders/list.html'
+          },
+          {
             name: '毛利表',
             level: 0,
             children: [

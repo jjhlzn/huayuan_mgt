@@ -11,13 +11,13 @@
 
     <title></title>
 </head>
-<body>
-    <div id="app" v-cloak class="min-h-screen content_background_color">
+<body class="cont_bg content_background_color">
+    <div id="app" v-cloak>
 
         <user-header></user-header>
 
         <!--  -->
-        <div class="lg:flex w-full" style="position: absolute; top: 44px; bottom: 0; width: 100%;">
+        <div class="lg:flex w-full content_background_color h-screen pt-12" >
 
             <div id="menu" class="w-60 pt-2 bg-gray-600 flex-shrink-0 
                             absolute inset-y-0 left-0 transform -translate-x-full lg:relative lg:translate-x-0 transition duration-200 ease-in-out">
@@ -25,7 +25,7 @@
             </div>
                 
             <!-- 内容 -->
-            <div class="flex-grow content_background_color">
+            <div class="flex-grow flex flex-col content_background_color h-full">
 
                 <!-- 标题-->
                 <p class="font-bold text-xl p-5 bg-white">入库单列表</p>
@@ -67,12 +67,8 @@
                 </div>
                 
                 <!-- 列表 -->
-                <div class="m-5 p-5 bg-white overflow-x-auto">
+                <div class="mx-5 p-5 bg-white overflow-x-auto">
 
-                    <div class="flex mb-4">
-                        <button class="my-2 bg-transparent hover:bg-blue-500 text-blue-500 h-8 px-2 transition-colors duration-150 border border-blue-500 rounded
-                                 focus:shadow-outline hover:bg-blue-500 hover:text-blue-100 text-sm" v-on:click="clickNewOrder">新建出库单</button>
-                    </div>
 
                     <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                         <tr>

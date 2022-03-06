@@ -28,21 +28,21 @@
             <div class="flex-grow flex flex-col content_background_color h-full">
 
                 <!-- 标题-->
-                <p class="font-bold text-xl p-5 bg-white">订单毛利表</p>
+                <p class="font-bold text-xl p-5 bg-white">外销合同列表</p>
 
                 <!-- 查询表单-->
                 <div class="m-5 p-5 bg-white">
                     <form>
-                        <div class="lg:flex">
-                            <div class="flex-grow lg:flex">
-                                <label class="w-16 text-sm py-1 block pr-2">关键字</label>
+                        <div class="flex">
+                            <div class="w-1/2 lg:flex">
+                                <label class="text-sm py-1 block pr-2">关键字</label>
                                 <input type="text" v-model="params.keyword" placeholder="请输入关键字" class="w-5/6  appearance-none border border-gray-200 rounded h-8 py-1.5 px-2 text-sm text-gray-700 leading-tight
                                                     focus:outline-none focus:bg-white focus:border-blue-500" />
                             </div>
 
-                           
 
-                            <div class="lg:w-1/4 lg:flex">
+
+                            <div class="w-1/2 lg:flex ml-2">
                                 <label class="text-sm py-1 block pr-2" >&nbsp;</label>
                                 <div>
                                     
@@ -60,48 +60,42 @@
                 
                 <!-- 列表 -->
                 <div class="mx-5 p-5 bg-white overflow-x-auto">
+
+
                     <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                         <tr>
                             <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 -->
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-32">
-                                销售合同号
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                外销合同号
                             </th>
                             <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                订单号
+                                签约日期
                             </th>
                             <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                客户名称
+                                金额
                             </th>
                             <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                业务员
-                            </th>
-
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                入库金额
-                            </th>
-                           
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                销售金额
+                                币别
                             </th>
                             <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                毛利
+                                装运日期
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                毛利率
+                            <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                操作
                             </th>
                         </tr>
 
                         <tr v-for="item in orders" class="hover:bg-gray-200">
-                            <td>{{item.ckdh}}</td>
-                            <td>{{item.xshth}}</td>
-                            <td>{{item.gnkhmc}}</td>
-                            <td>{{item.ywy}}</td>
-                           
-                            <td>{{item.rkAmount}}</td>
-                            <td>{{item.ckAmount}}</td>
-                            <td>{{item.ckAmount - item.rkAmount}}</td>
-                            <td>{{item.mll + '%'}}</td>
+                            <td>{{item.wxhth}}</td>
+                            <td>{{item.qyrq}}</td>
+                            <td>{{item.zje}}</td>
+                            <td>{{item.wbbb}}</td>
+                            <td>{{item.zyqx}}</td>
+                            <td>
                             
+                                <a href="#"  class="text-blue-500 hover:text-blue-900 visited:text-purple-600 "
+                                v-on:click="clickDetail(item.wxhth)">详情</a>
+                            </td>
                         </tr>
                     </table>
 
@@ -114,8 +108,6 @@
                                 layout="total, prev, pager, next"
                                 :total="totalCount"></el-pagination>
                     </div>
-
-                   
                 </div>
             
             </div>
@@ -134,6 +126,6 @@
     <script src="/js/menu.js"></script>
     <script src="/js/lib/header.js"></script>
     <script src="/js/utils.js"></script>
-    <script src="/js/ordermaolibiao.js"></script>
+    <script src="/js/wxorder.js"></script>
 </body>
 </html>
