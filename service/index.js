@@ -236,6 +236,7 @@ async function getWxOrderById(id) {
         if (orders.length > 0) {
             let order = orders[0]
             await loadProductsWithWxorder(order)
+            await loadFeiyongWithWxorer(order)
             return order
         } else {
             return null
@@ -276,6 +277,44 @@ async function loadProductsWithWxorder(order) {
         let pool = await db_pool.getPool(db_config)
         let products = (await pool.query(sql)).recordset
         order.products = products
+        return order
+    } catch (error) {
+        logger.error(error)
+        logger.error(error.stack)
+    }
+}
+
+async function loadFeiyongWithWxorer(order) {
+    let sql = `SELECT yw_contract.zje,   
+                    yw_contract.wbbb,   
+                    yw_contract_fy.plus_less,   
+                    yw_contract_fy.fymc,   
+                    yw_contract_fy.fyje,   
+                    yw_contract_fy.fybl,   
+                    yw_contract_fy.cxh,   
+                    yw_contract.zjems  
+                FROM yw_contract,   
+                    yw_contract_fy  
+                WHERE ( yw_contract.wxhth = yw_contract_fy.wxhth ) and  
+                    ( yw_contract.bbh = yw_contract_fy.bbh )
+                    and yw_contract.wxhth ='${order.wxhth}'
+            `
+    try {
+        let pool = await db_pool.getPool(db_config)
+        let feiyongs = (await pool.query(sql)).recordset
+        order.feiyongs = feiyongs
+        let totalFeiyong = 0
+        if (feiyongs.length > 0) {
+            for(var i = 0; i < feiyongs.length; i++) {
+                totalFeiyong += feiyongs[i].fyje
+                if (feiyongs[i].plus_less == 0) {
+                    feiyongs[i].plus_less_des = 'PLUS'
+                } else if (feiyongs[i].plus_less == 1) {
+                    feiyongs[i].plus_less_des = 'LESS'
+                }
+            }
+        }
+        order.totalFeiyong = totalFeiyong
         return order
     } catch (error) {
         logger.error(error)

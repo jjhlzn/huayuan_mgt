@@ -142,6 +142,46 @@
                         
                     </div>
      
+                    <div class="overflow-x-auto bg-white mx-5 p-5">
+                        <div class="py-2 text-sm">费用列表:</div>
+                        <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
+                            <tr>
+                                <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 --> 
+                                <th class="px-2  text-center font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    序号
+                                </th>
+
+                                <th class="px-2  text-center font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    加减
+                                </th>
+
+                                <th class="px-2  text-center font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    费用名称
+                                </th>
+                 
+                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    比率(%)
+                                </th>
+                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    金额
+                                </th>
+                               
+                            </tr>
+
+                            <tr v-for="(item,index) in order.feiyongs">
+                                
+                                <td> {{ index + 1 }}</td>
+                                <td> {{ item.plus_less_des }}</td>
+                                <td> {{ item.fymc }}</td>
+                                <td> {{ item.fybl }}</td>
+                                <td> {{ item.fyje }}</td>
+            
+                            </tr>
+
+                        </table>
+                        <div class="text-right mt-2 text-base"> <span class="mr-2">合计:</span> {{order.totalFeiyong}} </div>
+
+                    </div>
             </div>
         </div>
 
