@@ -1,10 +1,10 @@
 
-
 var query = parse_query_string(window.location.search.substr(1, window.location.search.length - 1))
 var id = query.id
 console.log('id = ' + id)
 var app = new Vue({
     el: '#app',
+    
     data: {
         order: {}
     },

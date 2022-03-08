@@ -46,7 +46,7 @@ Vue.component('user-header', {
         <div class="flex text-base font-medium text-white">
 
             <div class="px-14 py-3 hidden lg:block">
-                管理系统
+                
             </div>
 
             <button id="menuButton" class=" px-4 hover:bg-gray-700 hidden ">
@@ -80,13 +80,13 @@ Vue.component('user-header', {
                         <ul class="text-sm text-gray-700 w-22 border border-gray-100">
                             <li class=""><a
                                 class=" bg-white hover:bg-gray-100 py-2 px-4 block whitespace-no-wrap"
-                                href="/settings.html">个人设置</a>
+                                href="/settings.html">Settings</a>
                             </li>
                             <li class=""><a 
                                         class=" bg-white hover:bg-gray-100 py-2 px-4 block whitespace-no-wrap"
                                     href="#"
                                     v-on:click="logout"
-                                    >退出</a></li>
+                                    >Logout</a></li>
                         </ul>
                     </div>
                 </div>

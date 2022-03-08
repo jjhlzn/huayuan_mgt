@@ -1,4 +1,4 @@
-
+ELEMENT.locale(ELEMENT.lang.en)
 
 var app = new Vue({
     el: '#app',

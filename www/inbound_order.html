@@ -26,23 +26,32 @@
             <!-- 内容 -->
             <div class="flex-grow flex flex-col content_background_color h-full">
                 
-                    <p class="font-bold text-xl p-5 bg-white">入库单</p>
+                    <p class="font-bold text-xl p-5 bg-white">Inventory</p>
 
                     <div class="m-5 p-5 bg-white">
                          <!-- 入库单信息-->
                         <div>
                             <div class="lg:flex lg:flex-wrap">
                                 <div class="flex w-full lg:w-1/2 py-2  items-center">
-                                    <div class="w-24 pr-2 text-right text-gray-700">入库单号:</div>
+                                    <div class="w-32 pr-2 text-right text-gray-700">No.:</div>
                                     <div>{{order.rkdh}}</div>
                                 </div>
-                                <div class="flex w-full lg:w-1/2 py-2 ">
-                                    <div class="w-24 pr-2 text-right text-gray-700">采购公司:</div>
+                                <div class="flex w-full lg:w-1/2 py-2 hidden">
+                                    <div class="w-32 pr-2 text-right text-gray-700">采购公司:</div>
                                     <div>{{order.jhdwmc}}</div>
                                 </div>
                                 <div class="flex w-full lg:w-1/2 py-2">
-                                    <div class="w-24 pr-2 text-right text-gray-700">入库时间:</div>
+                                    <div class="w-32 pr-2 text-right text-gray-700">Shipping date:</div>
                                     <div>{{order.rkrq}}</div>
+                                </div>
+
+                                <div class="flex w-full lg:w-1/2 py-2">
+                                    <div class="w-32 pr-2 text-right text-gray-700">国外运费(USD):</div>
+                                    <div>{{order.wyf}}</div>
+                                </div>
+                                <div class="flex w-full lg:w-1/2 py-2">
+                                    <div class="w-32 pr-2 text-right text-gray-700">保险费(USD):</div>
+                                    <div>{{order.bf}}</div>
                                 </div>
                             </div>
                         
@@ -50,19 +59,19 @@
 
                         <!-- 商品列表 -->
                         <div class="overflow-x-auto mt-4">
-                            <div class="py-2 font-bold">商品列表</div>
+                            <div class="py-2 font-bold">Product List</div>
                             <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                                 <tr>
                                     <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 --> 
                                     <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                        商品名称
+                                        Product name
                                     </th>
                     
                                     <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                        销售单价
+                                        FOB unit price
                                     </th>
                                     <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                        数量
+                                        Quantity
                                     </th>
                                     
                                     
@@ -84,16 +93,16 @@
                         <!-- 付款明细 -->
                         <div class="overflow-x-auto mt-8">
                             <button class="my-2 bg-transparent hover:bg-blue-500 text-blue-500 h-6 px-2 transition-colors duration-150 border border-blue-500 rounded
-                                    focus:shadow-outline hover:bg-blue-500 hover:text-blue-100 text-sm" v-on:click="newItemClick">新增付款</button>
+                                    focus:shadow-outline hover:bg-blue-500 hover:text-blue-100 text-sm" v-on:click="newItemClick">Add payment</button>
 
                             <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                                 <tr>
                                     <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 --> 
                                     <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                        付款日期
+                                        Payment date
                                     </th>
                                     <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                        金额
+                                        Amount
                                     </th>
                                     <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
                                         

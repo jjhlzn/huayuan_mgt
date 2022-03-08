@@ -29,15 +29,15 @@
             <div class="flex-grow flex flex-col content_background_color h-full">
 
                 <!-- 标题-->
-                <p class="font-bold text-xl p-5 bg-white">{{title}}</p>
+                <p class="font-bold text-xl p-5 bg-white">Product stock</p>
 
                 <!-- 查询表单-->
                 <div class="m-5 p-5 bg-white">
                     <form>
                         <div class="flex">
                             <div class="w-1/2 lg:flex">
-                                <label class="text-sm py-1 block pr-2">关键字</label>
-                                <input type="text" v-model="params.keyword" placeholder="请输入关键字" class="w-5/6  appearance-none border border-gray-200 rounded h-8 py-1.5 px-2 text-sm text-gray-700 leading-tight
+                                <label class="text-sm py-1 block pr-2">Keys</label>
+                                <input type="text" v-model="params.keyword" placeholder="please input keyword" class="w-5/6  appearance-none border border-gray-200 rounded h-8 py-1.5 px-2 text-sm text-gray-700 leading-tight
                                                  focus:outline-none focus:bg-white focus:border-blue-500" />
                             </div>
 
@@ -47,10 +47,10 @@
                                     
 
                                     <button class=" h-8 px-4 mr-3  text-sm text-white transition-colors 
-                                        duration-150 rounded-sm focus:shadow-outline bg-blue-500 hover:bg-blue-600" @click="clickSearch">查询</button>
+                                        duration-150 rounded-sm focus:shadow-outline bg-blue-500 hover:bg-blue-600" @click="clickSearch">Search  </button>
 
                                     <button class=" h-8 px-4  text-sm text-gray-600 transition-colors border border-gray-400
-                                    duration-150 rounded-sm focus:shadow-outline bg-white hover:bg-gray-100" @click="clickReset">重置</button>
+                                    duration-150 rounded-sm focus:shadow-outline bg-white hover:bg-gray-100" @click="clickReset">Reset</button>
                                 </div>
                                 
                             </div>
@@ -64,7 +64,7 @@
                 <div id="contentDiv" class="mx-5 p-5 bg-white overflow-x-auto relative">
                     <div class="flex mb-4">
                         <button class="my-2 bg-transparent hover:bg-blue-500 text-blue-500 h-8 px-2 transition-colors duration-150 border border-blue-500 rounded
-                                 focus:shadow-outline hover:bg-blue-500 hover:text-blue-100 text-sm" v-on:click="clickNewOrder">新建出库单</button>
+                                 focus:shadow-outline hover:bg-blue-500 hover:text-blue-100 text-sm" v-on:click="clickNewOrder">Sales update</button>
                     </div>
 
                     
@@ -72,34 +72,34 @@
                         <tr class="py-1">
                             <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 -->
                             <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                入库时间
+                                Shipping date
                             </th>
                             <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                商品名称
+                                Product name
                             </th>
                             <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                货号
+                                Item No.
                             </th>
                             <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                规格
+                                Specification   
                             </th>
                             <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                入库数量
+                                Total quantity 
                             </th>
                             <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                销售数量
+                                Sales quantity
                             </th>
                             <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                可售数量
+                                In stock quantity
                             </th>
                             <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                采购单价
+                                FOB unit price
                             </th>
                             <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                采购金额
+                                FOB total amount
                             </th>
                             <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                提单号
+                                BL No.
                             </th>
                            
                         </tr>
@@ -121,7 +121,7 @@
                         <tr>
                             <td colspan="7" v-if="totalCount == 0 && !loading">
                                 <div>
-                                    无任何数据
+                                    No Data
                                 </div>
                             </td>
                         </tr>
@@ -161,6 +161,7 @@
     <script src="/js/axios.min.js"></script>
     <script src="/js/js.cookie.min.js"></script>
     <script src="/js/element-ui.js"></script>
+    <script src="//unpkg.com/element-ui/lib/umd/locale/en.js"></script>
     <script src="/js/menu.js"></script>
     <script src="/js/lib/header.js"></script>
     <script src="/js/utils.js"></script>

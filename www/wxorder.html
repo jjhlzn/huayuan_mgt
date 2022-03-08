@@ -26,14 +26,14 @@
             <!-- 内容 -->
             <div class="flex-grow flex flex-col content_background_color h-full">
                 
-                    <p class="font-bold text-xl p-5 bg-white">外销合同</p>
+                    <p class="font-bold text-xl p-5 bg-white">Buying order</p>
 
          
                     <div class="mx-5 mt-5 p-5 bg-white">
                         <div class="">
                             <div class=" lg:flex">
                                 <div class="lg:w-1/2">
-                                    <div class=" py-2">S/C No</div>
+                                    <div class=" py-2">Order No.</div>
                                     <input type="text" placeholder="" v-model="order.wxhth" 
                                         class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" disabled/>
                                 </div>
@@ -49,7 +49,7 @@
                             </div>
                         </div>
 
-                        <div class="pt-4">
+                        <div class="pt-2">
                             <div class=" lg:flex">
                                 <div class="lg:w-1/2">
                                     <div class=" py-2">Prcie Term</div>
@@ -66,11 +66,31 @@
                             </div>
                         </div>
 
-                        <div class="pt-4">
+                        <div class="pt-2">
                             <div class=" lg:flex">
                                 <div class="lg:w-1/2">
                                     <div class=" py-2">Date</div>
                                     <input type="text" placeholder="" v-model="order.qyrq"
+                                        class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" disabled/>
+
+                                </div>
+                                <div class="lg:w-1/2">
+                                    <div class=" py-2">Time of shipping </div>
+                                    <input type="text" placeholder="" v-model="order.zyqx"
+                                        class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" disabled/>
+
+                                </div>
+                               
+                            </div>
+                        </div>
+
+
+
+                        <div class="pt-2">
+                            <div class=" lg:flex">
+                                <div class="lg:w-1/2">
+                                    <div class=" py-2">Total Amount</div>
+                                    <input type="text" placeholder="" v-model="order.zje"
                                         class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" disabled/>
 
                                 </div>
@@ -83,42 +103,42 @@
                     </div>
 
                     <div class="overflow-x-auto bg-white mx-5 p-5">
-                        <div class="py-2 text-sm">商品列表:</div>
+                        <div class="py-2 text-sm">Product list:</div>
                         <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                             <tr>
                                 <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 --> 
-                                <th class="px-2  text-center font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    订单号
+                                <th class="px-2  text-center font-medium text-gray-800  tracking-wider w-24">
+                                    Order No.
                                 </th>
 
-                                <th class="px-2  text-center font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    商品名称
+                                <th class="px-2  text-center font-medium text-gray-800  tracking-wider w-24">
+                                    Product name 
                                 </th>
 
-                                <th class="px-2  text-center font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    规格
+                                <th class="px-2  text-center font-medium text-gray-800  tracking-wider w-24">
+                                    Specification 
                                 </th>
                  
-                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 hidden">
                                     描述
                                 </th>
-                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    公司货号
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    KB item No.
                                 </th>
-                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    客户货号
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    Item No.
                                 </th>
-                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    数量
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    Quantity 
                                 </th>
-                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    数量单位
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    Unit  
                                 </th>
-                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    单价
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    FOB unit price 
                                 </th>
-                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    总价
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    FOB total amount
                                 </th>
                             </tr>
 
@@ -127,7 +147,7 @@
                                 <td> {{ item.po_no }}</td>
                                 <td> {{ item.spywmc }}</td>
                                 <td> {{ item.spgg }}</td>
-                                <td> {{ item.spms }}</td>
+                                <td class="hidden"> {{ item.spms }}</td>
                                 <td> {{ item.sphh }}</td>
                                 <td> {{ item.sphh_kh }}</td>
                                 <td> {{ item.jjsl }}</td>
@@ -143,27 +163,27 @@
                     </div>
      
                     <div class="overflow-x-auto bg-white mx-5 p-5">
-                        <div class="py-2 text-sm">费用列表:</div>
+                        <div class="py-2 text-sm">Other Fee:</div>
                         <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                             <tr>
                                 <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 --> 
-                                <th class="px-2  text-center font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    序号
+                                <th class="px-2  text-center font-medium text-gray-800  tracking-wider w-24">
+                                    No.
                                 </th>
 
-                                <th class="px-2  text-center font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    加减
+                                <th class="px-2  text-center font-medium text-gray-800  tracking-wider w-24">
+                                    Plus/Minus
                                 </th>
 
-                                <th class="px-2  text-center font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    费用名称
+                                <th class="px-2  text-center font-medium text-gray-800  tracking-wider w-24">
+                                    Name  
                                 </th>
                  
-                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 hidden">
                                     比率(%)
                                 </th>
-                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    金额
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    Amount 
                                 </th>
                                
                             </tr>
@@ -173,13 +193,13 @@
                                 <td> {{ index + 1 }}</td>
                                 <td> {{ item.plus_less_des }}</td>
                                 <td> {{ item.fymc }}</td>
-                                <td> {{ item.fybl }}</td>
+                                <td class="hidden" > {{ item.fybl }}</td>
                                 <td> {{ item.fyje }}</td>
             
                             </tr>
 
                         </table>
-                        <div class="text-right mt-2 text-base"> <span class="mr-2">合计:</span> {{order.totalFeiyong}} </div>
+                        <div class="text-right mt-2 text-base"> <span class="mr-2">Total:</span> {{order.totalFeiyong}} </div>
 
                     </div>
             </div>

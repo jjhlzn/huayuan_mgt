@@ -26,38 +26,38 @@
             <!-- 内容 -->
             <div class="flex-grow flex flex-col content_background_color h-full">
                 
-                    <p class="font-bold text-xl p-5 bg-white">出库单</p>
+                    <p class="font-bold text-xl p-5 bg-white">Goods Sold</p>
 
                     <div class="overflow-x-auto bg-white mt-5 mx-5 p-5">
                         
                         <button class="my-2 bg-transparent hover:bg-blue-500 text-blue-500 h-6 px-2 transition-colors duration-150 border border-blue-500 rounded
-                                 focus:shadow-outline hover:bg-blue-500 hover:text-blue-100 text-sm" v-on:click="goToSelectProduct">添加商品</button>
+                                 focus:shadow-outline hover:bg-blue-500 hover:text-blue-100 text-sm" v-on:click="goToSelectProduct">Add product</button>
 
                         <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                             <tr>
                                 <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 --> 
-                                <th class="px-2  text-center font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    商品名称
+                                <th class="px-2  text-center font-medium text-gray-800  tracking-wider w-24">
+                                    Product name
                                 </th>
 
-                                <th class="px-2  text-center font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    货号
+                                <th class="px-2  text-center font-medium text-gray-800  tracking-wider w-24">
+                                    Item No.
                                 </th>
 
-                                <th class="px-2  text-center font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    规格
+                                <th class="px-2  text-center font-medium text-gray-800  tracking-wider w-24">
+                                    Specification   
                                 </th>
                  
-                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    销售单价
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    Sales price
                                 </th>
-                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    数量
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    Quantity   
                                 </th>
-                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    销售金额
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    Sales amount
                                 </th>
-                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                     
                                 </th>
                             </tr>
@@ -74,7 +74,7 @@
                                         leading-tight focus:outline-none focus:bg-white focus:border-blue-500" /></td>
                                 <td> {{ item.price * item.buyQuantity }}</td>
                                 <td>
-                                    <button class="text-red-500 hover:text-red-900" v-on:click="deleteItem(item.id)">删除</button>
+                                    <button class="text-red-500 hover:text-red-900" v-on:click="deleteItem(item.id)">Delete</button>
                                 </td>
                             </tr>
 
@@ -90,14 +90,14 @@
                         <div class="pt-8">
                             <div class=" lg:flex">
                                 <div class="lg:w-1/2">
-                                    <div class=" py-2">订单号</div>
+                                    <div class=" py-2">Buyer’s No.</div>
                                     <input type="text" placeholder="" v-model="xshth" 
                                         class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" />
                                 </div>
 
                                 <div class="lg:w-1/2">
-                                    <div class=" py-2">客户</div>
-                                    <input type="text" placeholder="请输入客户名称" v-model="clientName"
+                                    <div class=" py-2">Client  </div>
+                                    <input type="text" placeholder="" v-model="clientName"
                                         class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" />
 
                                 </div>
@@ -109,35 +109,24 @@
                         <div class="pt-4">
                             <div class=" lg:flex">
                                 <div class="lg:w-1/2">
-                                    <div class=" py-2">销售员</div>
-                                    <input type="text" placeholder="请输入销售员" v-model="seller"
+                                    <div class=" py-2">Salesman   </div>
+                                    <input type="text" placeholder="" v-model="seller"
                                         class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" />
 
                                 </div>
 
                                 <div class="lg:w-1/2">
-                                    <div class=" py-2">销售日期</div>
+                                    <div class=" py-2">Sales date</div>
                                     <vuejs-datepicker v-model="sellDate" format="yyyy-MM-dd" input-class="appearance-none border border-gray-200 h-9 rounded py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500"/>
                                 </div>
                             </div>
                         </div>
 
-                        <div class="pt-4 hidden">
-                            <div class=" lg:flex">
-                                <div class="lg:w-1/2">
-                                    <div class=" py-2">状态</div>
-                                    <input type="text" placeholder="" v-model="state" disabled=true
-                                        class="appearance-none border border-gray-200 rounded w-full md:w-1/4 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" />
-
-                                </div>
-
-                                
-                            </div>
-                        </div>
+                        
                         
 
                         <div class="pt-4">
-                            <div class="py-2">销售合同图片</div>
+                            <div class="py-2">Picture of Sales Contract</div>
 
                             <div class="flex flex-wrap">
                                 <div class="orderImage m-2 relative " v-for="(item, index) in images">
@@ -168,21 +157,21 @@
                          <!-- 付款明细 -->
                     <div class="overflow-x-auto mt-8" v-if="id != ''">
                         <button class="my-2 bg-transparent hover:bg-blue-500 text-blue-500 h-6 px-2 transition-colors duration-150 border border-blue-500 rounded
-                                 focus:shadow-outline hover:bg-blue-500 hover:text-blue-100 text-sm" v-on:click="newItemClick">新增收款</button>
+                                 focus:shadow-outline hover:bg-blue-500 hover:text-blue-100 text-sm" v-on:click="newItemClick">Add Collection </button>
 
                         <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                             <tr>
                                 <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 --> 
-                                <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    付款日期
+                                <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    Payment date
                                 </th>
-                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    订单号
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    Order No.
                                 </th>
-                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                    金额
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    Amount
                                 </th>
-                                <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                     
                                 </th>
                                 
@@ -212,15 +201,15 @@
                            
                                 <td class="px-1 py-2" v-if="!item.edit">
                                     <a class="text-blue-700 hover:text-blue-900 mr-4 visited:text-blue-700" 
-                                                    v-on:click="pressEdit(index)">编辑</a> 
+                                                    v-on:click="pressEdit(index)">Edit</a> 
                                     <a class="text-red-700 hover:text-red-900"
-                                                    v-on:click="deleteItem(index)">删除</a>
+                                                    v-on:click="deleteItem(index)">Delete</a>
                            
                                 </td>                 
                                 <td class="px-1 py-2" v-if="item.edit">
                                     <a class="text-blue-700 hover:text-blue-900 mr-4 visited:text-blue-700"
-                                                        v-on:click="confirmEdit(index)">确定</a>
-                                    <a class="text-gray-700 hover:text-gray-900" v-on:click="cancelEdit(index)">取消</a>
+                                                        v-on:click="confirmEdit(index)">Confirm</a>
+                                    <a class="text-gray-700 hover:text-gray-900" v-on:click="cancelEdit(index)">Cancel</a>
                                 </td>
                                 
                             </tr>
@@ -233,7 +222,7 @@
   
 
                             <button class="block h-8 px-5 m-2 text-sm text-white transition-colors 
-                                duration-150 rounded-sm focus:shadow-outline bg-blue-500 hover:bg-blue-600" v-on:click="saveOrder"> 保 存 </button>
+                                duration-150 rounded-sm focus:shadow-outline bg-blue-500 hover:bg-blue-600" v-on:click="saveOrder"> Save </button>
 
 
                             

@@ -28,15 +28,15 @@
             <div class="flex-grow flex flex-col content_background_color h-full">
 
                 <!-- 标题-->
-                <p class="font-bold text-xl p-5 bg-white">商品毛利表</p>
+                <p class="font-bold text-xl p-5 bg-white">Goods Gross Profit</p>
 
                 <!-- 查询表单-->
                 <div class="m-5 p-5 bg-white">
                     <form>
-                        <div class="lg:flex">
+                        <div class="lg:flex items-center">
                             <div class="flex-grow lg:flex">
-                                <label class="w-16 text-sm py-1 block pr-2">关键字</label>
-                                <input type="text" v-model="params.keyword" placeholder="请输入关键字" class="w-5/6  appearance-none border border-gray-200 rounded h-8 py-1.5 px-2 text-sm text-gray-700 leading-tight
+                                <label class="w-16 text-sm py-1 block pr-2">Keys          </label>
+                                <input type="text" v-model="params.keyword" placeholder="" class="w-5/6  appearance-none border border-gray-200 rounded h-8 py-1.5 px-2 text-sm text-gray-700 leading-tight
                                                     focus:outline-none focus:bg-white focus:border-blue-500" />
                             </div>
 
@@ -47,10 +47,10 @@
                                 <div>
                                     
                                     <button class=" h-8 px-4 mr-3  text-sm text-white transition-colors 
-                                    duration-150 rounded-sm focus:shadow-outline bg-blue-500 hover:bg-blue-600" v-on:click="clickSearch">查询</button>
+                                    duration-150 rounded-sm focus:shadow-outline bg-blue-500 hover:bg-blue-600" v-on:click="clickSearch">Search  </button>
 
                                     <button class=" h-8 px-4  text-sm text-gray-600 transition-colors border border-gray-400
-                                duration-150 rounded-sm focus:shadow-outline bg-white hover:bg-gray-100" v-on:click="clickReset">重置</button>
+                                duration-150 rounded-sm focus:shadow-outline bg-white hover:bg-gray-100" v-on:click="clickReset">Reset</button>
                                 </div>
                                 
                             </div>
@@ -62,56 +62,53 @@
                 <div class="mx-5 p-5 bg-white overflow-x-auto">
                     <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                         <tr>
-                            <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 -->
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-32">
-                                销售合同号
+                 
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Order No.
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                订单号
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Client  
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                客户名称
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Salesman 
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                业务员
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Invoice No. 
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                明细单编号
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Product name
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                商品名称
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Item No. 
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                商品货号
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Specification  
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                商品规格
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Quantity  
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                数量
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                FOB unit price
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                入库单价
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                FOB total amount
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                入库金额
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Sales price
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                销售单价
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Sales amount
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                销售金额
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Gross profit 
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                毛利
-                            </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                毛利率
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Gross profit margin
                             </th>
                         </tr>
 
                         <tr v-for="item in orders" class="hover:bg-gray-200">
-                            <td>{{item.ckdh}}</td>
+                     
                             <td>{{item.xshth}}</td>
                             <td>{{item.gnkhmc}}</td>
                             <td>{{item.ywy}}</td>
@@ -156,6 +153,7 @@
     <script src="/js/axios.min.js"></script>
     <script src="/js/js.cookie.min.js"></script>
     <script src="/js/element-ui.js"></script>
+    <script src="//unpkg.com/element-ui/lib/umd/locale/en.js"></script>
     <script src="/js/menu.js"></script>
     <script src="/js/lib/header.js"></script>
     <script src="/js/utils.js"></script>

@@ -1,7 +1,13 @@
+ELEMENT.locale(ELEMENT.lang.en)
 
+var startDate = moment().add(-90, 'days').format('YYYY-MM-DD')
+var endDate = moment().add(90, 'days').format('YYYY-MM-DD')
 
 var app = new Vue({
     el: '#app',
+    components: {
+        vuejsDatepicker
+    },
     data: {
         totalCount: 0,
         requests: [],
@@ -9,6 +15,8 @@ var app = new Vue({
         currentPage: 1,
         params: {
             payState: '',
+            startDate: startDate,
+            endDate: endDate
         },
         orders: [],
         loading: true
@@ -64,6 +72,8 @@ var app = new Vue({
             queryObject.pageSize = this.pageSize
             queryObject.keyword = this.params.keyword
             queryObject.payState =  this.params.payState
+            queryObject.startDate = moment(this.params.startDate).format('YYYY-MM-DD')
+            queryObject.endDate = moment(this.params.end).format('YYYY-MM-DD')
             return queryObject;
         },
 

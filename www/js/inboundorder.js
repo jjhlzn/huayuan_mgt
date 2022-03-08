@@ -6,7 +6,8 @@ var id = query.id
 var app = new Vue({
     el: '#app',
     components: {
-        vuejsDatepicker
+        vuejsDatepicker,
+        
     },
     data: {
         id: id,

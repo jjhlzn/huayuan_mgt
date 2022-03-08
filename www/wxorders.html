@@ -28,29 +28,40 @@
             <div class="flex-grow flex flex-col content_background_color h-full">
 
                 <!-- 标题-->
-                <p class="font-bold text-xl p-5 bg-white">外销合同列表</p>
+                <p class="font-bold text-xl p-5 bg-white">Buying order</p>
 
                 <!-- 查询表单-->
                 <div class="m-5 p-5 bg-white">
                     <form>
-                        <div class="flex">
-                            <div class="w-1/2 lg:flex">
-                                <label class="text-sm py-1 block pr-2">关键字</label>
-                                <input type="text" v-model="params.keyword" placeholder="请输入关键字" class="w-5/6  appearance-none border border-gray-200 rounded h-8 py-1.5 px-2 text-sm text-gray-700 leading-tight
-                                                    focus:outline-none focus:bg-white focus:border-blue-500" />
+                        <div class="flex items-center">
+                            <div class="w-2/3 lg:flex gap-x-2 items-center">
+                                <label class="text-sm py-1 block">Keys   </label>
+                                <input type="text" v-model="params.keyword" placeholder="" class="w-1/3  appearance-none border border-gray-200 rounded h-8 py-1.5 px-2 text-sm text-gray-700 leading-tight
+                                                    focus:outline-none focus:bg-white focus:border-blue-500 " />
+
+                                <label class="text-sm py-1 block pl-4">Date  </label>
+
+                                <vuejs-datepicker v-model="params.startDate"  format="yyyy-MM-dd" 
+                                    input-class="block w-28 appearance-none border border-gray-200 h-9 rounded py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 text-sm"></vuejs-datepicker>
+                                <label class="text-sm py-1 block pr-2">-</label>
+
+                                <vuejs-datepicker v-model="params.endDate" format="yyyy-MM-dd" 
+                                    input-class="block w-28  appearance-none border border-gray-200 h-9 rounded py-1 px-1 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500 text-sm"></vuejs-datepicker>
+                          
+                                
                             </div>
 
 
 
-                            <div class="w-1/2 lg:flex ml-2">
+                            <div class="w-1/3 lg:flex ml-2">
                                 <label class="text-sm py-1 block pr-2" >&nbsp;</label>
                                 <div>
                                     
                                     <button class=" h-8 px-4 mr-3  text-sm text-white transition-colors 
-                                    duration-150 rounded-sm focus:shadow-outline bg-blue-500 hover:bg-blue-600" v-on:click="clickSearch">查询</button>
+                                    duration-150 rounded-sm focus:shadow-outline bg-blue-500 hover:bg-blue-600" v-on:click="clickSearch">Search </button>
 
-                                    <button class=" h-8 px-4  text-sm text-gray-600 transition-colors border border-gray-400
-                                duration-150 rounded-sm focus:shadow-outline bg-white hover:bg-gray-100" v-on:click="clickReset">重置</button>
+                                    <button class=" h-8 px-4  text-sm text-gray-600 transition-colors border border-gray-400 hidden
+                                duration-150 rounded-sm focus:shadow-outline bg-white hover:bg-gray-100" v-on:click="clickReset">Reset</button>
                                 </div>
                                 
                             </div>
@@ -65,23 +76,23 @@
                     <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                         <tr>
                             <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 -->
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                外销合同号
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Order No. 
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                签约日期
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Date  
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                金额
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                FOB total amount
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                币别
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Currency    
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                装运日期
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Time of shipping
                             </th>
-                            <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                操作
+                            <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Operate 
                             </th>
                         </tr>
 
@@ -94,7 +105,7 @@
                             <td>
                             
                                 <a href="#"  class="text-blue-500 hover:text-blue-900 visited:text-purple-600 "
-                                v-on:click="clickDetail(item.wxhth)">详情</a>
+                                v-on:click="clickDetail(item.wxhth)">Details</a>
                             </td>
                         </tr>
                     </table>
@@ -119,13 +130,16 @@
     </div>
 
     <script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="/js/lib/moment.min.js"></script>
     <script type="text/javascript" src="/js/vue.js"></script>
+    <script type="text/javascript" src="/js/vuejs-datepicker.min.js"></script>
     <script src="/js/axios.min.js"></script>
     <script src="/js/js.cookie.min.js"></script>
     <script src="/js/element-ui.js"></script>
+    <script src="//unpkg.com/element-ui/lib/umd/locale/en.js"></script>
     <script src="/js/menu.js"></script>
     <script src="/js/lib/header.js"></script>
     <script src="/js/utils.js"></script>
-    <script src="/js/wxorder.js"></script>
+    <script src="/js/wxorders.js"></script>
 </body>
 </html>

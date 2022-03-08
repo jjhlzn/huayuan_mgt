@@ -184,6 +184,13 @@ function makeSearchWaiXiaoOrdersSql(queryobj) {
     if (queryobj.keyword) {
         whereClause += `  and wxhth like '%${queryobj.keyword}%' `
     }
+    if (queryobj.startDate) {
+        whereClause += ` and Zyqx >= '${queryobj.startDate}'  `
+    }
+    if (queryobj.endDate) {
+        whereClause += ` and Zyqx <= '${queryobj.endDate}'  `
+    }
+
     const skipCount = queryobj.pageSize * (queryobj.pageNo - 1)
 
     const sqlstr = `select top ${queryobj.pageSize}  
@@ -228,7 +235,8 @@ async function searchWaixiaoOrders(params) {
 }
 
 async function getWxOrderById(id) {
-    let sql = `select yw_contract.khms as buyer, jgtk, po_no,  convert(varchar, qyrq, 23) as qyrq, wxhth, bbh from yw_contract where wxhth = '${id}'`
+    let sql = `select yw_contract.khms as buyer, jgtk, po_no, zje, convert(varchar, Zyqx, 23) as zyqx,
+         convert(varchar, qyrq, 23) as qyrq, wxhth, bbh from yw_contract where wxhth = '${id}'`
     logger.debug(sql)
     try {
         let pool = await db_pool.getPool(db_config)
@@ -781,7 +789,9 @@ async function settleOrder(id) {
 
 async function getInboundOrderById(id) {
     try {
-        let sql = `select rkdh, jhdwmc, convert(varchar, rkrq, 20) as rkrq from yw_ckgl_jc where rkdh = '${id}'`
+        let sql = `select rkdh, jhdwmc, 
+        convert(varchar, rkrq, 20) as rkrq, wyf, bf
+        from yw_ckgl_jc where rkdh = '${id}'`
         logger.debug(sql)
         let pool = await db_pool.getPool(db_config)
         let orders = (await pool.query(sql)).recordset
@@ -801,6 +811,7 @@ async function getInboundOrderById(id) {
         yw_ckgl_jc_cmd.sjrksl as quantity, --入库数量
         yw_ckgl_jc_cmd.sldw,    --单位
         yw_ckgl_jc_cmd.hsje,   --金额
+
 
         yw_ckgl_jc_cmd.hsdj as price,   ---单价
         yw_ckgl_jc_cmd.hsdj,

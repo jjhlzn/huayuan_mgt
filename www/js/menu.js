@@ -4,39 +4,40 @@ Vue.component('left-menu', {
         expanded: false,
         menus: [
           {
-            name: '入库单',
-            level: 0,
-            children: [],
-            prefix: '/inboundorders/',
-            link: '/inboundorders/list.html'
-          },
-          {
-            name: '销售库存',
-            level: 0,
-            children: [],
-            prefix: '/products/',
-            link: '/products/list.html'
-          },
-          {
-            name: '出库单',
-            level: 0,
-            children: [],
-            prefix: '/orders/',
-            link: '/orders/list.html'
-          },
-          {
-            name: '外销合同表',
+            name: 'Buying order',
             level: 0,
             children: [],
             prefix: '/wxorders',
             link: '/wxorders/list.html'
           },
           {
+            name: 'Inventory',
+            level: 0,
+            children: [],
+            prefix: '/inboundorders/',
+            link: '/inboundorders/list.html'
+          },
+          {
+            name: 'Sales status',
+            level: 0,
+            children: [],
+            prefix: '/products/',
+            link: '/products/list.html'
+          },
+          {
+            name: 'Goods Sold',
+            level: 0,
+            children: [],
+            prefix: '/orders/',
+            link: '/orders/list.html'
+          },
+
+          {
             name: '毛利表',
             level: 0,
             children: [
               {
-                name: '商品毛利表',
+                name: 'Goods Gross Profit',
                 level: 0,
                 children: [
                   
