@@ -9,6 +9,7 @@ var app = new Vue({
         currentPage: 1,
         params: {
             payState: '',
+            days: '',
         },
         orders: [],
         loading: true
@@ -64,6 +65,7 @@ var app = new Vue({
             queryObject.pageSize = this.pageSize
             queryObject.keyword = this.params.keyword
             queryObject.payState =  this.params.payState
+            queryObject.days = this.params.days
             return queryObject;
         },
 
@@ -75,6 +77,7 @@ var app = new Vue({
         clickReset: function(e) {
             console.log("send reset")
             this.params.keyword = ''
+            this.params.days = ''
             this.fetchData()
             e.preventDefault()
         }

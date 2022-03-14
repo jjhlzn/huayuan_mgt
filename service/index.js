@@ -588,6 +588,10 @@ function makeSearchInboundOrdersSql(queryobj) {
         }
     }
 
+    if (queryobj.days != '') {
+        whereClause += ` and DATEDIFF(day,rkrq,getDate()) >= ${queryobj.days} `
+    }
+
     const skipCount = queryobj.pageSize * (queryobj.pageNo - 1)
 
     const sqlstr = `select top ${queryobj.pageSize}  
@@ -619,7 +623,11 @@ async function searchInboundOrders(params) {
         let totalCount = (await pool.query(sqlstrs[1])).recordset[0]['totalCount']
         orders.forEach( order => {
             order.rkje = order.rkje.toFixed(1) * 10 / 10
-            
+            try {
+                order.days = moment().diff(moment(order.rkrq), 'days')
+            } catch (e) {
+
+            }
         })
         return {
             orders: orders,
