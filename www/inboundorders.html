@@ -45,8 +45,8 @@
                                 <select v-model="params.payState" class="w-20 block appearance-none  text-gray-600 bg-white border border-gray-200  px-1 py-1 rounded  
                                             leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
                                     <option value="">All</option> 
-                                    <option value="已付">Received</option> 
-                                    <option value="未付">Uncollected</option> 
+                                    <option value="已付">Paid</option> 
+                                    <option value="未付">Unpaid</option> 
                                 </select>
                             </div>
 
@@ -82,15 +82,13 @@
                             <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                 BL No.
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24 hidden">
-                                采购公司
-                            </th>
                             <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                 Shipping date
                             </th>
                             <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                 FOB total amount
                             </th>
+                           
                             <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                 Amount paid
                             </th>
@@ -98,7 +96,7 @@
                                 Amount unpaid
                             </th>
                             <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
-                                Operate  
+                                Details  
                             </th>
                         </tr>
 
@@ -106,7 +104,6 @@
                             <td>{{item.rkdh}}</td>
                             <td>{{item.mxdbh}}</td>
                             <td>{{item.dhbh}}</td>
-                            <td class="hidden">{{item.jhdwmc}}</td>
                             <td>{{item.rkrq}}</td>
                             <td>{{item.rkje}}</td>
                             <td>{{item.payAmount}}</td>

@@ -39,8 +39,8 @@
                                 </div>
 
                                 <div class="lg:w-1/2">
-                                    <div class=" py-2">Buyer</div>
-                                    <input type="text" placeholder="" v-model="order.buyer"
+                                    <div class=" py-2">Current rate/USD-RMB</div>
+                                    <input type="text" placeholder="" v-model="order.zrmbhl"
                                         class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" disabled/>
 
                                 </div>
@@ -57,12 +57,13 @@
                                         class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" disabled/>
 
                                 </div>
-
                                 <div class="lg:w-1/2">
-                                    <div class=" py-2">Buyer's No</div>
-                                    <input type="text" placeholder="" v-model="order.po_no"
+                                    <div class=" py-2">CIF total amount</div>
+                                    <input type="text" placeholder="" v-model="order.zje"
                                         class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" disabled/>
+
                                 </div>
+                                
                             </div>
                         </div>
 
@@ -75,7 +76,7 @@
 
                                 </div>
                                 <div class="lg:w-1/2">
-                                    <div class=" py-2">Time of shipping </div>
+                                    <div class=" py-2">ETD </div>
                                     <input type="text" placeholder="" v-model="order.zyqx"
                                         class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" disabled/>
 
@@ -84,21 +85,9 @@
                             </div>
                         </div>
 
+                        
 
-
-                        <div class="pt-2">
-                            <div class=" lg:flex">
-                                <div class="lg:w-1/2">
-                                    <div class=" py-2">Total Amount</div>
-                                    <input type="text" placeholder="" v-model="order.zje"
-                                        class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" disabled/>
-
-                                </div>
-
-                               
-                            </div>
-                        </div>
-
+                       
                         
                     </div>
 
@@ -107,27 +96,23 @@
                         <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                             <tr>
                                 <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 --> 
-                                <th class="px-2  text-center font-medium text-gray-800  tracking-wider w-24">
-                                    Order No.
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    KB item No.
+                                </th>
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    SH Item No.
                                 </th>
 
                                 <th class="px-2  text-center font-medium text-gray-800  tracking-wider w-24">
-                                    Product name 
+                                    Product description 
                                 </th>
 
                                 <th class="px-2  text-center font-medium text-gray-800  tracking-wider w-24">
                                     Specification 
                                 </th>
                  
-                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 hidden">
-                                    描述
-                                </th>
-                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
-                                    KB item No.
-                                </th>
-                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
-                                    Item No.
-                                </th>
+                              
+                               
                                 <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                     Quantity 
                                 </th>
@@ -144,12 +129,12 @@
 
                             <tr v-for="item in order.products">
                                 
-                                <td> {{ item.po_no }}</td>
-                                <td> {{ item.spywmc }}</td>
-                                <td> {{ item.spgg }}</td>
-                                <td class="hidden"> {{ item.spms }}</td>
                                 <td> {{ item.sphh }}</td>
                                 <td> {{ item.sphh_kh }}</td>
+                                <td> {{ item.spywmc }}</td>
+                                <td> {{ item.spgg }}</td>
+                           
+                               
                                 <td> {{ item.jjsl }}</td>
                                 <td> {{ item.jjdw }}</td>
                                 <td> {{ item.wxdj }}</td>
@@ -163,25 +148,19 @@
                     </div>
      
                     <div class="overflow-x-auto bg-white mx-5 p-5">
-                        <div class="py-2 text-sm">Other Fee:</div>
+                        <div class="py-2 text-sm">Sea freight and other fee:</div>
                         <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                             <tr>
                                 <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 --> 
-                                <th class="px-2  text-center font-medium text-gray-800  tracking-wider w-24">
-                                    No.
-                                </th>
+                               
 
-                                <th class="px-2  text-center font-medium text-gray-800  tracking-wider w-24">
-                                    Plus/Minus
-                                </th>
+                                
 
                                 <th class="px-2  text-center font-medium text-gray-800  tracking-wider w-24">
                                     Name  
                                 </th>
                  
-                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 hidden">
-                                    比率(%)
-                                </th>
+                               
                                 <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                     Amount 
                                 </th>
@@ -190,11 +169,11 @@
 
                             <tr v-for="(item,index) in order.feiyongs">
                                 
-                                <td> {{ index + 1 }}</td>
-                                <td> {{ item.plus_less_des }}</td>
+                                
+                              
                                 <td> {{ item.fymc }}</td>
-                                <td class="hidden" > {{ item.fybl }}</td>
-                                <td> {{ item.fyje }}</td>
+                              
+                                <td> {{  (item.plus_less  == 0 ? '+' : '-') + item.fyje }}</td>
             
                             </tr>
 

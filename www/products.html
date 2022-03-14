@@ -29,7 +29,7 @@
             <div class="flex-grow flex flex-col content_background_color h-full">
 
                 <!-- 标题-->
-                <p class="font-bold text-xl p-5 bg-white">Product stock</p>
+                <p class="font-bold text-xl p-5 bg-white">Sales status</p>
 
                 <!-- 查询表单-->
                 <div class="m-5 p-5 bg-white">
@@ -39,6 +39,16 @@
                                 <label class="text-sm py-1 block pr-2">Keys</label>
                                 <input type="text" v-model="params.keyword" placeholder="please input keyword" class="w-5/6  appearance-none border border-gray-200 rounded h-8 py-1.5 px-2 text-sm text-gray-700 leading-tight
                                                  focus:outline-none focus:bg-white focus:border-blue-500" />
+                            </div>
+
+                            <div class="flex-grow lg:w-1/3 lg:flex">
+                                <label class="w-20 block text-sm text-center py-1 block pr-2">Condition</label>
+                                <select v-model="params.soldStatus" class="w-20 block appearance-none  text-gray-600 bg-white border border-gray-200  px-1 py-1 rounded  
+                                            leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
+                                    <option value="">All</option> 
+                                    <option value="已售">Sold</option> 
+                                    <option value="未售">Unsold</option> 
+                                </select>
                             </div>
 
                             <div class="w-1/2 lg:flex">
@@ -71,36 +81,35 @@
                     <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                         <tr class="py-1">
                             <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 -->
-                            <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                            <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
                                 Shipping date
                             </th>
-                            <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                Product name
+                            <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Product description
                             </th>
-                            <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                Item No.
+                            <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
+                                SH item No.
                             </th>
-                            <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                Specification   
+                            
+                            <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Quantity bought 
                             </th>
-                            <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                Total quantity 
+                            <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Quantity sold  
                             </th>
-                            <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                Sales quantity
+                            <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Quantity in stock
                             </th>
-                            <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                In stock quantity
+                            <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
+                                FOB unit price bought
                             </th>
-                            <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                FOB unit price
+                            <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
+                                FOB total amount bought  
                             </th>
-                            <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                FOB total amount
+                            <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                FOB total unsold amount   
                             </th>
-                            <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
-                                BL No.
-                            </th>
+                          
                            
                         </tr>
 
@@ -108,13 +117,14 @@
                             <td class="min-w-12">{{item.time}}</td>
                             <td>{{item.name}}</td>
                             <td>{{item.code}}</td>
-                            <td>{{item.spec}}</td>
+                         
                             <td>{{item.sjrksl}}</td>
                             <td>{{item.ycksl}}</td>
                             <td>{{item.quantity}}</td>
                             <td>{{item.price}}</td>
                             <td>{{item.hsje}}</td>
-                            <td>{{item.dhbh}}</td>
+                            <td>{{item.quantity * item.price}}</td>
+                           
                             
                         </tr>
 

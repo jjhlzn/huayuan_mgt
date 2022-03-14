@@ -37,11 +37,11 @@
                             <tr>
                                 <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 --> 
                                 <th class="px-2  text-center font-medium text-gray-800  tracking-wider w-24">
-                                    Product name
+                                    Product description
                                 </th>
 
                                 <th class="px-2  text-center font-medium text-gray-800  tracking-wider w-24">
-                                    Item No.
+                                    SH item No.
                                 </th>
 
                                 <th class="px-2  text-center font-medium text-gray-800  tracking-wider w-24">
@@ -90,13 +90,13 @@
                         <div class="pt-8">
                             <div class=" lg:flex">
                                 <div class="lg:w-1/2">
-                                    <div class=" py-2">Buyer’s No.</div>
+                                    <div class=" py-2">Order No.</div>
                                     <input type="text" placeholder="" v-model="xshth" 
                                         class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" />
                                 </div>
 
                                 <div class="lg:w-1/2">
-                                    <div class=" py-2">Client  </div>
+                                    <div class=" py-2">Customer  </div>
                                     <input type="text" placeholder="" v-model="clientName"
                                         class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" />
 
@@ -157,7 +157,7 @@
                          <!-- 付款明细 -->
                     <div class="overflow-x-auto mt-8" v-if="id != ''">
                         <button class="my-2 bg-transparent hover:bg-blue-500 text-blue-500 h-6 px-2 transition-colors duration-150 border border-blue-500 rounded
-                                 focus:shadow-outline hover:bg-blue-500 hover:text-blue-100 text-sm" v-on:click="newItemClick">Add Collection </button>
+                                 focus:shadow-outline hover:bg-blue-500 hover:text-blue-100 text-sm" v-on:click="newItemClick">Payment from customer  </button>
 
                         <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                             <tr>

@@ -9,7 +9,7 @@ var app = new Vue({
         requests: [],
         pageSize: 10,
         currentPage: 1,
-        params: {},
+        params: {soldStatus: ''},
         products: [],
         loading: true
     },
@@ -58,6 +58,7 @@ var app = new Vue({
             queryObject.pageNo = this.currentPage
             queryObject.pageSize = this.pageSize
             queryObject.keyword = this.params.keyword
+            queryObject.soldStatus = this.params.soldStatus
             return queryObject;
         },
 
@@ -69,6 +70,7 @@ var app = new Vue({
         clickReset: function(e) {
             console.log("send reset")
             this.params.keyword = ''
+            this.params.soldStatus = ''
             this.fetchData()
             e.preventDefault()
         }

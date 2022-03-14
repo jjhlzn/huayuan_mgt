@@ -20,6 +20,13 @@ function makeSearchProductsSql(queryobj) {
     if (queryobj.keyword) {
         whereClause += `  and yw_ckgl_jc_cmd.spzwmc like '%${queryobj.keyword}%' `
     }
+    if (queryobj.soldStatus) {
+        if (queryobj.soldStatus === '已售') {
+            whereClause += ` and yw_ckgl_jc_cmd.sjrksl <= 0 `
+        } else if (queryobj.soldStatus === '未售') {
+            whereClause += ` and yw_ckgl_jc_cmd.sjrksl > 0  `
+        }
+    }
     const skipCount = queryobj.pageSize * (queryobj.pageNo - 1)
 
     const sqlstr = `select top ${queryobj.pageSize}  
@@ -194,6 +201,7 @@ function makeSearchWaiXiaoOrdersSql(queryobj) {
     const skipCount = queryobj.pageSize * (queryobj.pageNo - 1)
 
     const sqlstr = `select top ${queryobj.pageSize}  
+                  
                     wxhth,---外销合同号
                     convert(varchar, qyrq, 23) as 	qyrq,---签约日期
                     zje,---金额
@@ -235,7 +243,7 @@ async function searchWaixiaoOrders(params) {
 }
 
 async function getWxOrderById(id) {
-    let sql = `select yw_contract.khms as buyer, jgtk, po_no, zje, convert(varchar, Zyqx, 23) as zyqx,
+    let sql = `select yw_contract.khms as buyer,zrmbhl, jgtk, po_no, zje, convert(varchar, Zyqx, 23) as zyqx,
          convert(varchar, qyrq, 23) as qyrq, wxhth, bbh from yw_contract where wxhth = '${id}'`
     logger.debug(sql)
     try {
@@ -801,6 +809,7 @@ async function getInboundOrderById(id) {
         let order = orders[0]
         //加载productions
         sql = `select 
+        wxhth,
         yw_ckgl_jc_cmd.spbm,   ---商品编码
         yw_ckgl_jc_cmd.hgbm,  --海关编码
         yw_ckgl_jc_cmd.sphh,  --商品货号
