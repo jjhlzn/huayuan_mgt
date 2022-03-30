@@ -29,3 +29,7 @@ function checkLogin() {
 
 
 checkLogin()
+
+function isFloat(text) {
+    return /^[0-9]+(\.)?[0-9]*$/.test(text)
+}

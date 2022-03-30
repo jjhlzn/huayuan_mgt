@@ -82,6 +82,9 @@
                         <tr class="py-1">
                             <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 -->
                             <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Invoice No.
+                            </th>
+                            <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
                                 Shipping date
                             </th>
                             <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
@@ -92,7 +95,7 @@
                             </th>
                             
                             <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
-                                Quantity bought 
+                                Quantity  
                             </th>
                             <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                 Quantity sold  
@@ -101,10 +104,10 @@
                                 Quantity in stock
                             </th>
                             <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
-                                FOB unit price bought
+                                FOB unit price 
                             </th>
                             <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
-                                FOB total amount bought  
+                                FOB total amount   
                             </th>
                             <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                 FOB total unsold amount   
@@ -114,6 +117,7 @@
                         </tr>
 
                         <tr v-for="item in products" class="hover:bg-gray-50 py-1">
+                            <td>{{item.mxdbh}}</td>
                             <td class="min-w-12">{{item.time}}</td>
                             <td>{{item.name}}</td>
                             <td>{{item.code}}</td>

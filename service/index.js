@@ -600,6 +600,7 @@ function makeSearchInboundOrdersSql(queryobj) {
                 dhbh,
                 jhdwmc,
                 rkje, 
+                (select sum(yw_ckgl_jc_cmd.sjrksl) from yw_ckgl_jc_cmd where yw_ckgl_jc_cmd.rkdh = yw_ckgl_jc.rkdh) as quantity,
                 convert(varchar, rkrq, 23) as rkrq,
                 isNull((select sum(amount) from yw_payments where dh = yw_ckgl_jc.rkdh), 0) as payAmount
             FROM yw_ckgl_jc
@@ -693,9 +694,9 @@ async function addOrUpdateOrder(order) {
             p.sphh = p.sphh || ''
             sql = `
             insert into yw_ckgl_cc_cmd 
-            (spbm, hgbm, sphh, spzwmc, spywmc, spgg, sldw, hsje, hsdj, wxdj, wxzj, ckdh, sjccsl, cxh, productId)
+            (spbm, hgbm, sphh, spzwmc, spywmc, spgg, sldw, hsje, hsdj, wxdj, wxzj, ckdh, sjccsl, cxh, productId, currency, huilv)
             values ('${p.spbm}', '${p.hgbm}', '${p.sphh}', '${p.name}', '${p.spywmc}', '${p.spgg}', '${p.sldw}', '${p.hsdj * p.buyQuantity}', ${p.hsdj},'${p.price}', ${p.price * p.buyQuantity} ,'${order.id}', 
-                '${p.buyQuantity}', '${i}', '${p.productId}')`
+                '${p.buyQuantity}', '${i}', '${p.productId}', '${p.currency}', '${p.huilv}')`
             
             logger.debug("product.id:" + p.productId)
             logger.info(sql)
@@ -752,7 +753,7 @@ async function getOrderById(id) {
         let order = orders[0]
 
         //加载商品
-        sql = `select spbm, hgbm, sphh,  spzwmc as name, spywmc, spgg, sldw, hsje, hsdj, wxdj as price, sjccsl as buyQuantity,
+        sql = `select spbm, hgbm, sphh,  spzwmc as name, spywmc, spgg, sldw, hsje, hsdj, wxdj as price, sjccsl as buyQuantity, currency, huilv,
                     ckdh, cxh, productId from yw_ckgl_cc_cmd where ckdh = '${id}' order by cxh`
        // logger.info(sql)
         let products = (await pool.query(sql)).recordset
@@ -766,7 +767,7 @@ async function getOrderById(id) {
         order.images = images
 
         //加载收款信息
-        sql = `select id, dh, amount, tdh, convert(varchar, addtime, 23) as addtime from yw_payments 
+        sql = `select id, dh, amount, tdh, currency, huilv, convert(varchar, addtime, 23) as addtime from yw_payments 
                 where dh = '${id}' order by addtime`
         order.payments = (await pool.query(sql)).recordset
 
@@ -837,7 +838,7 @@ async function getInboundOrderById(id) {
         order.products = (await pool.query(sql)).recordset
 
         //加载payments
-        sql = `select id, dh, amount, convert(varchar, addtime, 23) as addtime from yw_payments where dh = '${id}' order by addtime`
+        sql = `select id, dh, amount, currency, huilv, convert(varchar, addtime, 23) as addtime from yw_payments where dh = '${id}' order by addtime`
         order.payments = (await pool.query(sql)).recordset
 
         return order
@@ -853,10 +854,10 @@ async function addOrUpdatePayment(payment) {
         payment.tdh = payment.tdh || ''
         if (!payment.id) {
             payment.id = uuidv4()
-            sql = `insert into yw_payments (id, dh, amount, tdh) values ('${payment.id}', '${payment.dh}', '${payment.amount}', '${payment.tdh}')`
+            sql = `insert into yw_payments (id, dh, amount, tdh, currency, huilv) values ('${payment.id}', '${payment.dh}', '${payment.amount}', '${payment.tdh}', '${payment.currency}', '${payment.huilv}')`
         } else {
             sql = `update yw_payments set amount = ${payment.amount}, addtime = '${moment().format('YYYY-MM-DD HH:mm:ss')}',
-                    tdh = '${payment.tdh}'
+                    tdh = '${payment.tdh}', currency = '${payment.currency}', huilv = '${payment.huilv}'
              where id = '${payment.id}'`
         }
         logger.debug(sql)

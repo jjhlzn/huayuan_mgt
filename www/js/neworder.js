@@ -196,6 +196,16 @@ var app = new Vue({
                     alert('quantity must be greater than zero')
                     return false
                 }
+
+                if (!products[i].currency) {
+                    alert('please input currency')
+                    return false
+                }
+
+                if (!isFloat(products[i].huilv)) {
+                    alert('exchange rate must be number')
+                    return false
+                }
             }
 
 
@@ -280,6 +290,10 @@ var app = new Vue({
         confirmEdit: function(seq) {
             let that = this
             var item = this.order.payments[seq]
+            if (!isFloat(item.huilv)) {
+                alert('Exchange Rate must be number')
+                return
+            }
             axios.post('/updatepayment', item)
                 .then(function (response) {
                     console.log(response)
@@ -343,6 +357,8 @@ var app = new Vue({
                 amount: 0,
                 tdh: '',
                 edit: true,
+                currency: 'USD',
+                huilv: 0
             }
             this.order.payments.push(item)
         }

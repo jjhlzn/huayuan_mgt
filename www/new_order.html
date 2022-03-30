@@ -47,6 +47,13 @@
                                 <th class="px-2  text-center font-medium text-gray-800  tracking-wider w-24">
                                     Specification   
                                 </th>
+
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    Currency
+                                </th>
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    Exchange Rate
+                                </th>
                  
                                 <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                     Sales price
@@ -66,6 +73,25 @@
                                 <td v-bind:class="[ item.hasInOrder ? '' : 'text-blue-500']">{{item.name}}({{item.sphh}})</td>
                                 <td> {{ item.sphh }}</td>
                                 <td> {{ item.spgg }}</td>
+                                
+
+                                <td>
+                                    <select v-model="item.currency" class="w-20 block appearance-none  text-gray-600 bg-white border border-gray-200  px-1 py-1 rounded  
+                                                leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
+                                        <option value="USD">USD</option> 
+                                        <option value="EUR">EUR</option> 
+                                        <option value="RMB">RMB </option> 
+                                    </select>
+                                </td>
+                                
+                               
+                               
+                                <td>
+                                    <input type="digits" style="width: 70%;" v-model="item.huilv"
+                                        class="appearance-none border border-gray-200 rounded w-full py-2 px-4 text-gray-700
+                                        leading-tight focus:outline-none focus:bg-white focus:border-blue-500" />
+                                </td>
+
                                 <td> <input type="text"  v-model="item.price" 
                                     class="appearance-none border border-gray-200 rounded w-2/3 py-1 px-4 text-gray-700 
                                     leading-tight focus:outline-none focus:bg-white focus:border-blue-500" /></td>
@@ -169,6 +195,12 @@
                                     Order No.
                                 </th>
                                 <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    Currency
+                                </th>
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    Exchange Rate
+                                </th>
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                     Amount
                                 </th>
                                 <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
@@ -187,6 +219,22 @@
                                     <input type="text" style="width: 70%;" v-model="item.tdh"
                                         class="appearance-none border border-gray-200 rounded w-full py-2 px-4 text-gray-700
                                          leading-tight focus:outline-none focus:bg-white focus:border-blue-500" />
+                                </td>
+                                <td v-if="!item.edit">
+                                    {{item.currency}}
+                                </td>
+
+                                <td v-if="item.edit">
+                                    <select v-model="item.currency" class="w-20 block appearance-none  text-gray-600 bg-white border border-gray-200  px-1 py-1 rounded  
+                                                leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
+                                        <option value="USD">USD</option> 
+                                        <option value="EUR">EUR</option> 
+                                        <option value="RMB">RMB </option> 
+                                    </select>
+                                </td>
+                                
+                                <td v-if="!item.edit">
+                                    {{item.huilv}}
                                 </td>
                            
 

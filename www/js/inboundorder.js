@@ -48,6 +48,12 @@ var app = new Vue({
         confirmEdit: function(seq) {
             let that = this
             var item = this.order.payments[seq]
+
+            if (!isFloat(item.huilv)) {
+                alert('Exchange Rate must be number')
+                return
+            }
+
             axios.post('/updatepayment', item)
                 .then(function (response) {
                     console.log(response)
@@ -110,6 +116,8 @@ var app = new Vue({
                 addtime: moment().format('YYYY-MM-DD'),
                 amount: 0,
                 edit: true,
+                currency: 'USD',
+                huilv: 0
             }
             this.order.payments.push(item)
         }

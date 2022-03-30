@@ -60,17 +60,17 @@
                             <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                                 <tr>
                                     <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 --> 
-                                    <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
                                         Product description
                                     </th>
                     
-                                    <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                         FOB unit price
                                     </th>
-                                    <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                         Quantity
                                     </th>
-                                    <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                         FOB total amount
                                     </th>
                                     
@@ -97,13 +97,19 @@
                             <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                                 <tr>
                                     <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 --> 
-                                    <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
                                         SH payment date
                                     </th>
-                                    <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                        Currency
+                                    </th>
+                                    <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                        Exchange Rate
+                                    </th>
+                                    <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                         Amount
                                     </th>
-                                    <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                                    <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                         
                                     </th>
                                     
@@ -112,10 +118,37 @@
                                 <tr v-for="(item, index) in order.payments">
                                     <td>{{item.addtime}}</td>
                             
+                                    <td v-if="!item.edit">
+                                        {{item.currency}}
+                                    </td>
 
+                                    <td v-if="item.edit">
+                                        <select v-model="item.currency" class="w-20 block appearance-none  text-gray-600 bg-white border border-gray-200  px-1 py-1 rounded  
+                                                    leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
+                                            <option value="USD">USD</option> 
+                                            <option value="EUR">EUR</option> 
+                                            <option value="RMB">RMB </option> 
+                                        </select>
+                                    </td>
+                                    
+                                    <td v-if="!item.edit">
+                                        {{item.huilv}}
+                                    </td>
+
+                                   
+                                    <td v-if="item.edit">
+                                        <input type="digits" style="width: 70%;" v-model="item.huilv"
+                                            class="appearance-none border border-gray-200 rounded w-full py-2 px-4 text-gray-700
+                                            leading-tight focus:outline-none focus:bg-white focus:border-blue-500" />
+                                    </td>
+
+
+                                   
                                     <td v-if="!item.edit">
                                         {{item.amount}}
                                     </td>
+
+
                                     <td v-if="item.edit">
                                         <input type="text" style="width: 70%;" v-model="item.amount"
                                             class="appearance-none border border-gray-200 rounded w-full py-2 px-4 text-gray-700
