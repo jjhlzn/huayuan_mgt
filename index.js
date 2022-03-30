@@ -46,6 +46,9 @@ app.get('/inboundorders/list.html', (req, res) => {
 app.get('/inboundorders/order.html', (req, res) => {
     res.sendFile(__dirname + '/www/inbound_order.html')
 })
+app.get('/products/list2.html', (req, res) => {
+    res.sendFile(__dirname + '/www/products2.html')
+})
 app.get('/products/list.html', (req, res) => {
     res.sendFile(__dirname + '/www/products.html')
 })

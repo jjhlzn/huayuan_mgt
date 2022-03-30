@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="/css/tailwind.min.css?body=1" rel="stylesheet" />
+    <link href="/css/loading.css?body=1" rel="stylesheet" />
+    <link href="/css/common.css?body=1" rel="stylesheet" />
+    <link href="/css/element-ui.css?body=1" rel="stylesheet" />
+
+    <title></title>
+</head>
+<body class="cont_bg content_background_color">
+    <div id="app" v-cloak>
+
+        <user-header></user-header>
+
+        <!--  -->
+        <div class="lg:flex w-full content_background_color h-screen pt-12" >
+
+            <div id="menu" class="w-60 pt-2 bg-gray-600 flex-shrink-0 
+                            absolute inset-y-0 left-0 transform -translate-x-full lg:relative lg:translate-x-0 transition duration-200 ease-in-out">
+                <left-menu></left-menu>
+            </div>
+                
+            <!-- 内容 -->
+            <div class="flex-grow flex flex-col content_background_color h-full">
+
+                <!-- 标题-->
+                <p class="font-bold text-xl p-5 bg-white">SH Sales status</p>
+
+                <!-- 查询表单-->
+                <div class="m-5 p-5 bg-white">
+                    <form>
+                        <div class="flex">
+                            <div class="w-1/2 lg:flex">
+                                <label class="text-sm py-1 block pr-2">Keys</label>
+                                <input type="text" v-model="params.keyword" placeholder="please input keyword" class="w-5/6  appearance-none border border-gray-200 rounded h-8 py-1.5 px-2 text-sm text-gray-700 leading-tight
+                                                 focus:outline-none focus:bg-white focus:border-blue-500" />
+                            </div>
+
+                            <div class="flex-grow lg:w-1/3 lg:flex">
+                                <label class="w-20 block text-sm text-center py-1 block pr-2">Condition</label>
+                                <select v-model="params.soldStatus" class="w-20 block appearance-none  text-gray-600 bg-white border border-gray-200  px-1 py-1 rounded  
+                                            leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
+                                    <option value="">All</option> 
+                                    <option value="已售">Sold</option> 
+                                    <option value="未售">Unsold</option> 
+                                </select>
+                            </div>
+
+                            <div class="w-1/2 lg:flex">
+                                <label class="text-sm py-1 block pr-2" >&nbsp;</label>
+                                <div>
+                                    
+
+                                    <button class=" h-8 px-4 mr-3  text-sm text-white transition-colors 
+                                        duration-150 rounded-sm focus:shadow-outline bg-blue-500 hover:bg-blue-600" @click="clickSearch">Search  </button>
+
+                                    <button class=" h-8 px-4  text-sm text-gray-600 transition-colors border border-gray-400
+                                    duration-150 rounded-sm focus:shadow-outline bg-white hover:bg-gray-100" @click="clickReset">Reset</button>
+                                </div>
+                                
+                            </div>
+                        </div>
+                    </form>
+
+                 
+                </div>
+
+                <!-- 列表 -->
+                <div id="contentDiv" class="mx-5 p-5 bg-white overflow-x-auto relative">
+                    <div class="flex mb-4">
+                        <button class="my-2 bg-transparent hover:bg-blue-500 text-blue-500 h-8 px-2 transition-colors duration-150 border border-blue-500 rounded
+                                 focus:shadow-outline hover:bg-blue-500 hover:text-blue-100 text-sm" v-on:click="clickNewOrder">Sales update</button>
+                    </div>
+
+                    
+                    <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
+                        <tr class="py-1">
+                            <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 -->
+                            <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Invoice No.
+                            </th>
+                            <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Shipping date
+                            </th>
+                            <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Product description
+                            </th>
+                            <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
+                                SH item No.
+                            </th>
+                            
+                            <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Quantity  
+                            </th>
+                            <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Quantity sold  
+                            </th>
+                            <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Quantity in stock
+                            </th>
+                            <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
+                                FOB unit price 
+                            </th>
+                            <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
+                                FOB total amount   
+                            </th>
+                            <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                FOB total unsold amount   
+                            </th>
+                          
+                           
+                        </tr>
+
+                        <tr v-for="item in products" class="hover:bg-gray-50 py-1">
+                            <td>{{item.mxdbh}}</td>
+                            <td class="min-w-12">{{item.time}}</td>
+                            <td>{{item.name}}</td>
+                            <td>{{item.code}}</td>
+                         
+                            <td>{{item.sjrksl}}</td>
+                            <td>{{item.ycksl}}</td>
+                            <td>{{item.quantity}}</td>
+                            <td>{{item.price}}</td>
+                            <td>{{item.hsje}}</td>
+                            <td>{{item.quantity * item.price}}</td>
+                           
+                            
+                        </tr>
+
+                        <tr>
+                            <td colspan="7" v-if="totalCount == 0 && !loading">
+                                <div>
+                                    No Data
+                                </div>
+                            </td>
+                        </tr>
+                    </table>
+
+
+
+                    <div class="pt-5 bg-white">
+                        <el-pagination background
+                                @current-change="handleCurrentChange"
+                                :current-page="currentPage"
+                                :page-size="pageSize"
+                                layout="total, prev, pager, next"
+                                :total="totalCount"></el-pagination>
+                    </div>
+
+                    <div id="loading" class="bg-gray-300 bg-opacity-50" style="height: 100%; width: 100%;">
+                        <div class="lds-ring"> <div></div> <div></div> <div></div> <div></div> </div>
+                    </div>
+                    
+                    
+                </div>
+
+                
+            
+            
+            </div>
+        </div>
+
+        
+       
+            
+    </div>
+
+    <script type="text/javascript" src="/js/jquery-1.7.1.min.js"></script>
+    <script type="text/javascript" src="/js/vue.js"></script>
+    <script src="/js/axios.min.js"></script>
+    <script src="/js/js.cookie.min.js"></script>
+    <script src="/js/element-ui.js"></script>
+    <script src="//unpkg.com/element-ui/lib/umd/locale/en.js"></script>
+    <script src="/js/menu.js"></script>
+    <script src="/js/lib/header.js"></script>
+    <script src="/js/utils.js"></script>
+    <script src="/js/products.js"></script>
+</body>
+</html>

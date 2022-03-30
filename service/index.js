@@ -51,6 +51,8 @@ function makeSearchProductsSql(queryobj) {
             yw_ckgl_jc_cmd.sjrksl,
             yw_ckgl_jc_cmd.ycksl,
 
+        
+
             yw_ckgl_jc_cmd.hsdj as price,   ---单价
             yw_ckgl_jc_cmd.hsdj,
             yw_ckgl_jc_cmd.rkxh,  --入库序号
