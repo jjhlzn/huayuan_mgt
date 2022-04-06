@@ -18,19 +18,20 @@ Vue.component('left-menu', {
             link: '/inboundorders/list.html'
           },
           {
-            name: 'SH Sales status',
-            level: 0,
-            children: [],
-            prefix: '/products/',
-            link: '/products/list2.html'
-          },
-          {
             name: 'Sales status',
             level: 0,
             children: [],
-            prefix: '/products/',
+            prefix: '/products/list.html',
             link: '/products/list.html'
           },
+          {
+            name: 'SH Sales status',
+            level: 0,
+            children: [],
+            prefix: '/products/list2',
+            link: '/products/list2.html'
+          },
+          
           {
             name: 'Goods Sold',
             level: 0,
