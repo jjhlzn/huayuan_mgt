@@ -126,6 +126,16 @@ app.all('/searchproducts', auth, async (req, res) => {
     }))
 })
 
+app.all('/searchproducts2', auth, async (req, res) => {
+    let result = await service.searchProducts2(req.body.params)
+    res.send(JSON.stringify({
+        status: 0,
+        message: '',
+        products: result.products,
+        totalCount: result.totalCount
+    }))
+})
+
 app.all('/getproducts', auth, async (req, res) => {
     let ids = req.body.ids || req.body.productIds
     let products = await service.loadProducts(ids)

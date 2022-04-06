@@ -123,11 +123,12 @@
                             <td>{{item.code}}</td>
                          
                             <td>{{item.sjrksl}}</td>
-                            <td>{{item.ycksl}}</td>
-                            <td>{{item.quantity}}</td>
+                            <td>{{item.soldQuantity ? item.soldQuantity : 0}}</td>
+                            <td>{{item.sjrksl - item.soldQuantity}}</td>
+
                             <td>{{item.price}}</td>
                             <td>{{item.hsje}}</td>
-                            <td>{{item.quantity * item.price}}</td>
+                            <td>{{((item.sjrksl - item.soldQuantity) * item.price).toFixed(1)}}</td>
                            
                             
                         </tr>

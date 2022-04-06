@@ -106,13 +106,10 @@
                             <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
                                 FOB unit price 
                             </th>
-                            <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
-                                FOB total amount   
-                            </th>
+                            
                             <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
-                                FOB total unsold amount   
+                                Sales total amount   
                             </th>
-                          
                            
                         </tr>
 
@@ -123,13 +120,12 @@
                             <td>{{item.code}}</td>
                          
                             <td>{{item.sjrksl}}</td>
-                            <td>{{item.ycksl}}</td>
-                            <td>{{item.quantity}}</td>
-                            <td>{{item.price}}</td>
-                            <td>{{item.hsje}}</td>
-                            <td>{{item.quantity * item.price}}</td>
+                            <td>{{item.soldQuantity ? item.soldQuantity : 0}}</td>
+                            <td>{{item.sjrksl - item.soldQuantity}}</td>
+                            <td>{{ item.soldPrice }}</td>
                            
-                            
+                           
+                            <td>{{item.soldAmount}}   </td>
                         </tr>
 
                         <tr>
@@ -179,6 +175,6 @@
     <script src="/js/menu.js"></script>
     <script src="/js/lib/header.js"></script>
     <script src="/js/utils.js"></script>
-    <script src="/js/products.js"></script>
+    <script src="/js/products2.js"></script>
 </body>
 </html>

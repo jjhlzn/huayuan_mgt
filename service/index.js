@@ -51,6 +51,12 @@ function makeSearchProductsSql(queryobj) {
             yw_ckgl_jc_cmd.sjrksl,
             yw_ckgl_jc_cmd.ycksl,
 
+            (select sum(sjccsl) from yw_ckgl_cc_cmd
+            where yrkdh = yw_ckgl_jc_cmd.rkdh and yrkxh = yw_ckgl_jc_cmd.rkxh) as soldQuantity,  --卖出数量
+
+            -- wxdj, wxzj, 
+            (select sum(wxzj) from yw_ckgl_cc_cmd
+            where yrkdh = yw_ckgl_jc_cmd.rkdh and yrkxh = yw_ckgl_jc_cmd.rkxh) as soldAmount,  --卖出总价
         
 
             yw_ckgl_jc_cmd.hsdj as price,   ---单价
@@ -97,6 +103,121 @@ async function searchProducts(params) {
                 product.hsje = 0
             }
              product.hsje = product.hsje.toFixed(0)
+        })
+        return {
+            products: products,
+            totalCount: totalCount
+        }
+    } catch (error) {
+        logger.error(error)
+        return {message: '出错了', products: [], totalCount: 0}
+    } 
+}
+
+function makeSearchProductsSql2(queryobj) {
+    var whereClause = ` ( yw_ckgl_jc.rkdh = yw_ckgl_jc_cmd.rkdh ) and   
+                ( yw_ckgl_jc.state in ('复核','入库') )  and
+                yw_ckgl_jc_cmd.sjrksl > 
+                isnull((select sum(b.ccsl) from yw_ckgl_cc_cmd b, yw_ckgl_cc c 
+                    where b.ckdh = c.ckdh and 
+                            yw_ckgl_jc_cmd.jcbh = b.jcbh and 
+                            yw_ckgl_jc_cmd.jcxh = b.jcxh and
+                            yw_ckgl_jc_cmd.rktzdh = b.rktzdh and 
+                            yw_ckgl_jc_cmd.rktzdh_cxh = b.rktzdh_cxh),0)     `
+    if (queryobj.keyword) {
+        whereClause += `  and yw_ckgl_jc_cmd.spzwmc like '%${queryobj.keyword}%' `
+    }
+    if (queryobj.soldStatus) {
+        if (queryobj.soldStatus === '已售') {
+            whereClause += ` and yw_ckgl_jc_cmd.sjrksl <= 0 `
+        } else if (queryobj.soldStatus === '未售') {
+            whereClause += ` and yw_ckgl_jc_cmd.sjrksl > 0  `
+        }
+    }
+    const skipCount = queryobj.pageSize * (queryobj.pageNo - 1)
+
+    const sqlstr = `select top ${queryobj.pageSize}  
+            yw_ckgl_jc.rkdh + '_' + CONVERT(varchar(10), yw_ckgl_jc_cmd.rkxh)  as id,
+            yw_ckgl_jc.rkdh,   --入库单号
+              convert(varchar, yw_ckgl_jc.rkrq, 23) as time,   --入库日期
+            yw_ckgl_jc.ywy,   --业务员
+            yw_ckgl_jc.bm,   --部门
+            yw_ckgl_jc.tt_no,   --抬头
+            yw_ckgl_jc.cfck,    --存放仓库
+            yw_ckgl_jc.dhbh,   ---提单号
+            yw_ckgl_jc_cmd.spbm,   ---商品编码
+            yw_ckgl_jc_cmd.hgbm,  --海关编码
+            yw_ckgl_jc_cmd.sphh,  --商品货号
+            yw_ckgl_jc_cmd.sphh_kh,    --商品客户货号 
+            yw_ckgl_jc_cmd.spzwmc as name,   --商品中文名称
+            yw_ckgl_jc_cmd.spywmc ,   --商品英文名称
+            yw_ckgl_jc_cmd.spgg as spec,   --商品规格
+            yw_ckgl_jc_cmd.sjrksl as quantity, --入库数量
+
+            (select sum(sjccsl) from yw_ckgl_cc_cmd
+            where yrkdh = yw_ckgl_jc_cmd.rkdh and yrkxh = yw_ckgl_jc_cmd.rkxh) as soldQuantity,  --卖出数量
+
+            -- wxdj, wxzj, 
+            (select sum(wxzj) from yw_ckgl_cc_cmd
+            where yrkdh = yw_ckgl_jc_cmd.rkdh and yrkxh = yw_ckgl_jc_cmd.rkxh) as soldAmount,  --卖出总价
+
+            yw_ckgl_jc_cmd.sldw,    --单位
+            yw_ckgl_jc_cmd.hsje,   --金额
+            yw_ckgl_jc_cmd.sjrksl,
+            yw_ckgl_jc_cmd.ycksl,
+
+            yw_ckgl_jc_cmd.hsdj as price,   ---单价
+            yw_ckgl_jc_cmd.hsdj,
+            yw_ckgl_jc_cmd.rkxh,  --入库序号
+            yw_ckgl_jc_cmd.mxdbh, --明细单编号
+            yw_ckgl_jc_cmd.mxd_spid, --明细单ID
+            yw_ckgl_jc_cmd.wxhth, --外销合同号
+            yw_ckgl_jc_cmd.wxht_spid, --外销合同ID
+            c_ycksl = (select sum(b.ccsl) from yw_ckgl_cc_cmd b, yw_ckgl_cc c 
+                            where b.ckdh = c.ckdh and 
+                                    yw_ckgl_jc_cmd.rkdh = b.yrkdh and 
+                                    yw_ckgl_jc_cmd.rkxh = b.yrkxh),
+            yw_ckgl_jc_cmd.rktzdh,
+            yw_ckgl_jc_cmd.rktzdh_cxh
+            FROM yw_ckgl_jc,   
+                yw_ckgl_jc_cmd
+            where ${whereClause} 
+            and yw_ckgl_jc.rkdh + '_' + CONVERT(varchar(10), yw_ckgl_jc_cmd.rkxh)
+                 not in (select top ${skipCount} id from (select  yw_ckgl_jc.rkdh + '_' + CONVERT(varchar(10), yw_ckgl_jc_cmd.rkxh)  as id,
+                 yw_ckgl_jc.rkrq from
+			          yw_ckgl_jc, yw_ckgl_jc_cmd where ${whereClause} ) as middleTable order by rkrq )
+            order by yw_ckgl_jc.rkrq`
+
+    console.log(sqlstr)
+    //logger.info(sqlstr)
+    const statSqlstr = `select count(1) as totalCount from yw_ckgl_jc, yw_ckgl_jc_cmd where ${whereClause}
+                       `
+    //console.log(sqlstr)
+    //console.log(statSqlstr)
+    return [sqlstr, statSqlstr]
+
+}
+
+async function searchProducts2(params) {
+    console.log(params)
+    try {
+        let sqlstrs = makeSearchProductsSql2(params)
+        let pool = await db_pool.getPool(db_config)
+        let products = (await pool.query(sqlstrs[0])).recordset
+        let totalCount = (await pool.query(sqlstrs[1])).recordset[0]['totalCount']
+        products.forEach(product => {
+            if (!product.hsje) {
+                product.hsje = 0
+            }
+            product.hsje = product.hsje.toFixed(0)
+            if (!product.soldQuantity ) {
+                product.soldPrice = 0
+            } else {
+                product.soldPrice = (product.soldAmount / product.soldQuantity).toFixed(2)
+            }
+            if (!product.soldAmount) {
+                product.soldAmount = 0
+            }
         })
         return {
             products: products,
@@ -542,6 +663,10 @@ async function loadProducts(ids) {
         yw_ckgl_jc_cmd.spywmc ,   --商品英文名称
         yw_ckgl_jc_cmd.spgg as spec,   --商品规格
         yw_ckgl_jc_cmd.sjrksl as quantity, --入库数量
+
+        (select sum(sjccsl) from yw_ckgl_cc_cmd
+        where yrkdh = yw_ckgl_jc_cmd.rkdh and yrkxh = yw_ckgl_jc_cmd.rkxh) as soldQuantity,  --卖出数量
+
         yw_ckgl_jc_cmd.sldw,    --单位
         yw_ckgl_jc_cmd.hsje,   --金额
 
@@ -694,11 +819,13 @@ async function addOrUpdateOrder(order) {
         for(var i = 0; i < products.length; i++) {
             let p = products[i]
             p.sphh = p.sphh || ''
+            let ids = p.productId.split('_')
             sql = `
             insert into yw_ckgl_cc_cmd 
-            (spbm, hgbm, sphh, spzwmc, spywmc, spgg, sldw, hsje, hsdj, wxdj, wxzj, ckdh, sjccsl, cxh, productId, currency, huilv)
-            values ('${p.spbm}', '${p.hgbm}', '${p.sphh}', '${p.name}', '${p.spywmc}', '${p.spgg}', '${p.sldw}', '${p.hsdj * p.buyQuantity}', ${p.hsdj},'${p.price}', ${p.price * p.buyQuantity} ,'${order.id}', 
-                '${p.buyQuantity}', '${i}', '${p.productId}', '${p.currency}', '${p.huilv}')`
+            (spbm, hgbm, sphh, spzwmc, spywmc, spgg, sldw, hsje, hsdj, wxdj, wxzj, ckdh, sjccsl, cxh, productId, currency, huilv, yrkdh, yrkxh)
+            values ('${p.spbm}', '${p.hgbm}', '${p.sphh}', '${p.name}', '${p.spywmc}', '${p.spgg}', '${p.sldw}',
+             '${p.hsdj * p.buyQuantity}', ${p.hsdj},'${p.price}', ${p.price * p.buyQuantity} ,'${order.id}', 
+                '${p.buyQuantity}', '${i}', '${p.productId}', '${p.currency}', '${p.huilv}', '${ids[0]}', '${ids[1]}')`
             
             logger.debug("product.id:" + p.productId)
             logger.info(sql)
@@ -936,6 +1063,7 @@ function makeOrderId() {
 
 module.exports = {
     searchProducts: searchProducts,
+    searchProducts2,
     searchMaolibiaos,
     searchOrderMaolibiaos,
     loadProducts: loadProducts,
