@@ -465,7 +465,12 @@ function makeSearchMaolibiaosSql(queryobj) {
     var whereClause = ` 1 = 1 and yw_ckgl_cc.state !='已删除'  and yw_ckgl_cc.ckdh=yw_ckgl_cc_cmd.ckdh `
     var orderClause = ` order by  yw_ckgl_cc.ckdh, yw_ckgl_cc_cmd.spbm `
     if (queryobj.keyword) {
-        whereClause += `  and yw_ckgl_cc.ckdh+yw_ckgl_cc.gnkhmc like '%${queryobj.keyword}%' `
+        whereClause += `  and isNUll(yw_ckgl_cc.xshth, '') + isNUll(yw_ckgl_cc.ckdh, '')
+                            +  isNUll(yw_ckgl_cc.gnkhmc, '')
+                            + isNUll (yw_ckgl_cc.ywy, '')
+                            + isNUll (yw_ckgl_cc_cmd.spzwmc, '')
+                            + isNUll ( yw_ckgl_cc_cmd.mxdbh, '') 
+                            + isNUll ( yw_ckgl_cc_cmd.sphh, '')  like '%${queryobj.keyword}%' `
     }
 
     const skipCount = queryobj.pageSize * (queryobj.pageNo - 1)

@@ -39,7 +39,7 @@
                                
                                 <div class="flex w-full lg:w-1/2 py-2">
                                     <div class="w-32 pr-2 text-right text-gray-700">Shipping date:</div>
-                                    <div>{{order.rkrq}}</div>
+                                    <div>{{order.rkrq ? order.rkrq.substring(0, 10) : ''}}</div>
                                 </div>
 
                                 <div class="flex w-full lg:w-1/2 py-2">
