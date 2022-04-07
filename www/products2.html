@@ -103,7 +103,7 @@
                             <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                 Quantity in stock
                             </th>
-                            <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="hidden px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
                                 FOB unit price 
                             </th>
                             
@@ -122,7 +122,7 @@
                             <td>{{item.sjrksl}}</td>
                             <td>{{item.soldQuantity ? item.soldQuantity : 0}}</td>
                             <td>{{item.sjrksl - item.soldQuantity}}</td>
-                            <td>{{ item.soldPrice }}</td>
+                            <td class="hidden">{{ item.soldPrice }}</td>
                            
                            
                             <td>{{item.soldAmount}}   </td>

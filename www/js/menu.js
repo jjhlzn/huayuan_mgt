@@ -39,20 +39,21 @@ Vue.component('left-menu', {
             prefix: '/orders/',
             link: '/orders/list.html'
           },
-
+          {
+            name: 'Goods Gross Profit',
+            level: 0,
+            children: [
+              
+            ],
+            prefix: '/maolibiao/list.html',
+            link: '/maolibiao/list.html'
+          },
+          /*
           {
             name: '毛利表',
             level: 0,
             children: [
-              {
-                name: 'Goods Gross Profit',
-                level: 0,
-                children: [
-                  
-                ],
-                prefix: '/maolibiao/list.html',
-                link: '/maolibiao/list.html'
-              },
+              
               {
                 name: '订单毛利表',
                 level: 0,
@@ -65,7 +66,7 @@ Vue.component('left-menu', {
             ],
             prefix: '/maolibiao/',
             link: '#'
-          },
+          },*/
          
         ]
       }
