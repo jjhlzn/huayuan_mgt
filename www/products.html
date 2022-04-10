@@ -29,7 +29,7 @@
             <div class="flex-grow flex flex-col content_background_color h-full">
 
                 <!-- 标题-->
-                <p class="font-bold text-xl p-5 bg-white">Sales status</p>
+                <p class="font-bold text-xl p-5 bg-white">KB Sales status</p>
 
                 <!-- 查询表单-->
                 <div class="m-5 p-5 bg-white">
@@ -91,7 +91,7 @@
                                 Product description
                             </th>
                             <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
-                                SH item No.
+                                SP item No.
                             </th>
                             
                             <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
@@ -131,6 +131,20 @@
                             <td>{{((item.sjrksl - item.soldQuantity) * item.price).toFixed(1)}}</td>
                            
                             
+                        </tr>
+
+                        <tr class="font-bold bg-blue-50"  v-if="totalCount > 0">
+                            <td>合计</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                           
+                            <td>{{computeTotal('sjrksl')}}</td>
+                            <td>{{computeTotal('soldQuantity')}}</td>
+                            <td>{{computeTotal('sjrksl') - computeTotal('soldQuantity')}}</td>
+                            <td></td>
+                            <td>{{computeTotal('hsje')}}</td>
+                            <td>{{totalUnsoldAmount()  }}</td>
                         </tr>
 
                         <tr>

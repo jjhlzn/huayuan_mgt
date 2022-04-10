@@ -80,7 +80,7 @@
                         <tr>
                             <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 -->
                             <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
-                                Sales No. 
+                                SP Sales No. 
                             </th>
                             <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                 Customer     
@@ -90,6 +90,9 @@
                             </th>
                             <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                 Salesman  
+                            </th>
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                Currency 
                             </th>
                             <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                 Sales amount
@@ -110,6 +113,7 @@
                             <td>{{item.gnkhmc}}</td>
                             <td>{{item.sellDate}}</td>
                             <td>{{item.seller}}</td>
+                            <td>{{item.currency}}</td>
                             <td>{{item.sellAmount}}</td>
                             <td>{{item.payAmount}}</td>
                             <td>{{item.sellAmount - item.payAmount}}</td>
@@ -123,8 +127,20 @@
                                 v-on:click="clickDelete(item.ckdh)">Delete</a>
                             </td>
                         </tr>
+                        <tr class="font-bold bg-blue-50">
+                            <td>合计</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{computeTotal('sellAmount')}}</td>
+                            <td>{{computeTotal('payAmount')}}</td>
+                            <td>{{computeTotal('sellAmount') - computeTotal('payAmount')}}</td>
+                            <td></td>
+                        </tr>
+      
                     </table>
-
+                    
                     
                     <div class="pt-5 bg-white">
                         <el-pagination background
@@ -151,6 +167,7 @@
     <script src="/js/element-ui.js"></script>
     <script src="//unpkg.com/element-ui/lib/umd/locale/en.js"></script>
     <script src="/js/menu.js"></script>
+    <script src="/js/lib/table_heji.js"></script>
     <script src="/js/lib/header.js"></script>
     <script src="/js/utils.js"></script>
     <script src="/js/orders.js"></script>

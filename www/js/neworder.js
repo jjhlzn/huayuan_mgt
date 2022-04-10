@@ -80,6 +80,12 @@ var app = new Vue({
                         } else {
                             that.products = data.products
                         }
+                        that.products.forEach(function(product) {
+                            if (!product.currency) {
+                                product.currency = 'EUR'
+                            }
+                        })
+                      
                    }
                 })
                 .catch(function(error){
@@ -357,7 +363,7 @@ var app = new Vue({
                 amount: 0,
                 tdh: '',
                 edit: true,
-                currency: 'USD',
+                currency: 'EUR',
                 huilv: 0
             }
             this.order.payments.push(item)

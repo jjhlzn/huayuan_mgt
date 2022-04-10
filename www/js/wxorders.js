@@ -23,7 +23,16 @@ var app = new Vue({
     },
 
     methods: {
-
+        computeTotal: function(prop) {
+            return this.orders.map(function(order) {
+                if (!order[prop]) {
+                    return 0
+                }
+                return order[prop]
+            }).reduce(function(a, b) {
+                return a + b;
+            }, 0)
+        },
         clickDetail: function(id) {
             window.open("/wxorders/order.html?id="+id, "_blank")
             //window.location.href = 

@@ -79,7 +79,7 @@
                                 Product description
                             </th>
                             <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
-                                SH Item No. 
+                                SP Item No. 
                             </th>
                            
                             <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
@@ -122,6 +122,26 @@
                             <td>{{item.ml}}</td>
                             <td>{{item.mll + '%'}}</td>
                             
+                        </tr>
+
+                        <tr class="font-bold bg-blue-50"  v-if="totalCount > 0">
+                            <td>合计</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+
+                            <td>{{computeTotal('sjccsl')}}</td>
+                            <td></td>
+                            <td>{{totalAmount()}}</td>
+                           
+                            <td></td>
+                            <td>{{computeTotal('wxzj')}}</td>
+                            <td>{{computeTotal('ml')}}</td>
+                           
+                            <td></td>
+                 
                         </tr>
                     </table>
 

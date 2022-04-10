@@ -270,7 +270,7 @@ function makeSearchOrdersSql(queryobj) {
                 convert(varchar, sellDate, 23) as sellDate,
                 yw_ckgl_cc.bz,   --备注
                 yw_ckgl_cc.jw_flag,   --Y
-
+                (select top 1 currency from yw_ckgl_cc_cmd where yw_ckgl_cc_cmd.ckdh = yw_ckgl_cc.ckdh) as currency,
                 isNULL((select sum(wxzj) from yw_ckgl_cc_cmd where yw_ckgl_cc_cmd.ckdh = yw_ckgl_cc.ckdh),0) as sellAmount,
                 isNULL((select sum(amount) from yw_payments where yw_payments.dh = yw_ckgl_cc.ckdh),0) as payAmount
             FROM yw_ckgl_cc

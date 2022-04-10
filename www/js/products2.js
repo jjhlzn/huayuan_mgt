@@ -15,6 +15,26 @@ var app = new Vue({
     },
 
     methods: {
+        computeTotal: function(prop) {
+            return this.products.map(function(order) {
+                if (!order[prop]) {
+                    return 0
+                }
+                if (typeof order[prop] === 'string') {
+                    return parseInt(order[prop])
+                }
+                return order[prop]
+            }).reduce(function(a, b) {
+                return a + b;
+            }, 0)
+        },
+        totalUnsoldAmount: function() {
+            return this.products.map(function(item) {
+                return (item.sjrksl - item.soldQuantity) * item.price
+            }).reduce(function(a, b) {
+                return a + b;
+            }, 0)
+        },
         handleCurrentChange: function(pageNo) {
             console.log(pageNo)
             this.currentPage = pageNo

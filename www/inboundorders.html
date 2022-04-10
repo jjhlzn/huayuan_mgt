@@ -129,6 +129,19 @@
                                 v-on:click="clickDetail(item.rkdh)">Details    </a>
                             </td>
                         </tr>
+
+                        <tr class="font-bold bg-blue-50">
+                            <td>合计</td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td>{{computeTotal('quantity')}}</td>
+                            <td>{{computeTotal('rkje')}}</td>
+                            <td>{{computeTotal('payAmount')}}</td>
+                            <td>{{computeTotal('rkje') - computeTotal('payAmount')}}</td>
+                            <td></td>
+                        </tr>
                     </table>
 
                     

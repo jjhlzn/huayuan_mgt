@@ -9,10 +9,22 @@ var app = new Vue({
         currentPage: 1,
         params: {payState: ''},
         orders: [],
-        loading: true
+        loading: true,
+       
     },
 
     methods: {
+        computeTotal: function(prop) {
+            return this.orders.map(function(order) {
+                if (!order[prop]) {
+                    return 0
+                }
+                return order[prop]
+            }).reduce(function(a, b) {
+                return a + b;
+            }, 0)
+        },
+
         clickDetail: function(id) {
             //window.location.href = "/orders/neworder.html?id="+id
             window.open("/orders/neworder.html?id="+id, '_blank')
