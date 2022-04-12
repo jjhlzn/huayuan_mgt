@@ -6,6 +6,11 @@ var selectedStr = query.selectedproducts || ''
 var ids = selectedStr.split('___')
 console.log('id:', id)
 console.log('selected products:', ids)
+if (ids.length == 1) {
+    if (ids[0] == '') {
+        ids = []
+    }
+}
 
 var app = new Vue({
     el: '#app',
