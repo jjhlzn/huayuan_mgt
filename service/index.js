@@ -788,11 +788,11 @@ async function addOrUpdateOrder(order) {
         let totalAmount = 0  //出库金额
         if (order.products && order.products.length > 0) {
             order.products.forEach(product => {
-                product.amount = (parseFloat(product.buyQuantity) * parseFloat(product.price)).toFixed(4)
+                product.amount = parseFloat(product.buyQuantity) * parseFloat(product.price)
                 totalAmount += product.amount
             })
         }
-
+        logger.debug(`totalAmount = ${totalAmount}`)
         if (order.id) {
             sql = `update yw_ckgl_cc set ckje = ${totalAmount}, xshth = '${order.xshth}', gnkhmc = '${order.clientName}', seller = '${order.seller}', sellDate = '${order.sellDate}',
                           [state] = '${order.state}' where ckdh = '${order.id}'`
