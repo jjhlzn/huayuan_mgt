@@ -788,7 +788,7 @@ async function addOrUpdateOrder(order) {
         let totalAmount = 0  //出库金额
         if (order.products && order.products.length > 0) {
             order.products.forEach(product => {
-                product.amount = product.buyQuantity + product.price
+                product.amount = (parseFloat(product.buyQuantity) * parseFloat(product.price)).toFixed(4)
                 totalAmount += product.amount
             })
         }
