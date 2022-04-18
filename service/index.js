@@ -310,15 +310,16 @@ async function searchOrders(params) {
 
 
 function makeSearchWaiXiaoOrdersSql(queryobj) {
+    console.log(queryobj)
     var whereClause = ` 1=1 and bb_flag='Y' `
     if (queryobj.keyword) {
         whereClause += `  and wxhth like '%${queryobj.keyword}%' `
     }
     if (queryobj.startDate) {
-        whereClause += ` and Zyqx >= '${queryobj.startDate}'  `
+        whereClause += ` and qyrq >= '${queryobj.startDate}'  `
     }
     if (queryobj.endDate) {
-        whereClause += ` and Zyqx <= '${queryobj.endDate}'  `
+        whereClause += ` and qyrq <= '${queryobj.endDate}'  `
     }
 
     const skipCount = queryobj.pageSize * (queryobj.pageNo - 1)

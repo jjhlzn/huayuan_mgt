@@ -82,7 +82,7 @@ var app = new Vue({
             queryObject.keyword = this.params.keyword
             queryObject.payState =  this.params.payState
             queryObject.startDate = moment(this.params.startDate).format('YYYY-MM-DD')
-            queryObject.endDate = moment(this.params.end).format('YYYY-MM-DD')
+            queryObject.endDate = moment(this.params.endDate).format('YYYY-MM-DD')
             return queryObject;
         },
 
