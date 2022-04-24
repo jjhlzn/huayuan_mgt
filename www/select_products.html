@@ -103,10 +103,10 @@
                                 <button  class="text-red-500 hover:text-red-900 " v-if="item.selected" v-on:click="removeFromOrder(item.id)">Delete</button>
                             </td>
                             <td class="min-w-12">{{item.time}}</td>
-                            <td>{{item.name}}</td>
-                            <td>{{item.sphh}}</td>
+                            <td>{{item.spywmc}}</td>
+                            <td>{{item.sphh_kh}}</td>
                             <td>{{item.spec}}</td>
-                            <td>{{item.quantity}}</td>
+                            <td>{{item.quantity - item.soldQuantity}}</td>
                             <td>{{item.price}}</td>
                             <td>{{item.hsje}}</td>
                             <td>{{item.dhbh}}</td>

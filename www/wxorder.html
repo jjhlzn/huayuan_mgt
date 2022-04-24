@@ -39,8 +39,8 @@
                                 </div>
 
                                 <div class="lg:w-1/2">
-                                    <div class=" py-2">Current rate/USD-RMB</div>
-                                    <input type="text" placeholder="" v-model="order.zrmbhl"
+                                    <div class=" py-2">Currency</div>
+                                    <input type="text" placeholder="" v-model="order.wbbb"
                                         class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" disabled/>
 
                                 </div>
@@ -57,9 +57,15 @@
                                         class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" disabled/>
 
                                 </div>
-                                <div class="lg:w-1/2">
+                                <div class="lg:w-1/2 hidden">
                                     <div class=" py-2">Sea freight</div>
                                     <input type="text" placeholder="" v-model="order.zje"
+                                        class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" disabled/>
+
+                                </div>
+                                <div class="lg:w-1/2">
+                                    <div class=" py-2">Order Date</div>
+                                    <input type="text" placeholder="" v-model="order.qyrq"
                                         class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" disabled/>
 
                                 </div>
@@ -69,12 +75,7 @@
 
                         <div class="pt-2">
                             <div class=" lg:flex">
-                                <div class="lg:w-1/2">
-                                    <div class=" py-2">Order Date</div>
-                                    <input type="text" placeholder="" v-model="order.qyrq"
-                                        class="appearance-none border border-gray-200 rounded w-full md:w-2/3 py-2 px-4 text-gray-700 leading-tight focus:outline-none focus:bg-white focus:border-blue-500" disabled/>
-
-                                </div>
+                                
                                 <div class="lg:w-1/2">
                                     <div class=" py-2">ETD </div>
                                     <input type="text" placeholder="" v-model="order.zyqx"

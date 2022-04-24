@@ -51,7 +51,7 @@
                                 <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                     Currency
                                 </th>
-                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 hidden">
                                     Current Rate
                                 </th>
                  
@@ -70,8 +70,8 @@
                             </tr>
 
                             <tr v-for="item in products">
-                                <td v-bind:class="[ item.hasInOrder ? '' : 'text-blue-500']">{{item.name}}({{item.sphh}})</td>
-                                <td> {{ item.sphh }}</td>
+                                <td v-bind:class="[ item.hasInOrder ? '' : 'text-blue-500']">{{item.spywmc}}</td>
+                                <td> {{ item.sphh_kh }}</td>
                                 <td> {{ item.spgg }}</td>
                                 
 
@@ -86,7 +86,7 @@
                                 
                                
                                
-                                <td>
+                                <td class="hidden">
                                     <input type="digits" style="width: 70%;" v-model="item.huilv"
                                         class="appearance-none border border-gray-200 rounded w-full py-2 px-4 text-gray-700
                                         leading-tight focus:outline-none focus:bg-white focus:border-blue-500" />

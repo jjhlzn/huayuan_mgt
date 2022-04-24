@@ -11,11 +11,22 @@ var app = new Vue({
     },
     data: {
         id: id,
-        order: {}
+        order: {
+            products: []
+        }
     },
 
     methods: {
-        
+        computeTotal: function(prop) {
+            return this.order.products.map(function(product) {
+                if (!product[prop]) {
+                    return 0
+                }
+                return product[prop]
+            }).reduce(function(a, b) {
+                return a + b;
+            }, 0)
+        },
 
         loadData: function(id) {
             var that = this
@@ -25,6 +36,10 @@ var app = new Vue({
                     console.log(data)
                     if (data.status == 0) {
                         that.order = data.order
+                        let products = that.order.products
+                        that.order.products.forEach(function(product){
+                            product.amount = product.price * product.quantity
+                        })
                    }
                 })
                 .catch(function(error){
@@ -116,7 +131,7 @@ var app = new Vue({
                 addtime: moment().format('YYYY-MM-DD'),
                 amount: 0,
                 edit: true,
-                currency: 'USD',
+                currency: 'EUR',
                 huilv: 0
             }
             this.order.payments.push(item)

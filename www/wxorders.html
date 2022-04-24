@@ -60,7 +60,7 @@
                                     <button class=" h-8 px-4 mr-3  text-sm text-white transition-colors 
                                     duration-150 rounded-sm focus:shadow-outline bg-blue-500 hover:bg-blue-600" v-on:click="clickSearch">Search </button>
 
-                                    <button class=" h-8 px-4  text-sm text-gray-600 transition-colors border border-gray-400 hidden
+                                    <button class=" h-8 px-4  text-sm text-gray-600 transition-colors border border-gray-400 
                                 duration-150 rounded-sm focus:shadow-outline bg-white hover:bg-gray-100" v-on:click="clickReset">Reset</button>
                                 </div>
                                 
@@ -112,7 +112,7 @@
                         <tr class="font-bold bg-blue-50">
                             <td>Total</td>
                             <td></td>
-                            <td>{{computeTotal('zje')}}</td>
+                            <td>{{computeTotal('zje').toFixed(1)}}</td>
                             <td></td>
                             <td></td>
                             <td></td>

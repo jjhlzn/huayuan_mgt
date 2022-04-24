@@ -119,8 +119,8 @@
                         <tr v-for="item in products" class="hover:bg-gray-50 py-1">
                             <td>{{item.mxdbh}}</td>
                             <td class="min-w-12">{{item.time}}</td>
-                            <td>{{item.name}}</td>
-                            <td>{{item.code}}</td>
+                            <td>{{item.spywmc}}</td>
+                            <td>{{item.sphh}}</td>
                          
                             <td>{{item.sjrksl}}</td>
                             <td>{{item.soldQuantity ? item.soldQuantity : 0}}</td>
@@ -141,10 +141,10 @@
                            
                             <td>{{computeTotal('sjrksl')}}</td>
                             <td>{{computeTotal('soldQuantity')}}</td>
-                            <td>{{computeTotal('sjrksl') - computeTotal('soldQuantity')}}</td>
+                            <td>{{(computeTotal('sjrksl') - computeTotal('soldQuantity'))}}</td>
                             <td></td>
-                            <td>{{computeTotal('hsje')}}</td>
-                            <td>{{totalUnsoldAmount()  }}</td>
+                            <td>{{computeTotal('hsje').toFixed(1)}}</td>
+                            <td>{{totalUnsoldAmount().toFixed(1)  }}</td>
                         </tr>
 
                         <tr>

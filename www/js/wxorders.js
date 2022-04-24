@@ -1,7 +1,7 @@
 ELEMENT.locale(ELEMENT.lang.en)
 
-var startDate = moment().add(-90, 'days').format('YYYY-MM-DD')
-var endDate = moment().add(90, 'days').format('YYYY-MM-DD')
+var startDate = moment().add(-60, 'days').format('YYYY-MM-DD')
+var endDate = moment().add(0, 'days').format('YYYY-MM-DD')
 
 var app = new Vue({
     el: '#app',
@@ -14,6 +14,7 @@ var app = new Vue({
         pageSize: 10,
         currentPage: 1,
         params: {
+            keyword: '',
             payState: '',
             startDate: startDate,
             endDate: endDate
@@ -94,6 +95,8 @@ var app = new Vue({
         clickReset: function(e) {
             console.log("send reset")
             this.params.keyword = ''
+            this.params.startDate = moment().add(-60, 'days').format('YYYY-MM-DD')
+            this.params.endDate = moment().add(0, 'days').format('YYYY-MM-DD')
             this.fetchData()
             e.preventDefault()
         }

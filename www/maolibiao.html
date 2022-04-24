@@ -109,9 +109,9 @@
                      
                             <td>{{item.xshth}}</td>
                             <td>{{item.gnkhmc}}</td>
-                            <td>{{item.ywy}}</td>
-                            <td>{{item.mxdbh}}</td>
-                            <td>{{item.spzwmc}}</td>
+                            <td>{{item.seller}}</td>
+                            <td>{{item.mxdbh ? item.mxdbh : ''}}</td>
+                            <td>{{item.spywmc}}</td>
                             <td>{{item.sphh}}</td>
                       
                             <td>{{item.sjccsl}}</td>
@@ -132,13 +132,13 @@
                             <td></td>
                             <td></td>
 
-                            <td>{{computeTotal('sjccsl')}}</td>
+                            <td>{{computeTotal('sjccsl').toFixed(1)}}</td>
                             <td></td>
                             <td>{{totalAmount()}}</td>
                            
                             <td></td>
-                            <td>{{computeTotal('wxzj')}}</td>
-                            <td>{{computeTotal('ml')}}</td>
+                            <td>{{computeTotal('wxzj').toFixed(1)}}</td>
+                            <td>{{computeTotal('ml').toFixed(1)}}</td>
                            
                             <td></td>
                  

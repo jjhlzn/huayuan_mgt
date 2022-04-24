@@ -136,10 +136,10 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td>{{computeTotal('quantity')}}</td>
-                            <td>{{computeTotal('rkje')}}</td>
-                            <td>{{computeTotal('payAmount')}}</td>
-                            <td>{{computeTotal('rkje') - computeTotal('payAmount')}}</td>
+                            <td>{{computeTotal('quantity').toFixed(1)}}</td>
+                            <td>{{computeTotal('rkje').toFixed(1)}}</td>
+                            <td>{{computeTotal('payAmount').toFixed(1)}}</td>
+                            <td>{{(computeTotal('rkje') - computeTotal('payAmount')).toFixed(1)}}</td>
                             <td></td>
                         </tr>
                     </table>

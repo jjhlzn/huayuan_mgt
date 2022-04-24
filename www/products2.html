@@ -136,9 +136,9 @@
                            
                             <td>{{computeTotal('sjrksl')}}</td>
                             <td>{{computeTotal('soldQuantity')}}</td>
-                            <td>{{computeTotal('sjrksl') - computeTotal('soldQuantity')}}</td>
+                            <td>{{(computeTotal('sjrksl') - computeTotal('soldQuantity'))}}</td>
                            
-                            <td>{{computeTotal('soldAmount')}}</td>
+                            <td>{{computeTotal('soldAmount').toFixed(1)}}</td>
                  
                         </tr>
 

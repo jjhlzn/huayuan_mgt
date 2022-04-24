@@ -51,8 +51,8 @@ function makeSearchProductsSql(queryobj) {
             yw_ckgl_jc_cmd.sjrksl,
             yw_ckgl_jc_cmd.ycksl,
 
-            (select sum(sjccsl) from yw_ckgl_cc_cmd
-            where yrkdh = yw_ckgl_jc_cmd.rkdh and yrkxh = yw_ckgl_jc_cmd.rkxh) as soldQuantity,  --卖出数量
+            IsNULL( (select sum(sjccsl) from yw_ckgl_cc_cmd
+            where yrkdh = yw_ckgl_jc_cmd.rkdh and yrkxh = yw_ckgl_jc_cmd.rkxh), 0) as soldQuantity,  --卖出数量
 
             -- wxdj, wxzj, 
             (select sum(wxzj) from yw_ckgl_cc_cmd
@@ -154,8 +154,8 @@ function makeSearchProductsSql2(queryobj) {
             yw_ckgl_jc_cmd.spgg as spec,   --商品规格
             yw_ckgl_jc_cmd.sjrksl as quantity, --入库数量
 
-            (select sum(sjccsl) from yw_ckgl_cc_cmd
-            where yrkdh = yw_ckgl_jc_cmd.rkdh and yrkxh = yw_ckgl_jc_cmd.rkxh) as soldQuantity,  --卖出数量
+            IsNULL( (select sum(sjccsl) from yw_ckgl_cc_cmd
+            where yrkdh = yw_ckgl_jc_cmd.rkdh and yrkxh = yw_ckgl_jc_cmd.rkxh), 0) as soldQuantity,  --卖出数量
 
             -- wxdj, wxzj, 
             (select sum(wxzj) from yw_ckgl_cc_cmd
@@ -266,7 +266,7 @@ function makeSearchOrdersSql(queryobj) {
                 yw_ckgl_cc.ckje,   --销售金额
                 yw_ckgl_cc.state,   --状态
                 yw_ckgl_cc.ckrq,    
-                seller, 
+                yw_ckgl_cc.seller, 
                 convert(varchar, sellDate, 23) as sellDate,
                 yw_ckgl_cc.bz,   --备注
                 yw_ckgl_cc.jw_flag,   --Y
@@ -368,7 +368,7 @@ async function searchWaixiaoOrders(params) {
 
 async function getWxOrderById(id) {
     let sql = `select yw_contract.khms as buyer,zrmbhl, jgtk, po_no, zje, convert(varchar, Zyqx, 23) as zyqx,
-         convert(varchar, qyrq, 23) as qyrq, wxhth, bbh from yw_contract where wxhth = '${id}'`
+         convert(varchar, qyrq, 23) as qyrq, wxhth, bbh, wbbb from yw_contract where wxhth = '${id}'`
     logger.debug(sql)
     try {
         let pool = await db_pool.getPool(db_config)
@@ -496,6 +496,8 @@ function makeSearchMaolibiaosSql(queryobj) {
                         yw_ckgl_cc.ckrq,    
                         yw_ckgl_cc.bz,   --备注
                         yw_ckgl_cc.jw_flag,   --Y
+                        yw_ckgl_cc.seller,
+                        yw_ckgl_cc.mxdbh,
 
                         yw_ckgl_cc_cmd.spbm,   ---商品编码
                         yw_ckgl_cc_cmd.hgbm,  --海关编码
@@ -670,8 +672,8 @@ async function loadProducts(ids) {
         yw_ckgl_jc_cmd.spgg as spec,   --商品规格
         yw_ckgl_jc_cmd.sjrksl as quantity, --入库数量
 
-        (select sum(sjccsl) from yw_ckgl_cc_cmd
-        where yrkdh = yw_ckgl_jc_cmd.rkdh and yrkxh = yw_ckgl_jc_cmd.rkxh) as soldQuantity,  --卖出数量
+        IsNULL( (select sum(sjccsl) from yw_ckgl_cc_cmd
+            where yrkdh = yw_ckgl_jc_cmd.rkdh and yrkxh = yw_ckgl_jc_cmd.rkxh), 0) as soldQuantity,  --卖出数量
 
         yw_ckgl_jc_cmd.sldw,    --单位
         yw_ckgl_jc_cmd.hsje,   --金额
@@ -697,6 +699,7 @@ async function loadProducts(ids) {
         let products = (await pool.query(sql)).recordset
         products.forEach(product => {
             product.buyQuantity = 0
+            product.isNewAdd = true
         })
         return products
     }
@@ -828,10 +831,10 @@ async function addOrUpdateOrder(order) {
             let ids = p.productId.split('_')
             sql = `
             insert into yw_ckgl_cc_cmd 
-            (spbm, hgbm, sphh, spzwmc, spywmc, spgg, sldw, hsje, hsdj, wxdj, wxzj, ckdh, sjccsl, cxh, productId, currency, huilv, yrkdh, yrkxh)
+            (spbm, hgbm, sphh, spzwmc, spywmc, spgg, sldw, hsje, hsdj, wxdj, wxzj, ckdh, sjccsl, cxh, productId, currency, huilv, yrkdh, yrkxh, mxdbh)
             values ('${p.spbm}', '${p.hgbm}', '${p.sphh}', '${p.name}', '${p.spywmc}', '${p.spgg}', '${p.sldw}',
              '${p.hsdj * p.buyQuantity}', ${p.hsdj},'${p.price}', ${p.price * p.buyQuantity} ,'${order.id}', 
-                '${p.buyQuantity}', '${i}', '${p.productId}', '${p.currency}', '${p.huilv}', '${ids[0]}', '${ids[1]}')`
+                '${p.buyQuantity}', '${i}', '${p.productId}', '${p.currency}', '${p.huilv}', '${ids[0]}', '${ids[1]}', '${p.mxdbh}')`
             
             logger.debug("product.id:" + p.productId)
             logger.info(sql)
@@ -941,7 +944,7 @@ async function settleOrder(id) {
 
 async function getInboundOrderById(id) {
     try {
-        let sql = `select rkdh, jhdwmc, 
+        let sql = `select mxdbh, rkdh, jhdwmc, 
         convert(varchar, rkrq, 20) as rkrq, wyf, bf
         from yw_ckgl_jc where rkdh = '${id}'`
         logger.debug(sql)

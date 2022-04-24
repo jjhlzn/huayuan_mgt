@@ -84,6 +84,9 @@ var app = new Vue({
                             if (!product.currency) {
                                 product.currency = 'EUR'
                             }
+                            if (product.isNewAdd) {
+                                product.price = ''
+                            }
                         })
                       
                    }
@@ -208,17 +211,30 @@ var app = new Vue({
                     return false
                 }
 
+                /*
                 if (!isFloat(products[i].huilv)) {
                     alert('exchange rate must be number')
+                    return false
+                }*/
+                products[i].huilv = 0
+
+                //新增的商品  库存不能超过未销售数量
+                
+                var quantityInStock = products[i].quantity - products[i].soldQuantity
+                if ( products[i].isNewAdd && products[i].buyQuantity > quantityInStock) {
+                    console.log(i)
+                    console.log(products[i].quantity)
+                    console.log(products[i].buyQuantity)
+                    alert(`Quantity is over than quantity in stock (Quantity in stock is ${quantityInStock})`)
                     return false
                 }
             }
 
-
+            /*
             if (!this.seller) {
                 alert('必须填写销售员')
                 return false
-            }
+            }*/
 
             if (!this.sellDate) {
                 alert('必须填写销售日期')

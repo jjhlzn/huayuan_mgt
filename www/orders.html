@@ -109,7 +109,7 @@
                         </tr>
 
                         <tr v-for="item in orders" class="hover:bg-gray-200">
-                            <td>{{item.ckdh}}</td>
+                            <td>{{item.xshth}}</td>
                             <td>{{item.gnkhmc}}</td>
                             <td>{{item.sellDate}}</td>
                             <td>{{item.seller}}</td>
@@ -133,9 +133,9 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td>{{computeTotal('sellAmount')}}</td>
-                            <td>{{computeTotal('payAmount')}}</td>
-                            <td>{{computeTotal('sellAmount') - computeTotal('payAmount')}}</td>
+                            <td>{{computeTotal('sellAmount').toFixed(1)}}</td>
+                            <td>{{computeTotal('payAmount').toFixed(1)}}</td>
+                            <td>{{(computeTotal('sellAmount') - computeTotal('payAmount')).toFixed(1)}}</td>
                             <td></td>
                         </tr>
       

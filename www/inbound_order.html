@@ -34,7 +34,7 @@
                             <div class="lg:flex lg:flex-wrap">
                                 <div class="flex w-full lg:w-1/2 py-2  items-center">
                                     <div class="w-32 pr-2 text-right text-gray-700">Invoice No.:</div>
-                                    <div>{{order.wxhth}}</div>
+                                    <div>{{order.mxdbh}}</div>
                                 </div>
                                
                                 <div class="flex w-full lg:w-1/2 py-2">
@@ -59,7 +59,15 @@
                             <div class="py-2 font-bold">Product List</div>
                             <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                                 <tr>
-                                    <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 --> 
+                                    <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 -->
+                                    <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
+                                        KB item No.
+                                    </th>
+                                    
+                                    <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
+                                        SP item No.
+                                    </th>
+
                                     <th class="px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
                                         Product description
                                     </th>
@@ -77,12 +85,25 @@
                                 </tr>
 
                                 <tr v-for="item in order.products">
-                                    <td>{{item.name}}({{item.sphh}})</td>
+                                    <td> {{item.sphh}} </td>
+                                    <td> {{item.sphh_kh}} </td>
+                                    <td>{{item.spywmc}}</td>
                             
-                                    <td> {{item.price}} </td>
-                                    <td> {{item.quantity}} </td>
-                                    <td> {{item.price * item.quantity}} </td>
+                                    <td class="digitType"> {{item.price}} </td>
+                                    <td class="digitType"> {{item.quantity}} </td>
+                                    <td class="digitType"> {{(item.price * item.quantity).toFixed(2)}} </td>
                                     
+                                </tr>
+
+                                <tr class="font-bold bg-blue-50">
+                                    <td>Total</td>
+                                    <td></td>
+                                   
+                                    <td></td>
+                                    <td></td>
+                                    <td class="digitType"> {{computeTotal('quantity')}} </td>
+                                    
+                                    <td class="digitType"> {{computeTotal('amount').toFixed(2)}}  </td>
                                 </tr>
 
 
@@ -103,9 +124,7 @@
                                     <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                         Currency
                                     </th>
-                                    <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
-                                        Current Rate
-                                    </th>
+                                  
                                     <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                         Amount
                                     </th>
@@ -130,17 +149,7 @@
                                             <option value="RMB">RMB </option> 
                                         </select>
                                     </td>
-                                    
-                                    <td v-if="!item.edit">
-                                        {{item.huilv}}
-                                    </td>
-
-                                   
-                                    <td v-if="item.edit">
-                                        <input type="digits" style="width: 70%;" v-model="item.huilv"
-                                            class="appearance-none border border-gray-200 rounded w-full py-2 px-4 text-gray-700
-                                            leading-tight focus:outline-none focus:bg-white focus:border-blue-500" />
-                                    </td>
+                       
 
 
                                    
