@@ -125,7 +125,7 @@
                                         Currency
                                     </th>
                                   
-                                    <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                         Amount
                                     </th>
                                     <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
@@ -153,8 +153,8 @@
 
 
                                    
-                                    <td v-if="!item.edit">
-                                        {{item.amount}}
+                                    <td class="digitType" v-if="!item.edit">
+                                        {{item.amount.toFixed(2)}}
                                     </td>
 
 

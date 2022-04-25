@@ -82,7 +82,7 @@
                             <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                 Date  
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 FOB total amount
                             </th>
                             <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
@@ -99,7 +99,7 @@
                         <tr v-for="item in orders" class="hover:bg-gray-200">
                             <td>{{item.wxhth}}</td>
                             <td>{{item.qyrq}}</td>
-                            <td>{{item.zje}}</td>
+                            <td class="digitType">{{item.zje.toFixed(2)}}</td>
                             <td>{{item.wbbb}}</td>
                             <td>{{item.zyqx}}</td>
                             <td>
@@ -112,7 +112,7 @@
                         <tr class="font-bold bg-blue-50">
                             <td>Total</td>
                             <td></td>
-                            <td>{{computeTotal('zje').toFixed(1)}}</td>
+                            <td class="digitType">{{computeTotal('zje').toFixed(2)}}</td>
                             <td></td>
                             <td></td>
                             <td></td>

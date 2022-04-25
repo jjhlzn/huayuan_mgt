@@ -31,7 +31,7 @@ var app = new Vue({
                 }
                 return order[prop]
             }).reduce(function(a, b) {
-                return a + b;
+                return parseFloat(a) + parseFloat(b);
             }, 0)
         },
         clickDetail: function(id) {

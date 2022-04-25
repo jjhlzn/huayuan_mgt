@@ -94,20 +94,20 @@
                                 SP item No.
                             </th>
                             
-                            <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 Quantity  
                             </th>
-                            <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 Quantity sold  
                             </th>
-                            <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 Quantity in stock
                             </th>
-                            <th class="hidden px-2  text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="hidden px-2  text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 FOB unit price 
                             </th>
                             
-                            <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 Sales total amount   
                             </th>
                            
@@ -116,16 +116,16 @@
                         <tr v-for="item in products" class="hover:bg-gray-50 py-1">
                             <td>{{item.mxdbh}}</td>
                             <td class="min-w-12">{{item.time}}</td>
-                            <td>{{item.name}}</td>
-                            <td>{{item.code}}</td>
+                            <td>{{item.spywmc}}</td>
+                            <td>{{item.sphh}}</td>
                          
-                            <td>{{item.sjrksl}}</td>
-                            <td>{{item.soldQuantity ? item.soldQuantity : 0}}</td>
-                            <td>{{item.sjrksl - item.soldQuantity}}</td>
+                            <td class="digitType">{{item.sjrksl}}</td>
+                            <td class="digitType">{{item.soldQuantity ? item.soldQuantity : 0}}</td>
+                            <td class="digitType">{{item.sjrksl - item.soldQuantity}}</td>
                             <td class="hidden">{{ item.soldPrice }}</td>
                            
                            
-                            <td>{{item.soldAmount}}   </td>
+                            <td class="digitType">{{item.soldAmount.toFixed(2) }}  </td>
                         </tr>
 
                         <tr class="font-bold bg-blue-50"  v-if="totalCount > 0">
@@ -134,11 +134,11 @@
                             <td></td>
                             <td></td>
                            
-                            <td>{{computeTotal('sjrksl')}}</td>
-                            <td>{{computeTotal('soldQuantity')}}</td>
-                            <td>{{(computeTotal('sjrksl') - computeTotal('soldQuantity'))}}</td>
+                            <td class="digitType">{{computeTotal('sjrksl')}}</td>
+                            <td class="digitType">{{computeTotal('soldQuantity')}}</td>
+                            <td class="digitType">{{(computeTotal('sjrksl') - computeTotal('soldQuantity'))}}</td>
                            
-                            <td>{{computeTotal('soldAmount').toFixed(1)}}</td>
+                            <td class="digitType">{{computeTotal('soldAmount').toFixed(2)}}</td>
                  
                         </tr>
 

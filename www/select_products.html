@@ -82,13 +82,13 @@
                             <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
                                 Specification  
                             </th>
-                            <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                            <th class="px-2 text-center  font-medium text-gray-800 uppercase tracking-wider w-24 digitType">
                                 Quantity In stock 
                             </th>
-                            <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                            <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24 digitType">
                                 FOB unit price
                             </th>
-                            <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
+                            <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24 digitType">
                                 FOB total amount
                             </th>
                             <th class="px-2  text-center  font-medium text-gray-800 uppercase tracking-wider w-24">
@@ -106,9 +106,9 @@
                             <td>{{item.spywmc}}</td>
                             <td>{{item.sphh_kh}}</td>
                             <td>{{item.spec}}</td>
-                            <td>{{item.quantity - item.soldQuantity}}</td>
-                            <td>{{item.price}}</td>
-                            <td>{{item.hsje}}</td>
+                            <td class="digitType">{{item.quantity - item.soldQuantity}}</td>
+                            <td class="digitType">{{item.price.toFixed(2)}}</td>
+                            <td class="digitType">{{item.hsje.toFixed(2)}}</td>
                             <td>{{item.dhbh}}</td>
                             
                         </tr>

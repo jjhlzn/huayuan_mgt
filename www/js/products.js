@@ -21,7 +21,7 @@ var app = new Vue({
                     return 0
                 }
                 if (typeof order[prop] === 'string') {
-                    return parseInt(order[prop])
+                    return parseFloat(order[prop])
                 }
                 return order[prop]
             }).reduce(function(a, b) {

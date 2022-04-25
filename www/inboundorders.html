@@ -94,17 +94,17 @@
                             <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                 Days from ETD
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 Quantity
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 CIF total amount
                             </th>
                            
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 Amount paid
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 Amount unpaid
                             </th>
                             <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
@@ -118,10 +118,11 @@
                             <td>{{item.dhbh}}</td>
                             <td>{{item.rkrq}}</td>
                             <td>{{item.days}}</td>
-                            <td>{{item.quantity}}</td>
-                            <td>{{item.rkje}}</td>
-                            <td>{{item.payAmount}}</td>
-                            <td>{{item.rkje - item.payAmount}}</td>
+
+                            <td class="digitType">{{item.quantity}}</td>
+                            <td class="digitType">{{item.rkje.toFixed(2)}}</td>
+                            <td class="digitType">{{item.payAmount.toFixed(2)}}</td>
+                            <td class="digitType">{{(item.rkje - item.payAmount).toFixed(2)}}</td>
                             <td>
                                 
 
@@ -136,10 +137,10 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td>{{computeTotal('quantity').toFixed(1)}}</td>
-                            <td>{{computeTotal('rkje').toFixed(1)}}</td>
-                            <td>{{computeTotal('payAmount').toFixed(1)}}</td>
-                            <td>{{(computeTotal('rkje') - computeTotal('payAmount')).toFixed(1)}}</td>
+                            <td class="digitType">{{computeTotal('quantity').toFixed(0)}}</td>
+                            <td class="digitType">{{computeTotal('rkje').toFixed(2)}}</td>
+                            <td class="digitType">{{computeTotal('payAmount').toFixed(2)}}</td>
+                            <td class="digitType">{{(computeTotal('rkje') - computeTotal('payAmount')).toFixed(2)}}</td>
                             <td></td>
                         </tr>
                     </table>

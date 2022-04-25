@@ -33,3 +33,12 @@ checkLogin()
 function isFloat(text) {
     return /^[0-9]+(\.)?[0-9]*$/.test(text)
 }
+
+function showNumber(value) {
+    if (value == null) {
+        return
+    }
+    if (value != null && value.toFixed && typeof data[prop].toFixed == 'function') {
+        data[prop] = data[prop].toFixed(2)
+    }
+}

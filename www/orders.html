@@ -94,13 +94,13 @@
                             <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                 Currency 
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 Sales amount
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 Amount received 
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 Outstanding amount
                             </th>
                             <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
@@ -114,9 +114,9 @@
                             <td>{{item.sellDate}}</td>
                             <td>{{item.seller}}</td>
                             <td>{{item.currency}}</td>
-                            <td>{{item.sellAmount}}</td>
-                            <td>{{item.payAmount}}</td>
-                            <td>{{item.sellAmount - item.payAmount}}</td>
+                            <td class="digitType">{{item.sellAmount.toFixed(2)}}</td>
+                            <td class="digitType">{{item.payAmount.toFixed(2)}}</td>
+                            <td class="digitType">{{(item.sellAmount - item.payAmount).toFixed(2)}}</td>
                             <td>
                                 
 
@@ -133,9 +133,9 @@
                             <td></td>
                             <td></td>
                             <td></td>
-                            <td>{{computeTotal('sellAmount').toFixed(1)}}</td>
-                            <td>{{computeTotal('payAmount').toFixed(1)}}</td>
-                            <td>{{(computeTotal('sellAmount') - computeTotal('payAmount')).toFixed(1)}}</td>
+                            <td class="digitType">{{computeTotal('sellAmount').toFixed(2)}}</td>
+                            <td class="digitType">{{computeTotal('payAmount').toFixed(2)}}</td>
+                            <td class="digitType">{{(computeTotal('sellAmount') - computeTotal('payAmount')).toFixed(2)}}</td>
                             <td></td>
                         </tr>
       

@@ -27,7 +27,11 @@ var app = new Vue({
                 })
         },
 
-   
+        show: function(value){
+            if (value != null && data[prop].toFixed && typeof data[prop].toFixed !== 'function') {
+                data[prop] = parseFloat(data[prop].toFixed(2))
+            }
+        }
     }, 
 
     mounted: function() {

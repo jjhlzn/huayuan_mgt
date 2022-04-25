@@ -15,6 +15,7 @@ const storage = multer.diskStorage({
     }
 })
 const upload = multer({ storage: storage })
+const {handleFloatProps} = require('./handle_response')
 
 
 var cookieParser = require('cookie-parser')
@@ -77,12 +78,6 @@ app.get('/settings.html', (req, res) => {
     res.sendFile(__dirname + '/www/settings.html')
 })
 
-/*
-app.get('/index.html', function(req, res) {
-    res.sendFile(__dirname + '/www/products.html')
-});*/
-
-//let users = [{userId: 'admin', password: '123456', name: '管理员'}]
 
 app.post('/login', async (req, res) => {
     const user = {userId: req.body.userId, password: req.body.password}
@@ -118,6 +113,7 @@ app.post('/checktoken', auth, (req, res) => {
 
 app.all('/searchproducts', auth, async (req, res) => {
     let result = await service.searchProducts(req.body.params)
+    handleFloatProps(result)
     res.send(JSON.stringify({
         status: 0,
         message: '',
@@ -190,6 +186,7 @@ app.all('/searchinboundorders', auth, async (req, res) => {
 
 app.all('/searchmaolibiaos', auth, async (req, res) => {
     let result = await service.searchMaolibiaos(req.body.params)
+    handleFloatProps(result)
     res.send(JSON.stringify({
         status: 0,
         message: '',
@@ -309,6 +306,7 @@ app.all('/getorderandproducts', auth, async (req, res) => {
 
 app.all('/searchwxorders', auth, async (req, res) => {
     let result = await service.searchWaixiaoOrders(req.body.params)
+    handleFloatProps(result)
     res.send(JSON.stringify({
         status: 0,
         message: '',

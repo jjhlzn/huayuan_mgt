@@ -82,25 +82,25 @@
                                 SP Item No. 
                             </th>
                            
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 Quantity  
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 FOB unit price
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 FOB total amount
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 Sales price
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 Sales amount
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 Gross profit 
                             </th>
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 Gross profit margin
                             </th>
                         </tr>
@@ -112,15 +112,15 @@
                             <td>{{item.seller}}</td>
                             <td>{{item.mxdbh ? item.mxdbh : ''}}</td>
                             <td>{{item.spywmc}}</td>
-                            <td>{{item.sphh}}</td>
+                            <td>{{item.sphh_kh}}</td>
                       
-                            <td>{{item.sjccsl}}</td>
-                            <td>{{item.hsdj}}</td>
-                            <td>{{item.hsdj * item.sjccsl}}</td>
-                            <td>{{item.wxdj}}</td>
-                            <td>{{item.wxzj}}</td>
-                            <td>{{item.ml}}</td>
-                            <td>{{item.mll + '%'}}</td>
+                            <td class="digitType">{{item.sjccsl}}</td>
+                            <td class="digitType">{{item.hsdj.toFixed(2)}}</td>
+                            <td class="digitType">{{(item.hsdj * item.sjccsl).toFixed(2)}}</td>
+                            <td class="digitType">{{item.wxdj.toFixed(2)}}</td>
+                            <td class="digitType">{{item.wxzj.toFixed(2)}}</td>
+                            <td class="digitType">{{item.ml.toFixed(2)}}</td>
+                            <td class="digitType">{{item.mll + '%'}}</td>
                             
                         </tr>
 
@@ -132,13 +132,13 @@
                             <td></td>
                             <td></td>
 
-                            <td>{{computeTotal('sjccsl').toFixed(1)}}</td>
+                            <td class="digitType">{{computeTotal('sjccsl')}}</td>
                             <td></td>
-                            <td>{{totalAmount()}}</td>
+                            <td class="digitType">{{totalAmount().toFixed(2)}}</td>
                            
                             <td></td>
-                            <td>{{computeTotal('wxzj').toFixed(1)}}</td>
-                            <td>{{computeTotal('ml').toFixed(1)}}</td>
+                            <td class="digitType">{{computeTotal('wxzj').toFixed(2)}}</td>
+                            <td class="digitType">{{computeTotal('ml').toFixed(2)}}</td>
                            
                             <td></td>
                  

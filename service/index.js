@@ -102,7 +102,14 @@ async function searchProducts(params) {
             if (!product.hsje) {
                 product.hsje = 0
             }
-             product.hsje = product.hsje.toFixed(0)
+            if (!product.price) {
+                product.price = 0
+            }
+            product.hsje = parseFloat(product.hsje)
+            if (!product.soldQuantity) {
+                product.soldQuantity = 0
+            }
+            // product.hsje = product.hsje.toFixed(0)
         })
         return {
             products: products,
@@ -377,6 +384,13 @@ async function getWxOrderById(id) {
             let order = orders[0]
             await loadProductsWithWxorder(order)
             await loadFeiyongWithWxorer(order)
+
+            if (!order.wxdj) {
+                order.wxdj = 0
+            }
+            if (!order.wxzj) {
+                order.wxzj = 0
+            }
             return order
         } else {
             return null
@@ -538,13 +552,20 @@ async function searchMaolibiaos(params) {
         let totalCount = (await pool.query(sqlstrs[1])).recordset[0]['totalCount']
 
         orders.forEach( order =>  {
+            if (!order.hsdj) {
+                order.hsdj = 0
+            }
             let rkAmount = order.hsdj * order.sjccsl
+            if (!order.ml) {
+                order.ml = 0
+            }
             if (rkAmount != 0) {
                 order.mll = (order.ml / rkAmount * 100).toFixed(2)
             } else {
                 order.mll = 100
             }
         })
+       
         
         return {
             orders: orders,

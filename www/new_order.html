@@ -55,13 +55,13 @@
                                     Current Rate
                                 </th>
                  
-                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 ">
                                     Sales price
                                 </th>
-                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 ">
                                     Quantity   
                                 </th>
-                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                     Sales amount
                                 </th>
                                 <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
@@ -98,7 +98,7 @@
                                 <td> <input type="text"  v-model="item.buyQuantity" 
                                         class="appearance-none border border-gray-200 rounded w-2/3 py-1 px-4 text-gray-700 
                                         leading-tight focus:outline-none focus:bg-white focus:border-blue-500" /></td>
-                                <td> {{ (item.price * item.buyQuantity).toFixed(2) }}</td>
+                                <td class="digitType"> {{ (item.price * item.buyQuantity).toFixed(2) }}</td>
                                 <td>
                                     <button class="text-red-500 hover:text-red-900" v-on:click="deleteItem(item.id)">Delete</button>
                                 </td>
@@ -200,7 +200,7 @@
                                 <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                     Current Rate
                                 </th>
-                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                     Amount
                                 </th>
                                 <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
@@ -244,7 +244,7 @@
                                         leading-tight focus:outline-none focus:bg-white focus:border-blue-500" />
                                 </td>
 
-                                <td v-if="!item.edit">
+                                <td class="digitType" v-if="!item.edit">
                                     {{item.amount}}
                                 </td>
                                 <td v-if="item.edit">

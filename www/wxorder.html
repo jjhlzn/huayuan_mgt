@@ -114,16 +114,16 @@
                  
                               
                                
-                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                     Quantity 
                                 </th>
                                 <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                     Unit  
                                 </th>
-                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                     FOB unit price 
                                 </th>
-                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                     FOB total amount
                                 </th>
                             </tr>
@@ -136,10 +136,10 @@
                                 <td> {{ item.spgg }}</td>
                            
                                
-                                <td> {{ item.jjsl }}</td>
+                                <td class="digitType"> {{ item.jjsl }}</td>
                                 <td> {{ item.jjdw }}</td>
-                                <td> {{ item.wxdj }}</td>
-                                <td> {{ item.wxzj }}</td>
+                                <td class="digitType"> {{ item.wxdj.toFixed(2) }}</td>
+                                <td class="digitType"> {{ item.wxzj.toFixed(2) }}</td>
                             </tr>
 
 
