@@ -72,13 +72,13 @@
                                         Product description
                                     </th>
                     
-                                    <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                         FOB unit price
                                     </th>
-                                    <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                         Quantity
                                     </th>
-                                    <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                    <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                         FOB total amount
                                     </th>
                                     
@@ -89,7 +89,7 @@
                                     <td> {{item.sphh_kh}} </td>
                                     <td>{{item.spywmc}}</td>
                             
-                                    <td class="digitType"> {{item.price}} </td>
+                                    <td class="digitType"> {{item.price.toFixed(2)}} </td>
                                     <td class="digitType"> {{item.quantity}} </td>
                                     <td class="digitType"> {{(item.price * item.quantity).toFixed(2)}} </td>
                                     
