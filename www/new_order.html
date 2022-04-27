@@ -197,7 +197,7 @@
                                 <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                     Currency
                                 </th>
-                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                                <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 hidden">
                                     Current Rate
                                 </th>
                                 <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
@@ -233,14 +233,14 @@
                                     </select>
                                 </td>
                                 
-                                <td v-if="!item.edit">
+                                <td class="hidden"  v-if="!item.edit">
                                     {{item.huilv}}
                                 </td>
 
                                 
-                                <td v-if="item.edit">
+                                <td  class="hidden"  v-if="item.edit">
                                     <input type="digits" style="width: 70%;" v-model="item.huilv"
-                                        class="appearance-none border border-gray-200 rounded w-full py-2 px-4 text-gray-700
+                                        class=" appearance-none border border-gray-200 rounded w-full py-2 px-4 text-gray-700
                                         leading-tight focus:outline-none focus:bg-white focus:border-blue-500" />
                                 </td>
 
