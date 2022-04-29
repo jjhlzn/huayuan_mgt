@@ -79,7 +79,7 @@
                     <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
                         <tr>
                             <!-- 入库时间(预计到港日期)、商品名称、货号、规格、可售数量、采购单价、采购总价、提单号 -->
-                            <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
+                            <th class="hidden px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                 No.
                             </th>
                             <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24">
@@ -113,7 +113,7 @@
                         </tr>
 
                         <tr v-for="item in orders" class="hover:bg-gray-200">
-                            <td>{{item.rkdh}}</td>
+                            <td class="hidden">{{item.rkdh}}</td>
                             <td>{{item.mxdbh}}</td>
                             <td>{{item.dhbh}}</td>
                             <td>{{item.rkrq}}</td>
@@ -133,13 +133,13 @@
 
                         <tr class="font-bold bg-blue-50">
                             <td>Total</td>
-                            <td></td>
+                            
                             <td></td>
                             <td></td>
                             <td></td>
                             <td class="digitType">{{computeTotal('quantity').toFixed(0)}}</td>
                             <td class="digitType">{{computeTotal('rkje').toFixed(2)}}</td>
-                            <td class="digitType">{{computeTotal('payAmount').toFixed(2)}}</td>
+                            <td class="digitTyp e">{{computeTotal('payAmount').toFixed(2)}}</td>
                             <td class="digitType">{{(computeTotal('rkje') - computeTotal('payAmount')).toFixed(2)}}</td>
                             <td></td>
                         </tr>

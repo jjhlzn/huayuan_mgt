@@ -86,7 +86,7 @@
                                 Quantity  
                             </th>
                             <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
-                                FOB unit price
+                                unit price
                             </th>
                             <th class="px-2 py-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                 FOB total amount
@@ -115,7 +115,7 @@
                             <td>{{item.sphh_kh}}</td>
                       
                             <td class="digitType">{{item.sjccsl}}</td>
-                            <td class="digitType">{{item.hsdj.toFixed(2)}}</td>
+                            <td class="digitType">{{item.unitPrice.toFixed(2)}}</td>
                             <td class="digitType">{{(item.hsdj * item.sjccsl).toFixed(2)}}</td>
                             <td class="digitType">{{item.wxdj.toFixed(2)}}</td>
                             <td class="digitType">{{item.wxzj.toFixed(2)}}</td>

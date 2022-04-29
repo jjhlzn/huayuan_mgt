@@ -523,6 +523,9 @@ function makeSearchMaolibiaosSql(queryobj) {
                         yw_ckgl_cc_cmd.sjccsl,    --数量
                         yw_ckgl_cc_cmd.sldw,    --单位
                         yw_ckgl_cc_cmd.hsdj,   ---入库单价
+                        (ISNULL((select top 1 ISNULL(wyf,0) + ISNULL(bf,0) from yw_ckgl_jc where yw_ckgl_jc.rkdh =  yw_ckgl_cc_cmd.yrkdh), 0) 
+						/ ISNULL((select sum(aa.sjrksl) from yw_ckgl_jc_cmd as aa where aa.rkdh =  yw_ckgl_cc_cmd.yrkdh), 1) + hsdj)
+						as unitPrice,     
                         yw_ckgl_cc_cmd.mxdbh, --明细单编号
                         yw_ckgl_cc_cmd.mxd_spid, --明细单ID
                         yw_ckgl_cc_cmd.wxhth, --外销合同号
@@ -915,7 +918,7 @@ async function getOrderById(id) {
 
         //加载商品
         sql = `select spbm, hgbm, sphh, sphh_kh,  spzwmc as name, spywmc, spgg, sldw, hsje, hsdj, wxdj as price, sjccsl as buyQuantity, currency, huilv,
-                    ckdh, cxh, productId from yw_ckgl_cc_cmd where ckdh = '${id}' order by cxh`
+                    ckdh, cxh, productId, mxdbh from yw_ckgl_cc_cmd where ckdh = '${id}' order by cxh`
        // logger.info(sql)
         let products = (await pool.query(sql)).recordset
         order.products = products
