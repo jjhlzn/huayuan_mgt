@@ -532,7 +532,8 @@ function makeSearchMaolibiaosSql(queryobj) {
                         yw_ckgl_cc_cmd.wxht_spid, --外销合同ID
                         yw_ckgl_cc_cmd.wxdj, --销售单价
                         yw_ckgl_cc_cmd.wxzj, --销售金额      
-                    ml=wxzj-hsdj*sjccsl---毛利
+                    ml=wxzj-(ISNULL((select top 1 ISNULL(wyf,0) + ISNULL(bf,0) from yw_ckgl_jc where yw_ckgl_jc.rkdh =  yw_ckgl_cc_cmd.yrkdh), 0) 
+                    / ISNULL((select sum(aa.sjrksl) from yw_ckgl_jc_cmd as aa where aa.rkdh =  yw_ckgl_cc_cmd.yrkdh), 1) + hsdj)*sjccsl---毛利
                     FROM yw_ckgl_cc,yw_ckgl_cc_cmd
                     WHERE ${whereClause} and  (yw_ckgl_cc.ckdh+'_'+yw_ckgl_cc_cmd.spbm) not in (
                         select top ${skipCount} yw_ckgl_cc.ckdh+'_'+yw_ckgl_cc_cmd.spbm as id 
@@ -558,12 +559,12 @@ async function searchMaolibiaos(params) {
             if (!order.hsdj) {
                 order.hsdj = 0
             }
-            let rkAmount = order.hsdj * order.sjccsl
+            let rkAmount = (order.unitPrice * order.sjccsl).toFixed(2)
             if (!order.ml) {
                 order.ml = 0
             }
             if (rkAmount != 0) {
-                order.mll = (order.ml / rkAmount * 100).toFixed(2)
+                order.mll = (order.ml.toFixed(2) / rkAmount * 100).toFixed(2)
             } else {
                 order.mll = 100
             }
