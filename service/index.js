@@ -253,6 +253,9 @@ function makeSearchOrdersSql(queryobj) {
               - isNull((select sum(amount) from yw_payments where yw_payments.dh = yw_ckgl_cc.ckdh),0)) > 0.0001 `
         }
     }
+
+    let orderCaluse = ` order by sellDate desc `
+
     const skipCount = queryobj.pageSize * (queryobj.pageNo - 1)
 
     const sqlstr = `select top ${queryobj.pageSize}  
@@ -282,8 +285,8 @@ function makeSearchOrdersSql(queryobj) {
                 isNULL((select sum(amount) from yw_payments where yw_payments.dh = yw_ckgl_cc.ckdh),0) as payAmount
             FROM yw_ckgl_cc
             where ${whereClause} 
-            and ckdh not in (select top ${skipCount} ckdh from yw_ckgl_cc where ${whereClause} order by zdrq )
-            order by zdrq`
+            and ckdh not in (select top ${skipCount} ckdh from yw_ckgl_cc where ${whereClause} ${orderCaluse} )
+            ${orderCaluse} `
     logger.info(sqlstr)
     const statSqlstr = `select count(1) as totalCount from yw_ckgl_cc where ${whereClause}
                        `
@@ -329,6 +332,8 @@ function makeSearchWaiXiaoOrdersSql(queryobj) {
         whereClause += ` and qyrq <= '${queryobj.endDate}'  `
     }
 
+    let orderClause = ` order by qyrq desc `
+
     const skipCount = queryobj.pageSize * (queryobj.pageNo - 1)
 
     const sqlstr = `select top ${queryobj.pageSize}  
@@ -340,7 +345,8 @@ function makeSearchWaiXiaoOrdersSql(queryobj) {
                     convert(varchar, Zyqx, 23) as 	zyqx --装运期限
                     From yw_contract
             where ${whereClause} 
-            and wxhth not in (select top ${skipCount} wxhth from yw_contract where ${whereClause})
+            and wxhth not in (select top ${skipCount} wxhth from yw_contract where ${whereClause} ${orderClause} )
+            ${orderClause}
            `
     logger.info(sqlstr)
     const statSqlstr = `select count(1) as totalCount from yw_contract where ${whereClause}
@@ -478,7 +484,7 @@ async function loadFeiyongWithWxorer(order) {
 
 function makeSearchMaolibiaosSql(queryobj) {
     var whereClause = ` 1 = 1 and yw_ckgl_cc.state !='已删除'  and yw_ckgl_cc.ckdh=yw_ckgl_cc_cmd.ckdh `
-    var orderClause = ` order by  yw_ckgl_cc.ckdh, yw_ckgl_cc_cmd.spbm `
+    var orderClause = ` order by  yw_ckgl_cc.sellDate desc `
     if (queryobj.keyword) {
         whereClause += `  and isNUll(yw_ckgl_cc.xshth, '') + isNUll(yw_ckgl_cc.ckdh, '')
                             +  isNUll(yw_ckgl_cc.gnkhmc, '')
@@ -583,7 +589,7 @@ async function searchMaolibiaos(params) {
 
 function makeSearchOrderMaolibiaosSql(queryobj) {
     var whereClause = ` 1 = 1 and yw_ckgl_cc.state !='已删除'  `
-    var orderClause = ` order by  yw_ckgl_cc.ckdh `
+    var orderClause = ` order by  yw_ckgl_cc.sellDate desc `
     if (queryobj.keyword) {
         whereClause += `  and yw_ckgl_cc.ckdh+yw_ckgl_cc.gnkhmc like '%${queryobj.keyword}%' `
     }
@@ -753,6 +759,8 @@ function makeSearchInboundOrdersSql(queryobj) {
         whereClause += ` and DATEDIFF(day,rkrq,getDate()) >= ${queryobj.days} `
     }
 
+    let orderCaluse = `  order by rkrq desc `
+
     const skipCount = queryobj.pageSize * (queryobj.pageNo - 1)
 
     const sqlstr = `select top ${queryobj.pageSize}  
@@ -767,8 +775,8 @@ function makeSearchInboundOrdersSql(queryobj) {
                 isNull((select sum(amount) from yw_payments where dh = yw_ckgl_jc.rkdh), 0) as payAmount
             FROM yw_ckgl_jc
             where ${whereClause} 
-            and rkdh not in (select top ${skipCount} rkdh from yw_ckgl_jc where ${whereClause} order by rkrq )
-            order by rkrq`
+            and rkdh not in (select top ${skipCount} rkdh from yw_ckgl_jc where ${whereClause} ${orderCaluse} )
+            ${orderCaluse} `
     logger.info(sqlstr)
     const statSqlstr = `select count(1) as totalCount from yw_ckgl_jc where ${whereClause}
                        `
