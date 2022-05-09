@@ -8,6 +8,10 @@ const moment = require('moment')
 const md5 = require('md5')
 
 function makeSearchProductsSql(queryobj) {
+    if (queryobj.keyword) {
+        queryobj.keyword = queryobj.keyword.trim()
+    }
+
     var whereClause = ` ( yw_ckgl_jc.rkdh = yw_ckgl_jc_cmd.rkdh ) and   
                 ( yw_ckgl_jc.state in ('复核','入库') )  and
                 yw_ckgl_jc_cmd.sjrksl > 
@@ -18,7 +22,7 @@ function makeSearchProductsSql(queryobj) {
                             yw_ckgl_jc_cmd.rktzdh = b.rktzdh and 
                             yw_ckgl_jc_cmd.rktzdh_cxh = b.rktzdh_cxh),0)     `
     if (queryobj.keyword) {
-        whereClause += `  and yw_ckgl_jc_cmd.spzwmc like '%${queryobj.keyword}%' `
+        whereClause += `  and ISNULL(yw_ckgl_jc_cmd.mxdbh, '') + ISNULL(yw_ckgl_jc_cmd.spywmc, '') + ISNULL(yw_ckgl_jc_cmd.sphh_kh, '') like '%${queryobj.keyword}%' `
     }
     if (queryobj.soldStatus) {
         if (queryobj.soldStatus === '已售') {
@@ -122,6 +126,9 @@ async function searchProducts(params) {
 }
 
 function makeSearchProductsSql2(queryobj) {
+    if (queryobj.keyword) {
+        queryobj.keyword = queryobj.keyword.trim()
+    }
     var whereClause = ` ( yw_ckgl_jc.rkdh = yw_ckgl_jc_cmd.rkdh ) and   
                 ( yw_ckgl_jc.state in ('复核','入库') )  and
                 yw_ckgl_jc_cmd.sjrksl > 
@@ -132,7 +139,7 @@ function makeSearchProductsSql2(queryobj) {
                             yw_ckgl_jc_cmd.rktzdh = b.rktzdh and 
                             yw_ckgl_jc_cmd.rktzdh_cxh = b.rktzdh_cxh),0)     `
     if (queryobj.keyword) {
-        whereClause += `  and yw_ckgl_jc_cmd.spzwmc like '%${queryobj.keyword}%' `
+        whereClause += `  and ISNULL(yw_ckgl_jc_cmd.mxdbh, '') + ISNULL(yw_ckgl_jc_cmd.spywmc, '') + ISNULL(yw_ckgl_jc_cmd.sphh_kh, '') like '%${queryobj.keyword}%' `
     }
     if (queryobj.soldStatus) {
         if (queryobj.soldStatus === '已售') {
@@ -237,9 +244,12 @@ async function searchProducts2(params) {
 }
 
 function makeSearchOrdersSql(queryobj) {
+    if (queryobj.keyword) {
+        queryobj.keyword = queryobj.keyword.trim()
+    }
     var whereClause = ` 1 = 1 and state != '已删除' `
     if (queryobj.keyword) {
-        whereClause += `  and gnkhmc+ckdh like '%${queryobj.keyword}%' `
+        whereClause += `  and ISNULL(yw_ckgl_cc.xshth, '') + ISNULL(yw_ckgl_cc.gnkhmc, '') + ISNULL(yw_ckgl_cc.seller, '') like '%${queryobj.keyword}%' `
     }
     if (queryobj.payState) {
         if (queryobj.payState == '已收') {
@@ -321,6 +331,9 @@ async function searchOrders(params) {
 
 function makeSearchWaiXiaoOrdersSql(queryobj) {
     console.log(queryobj)
+    if (queryobj.keyword) {
+        queryobj.keyword = queryobj.keyword.trim()
+    }
     var whereClause = ` 1=1 and bb_flag='Y' `
     if (queryobj.keyword) {
         whereClause += `  and wxhth like '%${queryobj.keyword}%' `
@@ -483,15 +496,21 @@ async function loadFeiyongWithWxorer(order) {
 }
 
 function makeSearchMaolibiaosSql(queryobj) {
+    if (queryobj.keyword) {
+        queryobj.keyword = queryobj.keyword.trim()
+    }
     var whereClause = ` 1 = 1 and yw_ckgl_cc.state !='已删除'  and yw_ckgl_cc.ckdh=yw_ckgl_cc_cmd.ckdh `
     var orderClause = ` order by  yw_ckgl_cc.sellDate desc `
     if (queryobj.keyword) {
         whereClause += `  and isNUll(yw_ckgl_cc.xshth, '') + isNUll(yw_ckgl_cc.ckdh, '')
                             +  isNUll(yw_ckgl_cc.gnkhmc, '')
                             + isNUll (yw_ckgl_cc.ywy, '')
-                            + isNUll (yw_ckgl_cc_cmd.spzwmc, '')
+                            + isNUll (yw_ckgl_cc_cmd.spywmc, '')
                             + isNUll ( yw_ckgl_cc_cmd.mxdbh, '') 
-                            + isNUll ( yw_ckgl_cc_cmd.sphh, '')  like '%${queryobj.keyword}%' `
+                            + isNUll ( yw_ckgl_cc_cmd.sphh_kh, '') 
+                            + isNUll ( yw_ckgl_cc_cmd.sphh, '') 
+                            + ISNULL( yw_ckgl_cc.seller,'')
+                            +  isNUll(yw_ckgl_cc_cmd.mxdbh, '') like '%${queryobj.keyword}%' `
     }
 
     const skipCount = queryobj.pageSize * (queryobj.pageNo - 1)
@@ -741,9 +760,13 @@ async function loadProducts(ids) {
 }
 
 function makeSearchInboundOrdersSql(queryobj) {
+    if (queryobj.keyword) {
+        queryobj.keyword = queryobj.keyword.trim()
+    }
+
     var whereClause = ` 1 = 1  `
     if (queryobj.keyword) {
-        whereClause += `  and jhdwmc+rkdh like '%${queryobj.keyword}%' `
+        whereClause += `  and ISNULL(mxdbh, '') + ISNULL(dhbh, '') like '%${queryobj.keyword}%' `
     }
 
     if (queryobj.payState) {
@@ -769,7 +792,8 @@ function makeSearchInboundOrdersSql(queryobj) {
                 dhbh,
                 jhdwmc,
                 rkje, 
-                (ISNULL(wyf,0) + ISNULL(bf,0) + (Select sum(yw_ckgl_jc_cmd.sjrksl * yw_ckgl_jc_cmd.hsdj) from yw_ckgl_jc_cmd where yw_ckgl_jc_cmd.rkdh = yw_ckgl_jc.rkdh)) as cifTotalAmount,
+                (ISNULL(wyf,0) + ISNULL(bf,0) + (Select sum(yw_ckgl_jc_cmd.sjrksl * yw_ckgl_jc_cmd.hsdj) 
+                        from yw_ckgl_jc_cmd where yw_ckgl_jc_cmd.rkdh = yw_ckgl_jc.rkdh)) as cifTotalAmount,
                 (select sum(yw_ckgl_jc_cmd.sjrksl) from yw_ckgl_jc_cmd where yw_ckgl_jc_cmd.rkdh = yw_ckgl_jc.rkdh) as quantity,
                 convert(varchar, rkrq, 23) as rkrq,
                 isNull((select sum(amount) from yw_payments where dh = yw_ckgl_jc.rkdh), 0) as payAmount
