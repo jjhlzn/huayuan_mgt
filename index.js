@@ -326,6 +326,17 @@ app.all('/getwxorder', auth, async (req, res) => {
     }))
 } )
 
+app.post('/checkcanaddpayment', auth,  async( req, res) => {
+    logger.debug(`userId = ${req.params.userId}`)
+
+
+    let canAddPayment = await service.checkCanAddPayment(req.params.userId, req.body.roleName)
+    res.send(JSON.stringify({
+        status: 0,
+        canAddPayment: canAddPayment
+    }))
+})
+
 function isInList(id, products) {
     for(var i = 0; i < products.length; i++) { 
         if (products[i].productId == id) {
@@ -342,6 +353,7 @@ function getProduct(id, products) {
         }
     }
 }
+
 
 const port = 7897
 

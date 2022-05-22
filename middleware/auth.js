@@ -11,11 +11,13 @@ module.exports = (req, res, next) => {
         var token = req.cookies['token']
         var decodedToken = jwt.verify(token, privateKey)
         var userId = decodedToken.userId
+        
         if (req.body.userId && req.body.userId != userId) {
             return res.status(401).send({
                 error: new Error('userId error')
             })
         }
+        req.params.userId = userId
         next()
     } catch (err) {
         logger.error(err)

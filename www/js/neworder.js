@@ -217,6 +217,16 @@ var app = new Vue({
                     return false
                 }
 
+                if (!products[i].spCost) {
+                    alert('must input sp cost')
+                    return false
+                }
+
+                if (!isNumeric(products[i].spCost)) {
+                    alert('sp count must be number')
+                    return false
+                }
+
                 if (!products[i].buyQuantity) {
                     alert('必须填写数量')
                     return false

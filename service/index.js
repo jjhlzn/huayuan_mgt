@@ -1,7 +1,8 @@
-
 const db_pool = require('../lib/db_pool')
 const db_config = require('../lib/db_config')
-const { v4: uuidv4 } = require('uuid');
+const {
+    v4: uuidv4
+} = require('uuid');
 const logger = require('../lib/logger')('service/index.js')
 const _ = require('underscore')
 const moment = require('moment')
@@ -121,8 +122,12 @@ async function searchProducts(params) {
         }
     } catch (error) {
         logger.error(error)
-        return {message: '出错了', products: [], totalCount: 0}
-    } 
+        return {
+            message: '出错了',
+            products: [],
+            totalCount: 0
+        }
+    }
 }
 
 function makeSearchProductsSql2(queryobj) {
@@ -224,7 +229,7 @@ async function searchProducts2(params) {
                 product.hsje = 0
             }
             product.hsje = product.hsje.toFixed(0)
-            if (!product.soldQuantity ) {
+            if (!product.soldQuantity) {
                 product.soldPrice = 0
             } else {
                 product.soldPrice = (product.soldAmount / product.soldQuantity).toFixed(2)
@@ -239,8 +244,12 @@ async function searchProducts2(params) {
         }
     } catch (error) {
         logger.error(error)
-        return {message: '出错了', products: [], totalCount: 0}
-    } 
+        return {
+            message: '出错了',
+            products: [],
+            totalCount: 0
+        }
+    }
 }
 
 function makeSearchOrdersSql(queryobj) {
@@ -313,19 +322,23 @@ async function searchOrders(params) {
         let orders = (await pool.query(sqlstrs[0])).recordset
         let totalCount = (await pool.query(sqlstrs[1])).recordset[0]['totalCount']
 
-        orders.forEach( order => {
+        orders.forEach(order => {
             order.sellAmount = order.sellAmount || 0
             order.payAmount = order.payAmount || 0
         })
-        
+
         return {
             orders: orders,
             totalCount: totalCount
         }
     } catch (error) {
         logger.error(error)
-        return {message: '出错了', orders: [], totalCount: 0}
-    } 
+        return {
+            message: '出错了',
+            orders: [],
+            totalCount: 0
+        }
+    }
 }
 
 
@@ -377,19 +390,23 @@ async function searchWaixiaoOrders(params) {
         let orders = (await pool.query(sqlstrs[0])).recordset
         let totalCount = (await pool.query(sqlstrs[1])).recordset[0]['totalCount']
 
-        orders.forEach( order => {
+        orders.forEach(order => {
             order.sellAmount = order.sellAmount || 0
             order.payAmount = order.payAmount || 0
         })
-        
+
         return {
             orders: orders,
             totalCount: totalCount
         }
     } catch (error) {
         logger.error(error)
-        return {message: '出错了', orders: [], totalCount: 0}
-    } 
+        return {
+            message: '出错了',
+            orders: [],
+            totalCount: 0
+        }
+    }
 }
 
 async function getWxOrderById(id) {
@@ -478,7 +495,7 @@ async function loadFeiyongWithWxorer(order) {
         order.feiyongs = feiyongs
         let totalFeiyong = 0
         if (feiyongs.length > 0) {
-            for(var i = 0; i < feiyongs.length; i++) {
+            for (var i = 0; i < feiyongs.length; i++) {
                 totalFeiyong += feiyongs[i].fyje
                 if (feiyongs[i].plus_less == 0) {
                     feiyongs[i].plus_less_des = 'PLUS'
@@ -537,7 +554,7 @@ function makeSearchMaolibiaosSql(queryobj) {
                         yw_ckgl_cc.jw_flag,   --Y
                         yw_ckgl_cc.seller,
                         yw_ckgl_cc.mxdbh,
-
+                        yw_ckgl_cc_cmd.spCost,
                         yw_ckgl_cc_cmd.spbm,   ---商品编码
                         yw_ckgl_cc_cmd.hgbm,  --海关编码
                         yw_ckgl_cc_cmd.sphh,  --商品货号
@@ -580,7 +597,7 @@ async function searchMaolibiaos(params) {
         let orders = (await pool.query(sqlstrs[0])).recordset
         let totalCount = (await pool.query(sqlstrs[1])).recordset[0]['totalCount']
 
-        orders.forEach( order =>  {
+        orders.forEach(order => {
             if (!order.hsdj) {
                 order.hsdj = 0
             }
@@ -593,17 +610,24 @@ async function searchMaolibiaos(params) {
             } else {
                 order.mll = 100
             }
+            if (!order.spCost) {
+                order.spCost = 0
+            }
         })
-       
-        
+
+
         return {
             orders: orders,
             totalCount: totalCount
         }
     } catch (error) {
         logger.error(error)
-        return {message: '出错了', orders: [], totalCount: 0}
-    } 
+        return {
+            message: '出错了',
+            orders: [],
+            totalCount: 0
+        }
+    }
 }
 
 function makeSearchOrderMaolibiaosSql(queryobj) {
@@ -660,8 +684,8 @@ async function searchOrderMaolibiaos(params) {
         let orders = (await pool.query(sqlstrs[0])).recordset
         let totalCount = (await pool.query(sqlstrs[1])).recordset[0]['totalCount']
 
-        orders.forEach( order =>  {
-            
+        orders.forEach(order => {
+
             if (order.rkAmount != 0) {
                 let ml = order.ckAmount - order.rkAmount
                 order.mll = (ml / order.rkAmount * 100).toFixed(2)
@@ -669,15 +693,19 @@ async function searchOrderMaolibiaos(params) {
                 order.mll = 100
             }
         })
-        
+
         return {
             orders: orders,
             totalCount: totalCount
         }
     } catch (error) {
         logger.error(error)
-        return {message: '出错了', orders: [], totalCount: 0}
-    } 
+        return {
+            message: '出错了',
+            orders: [],
+            totalCount: 0
+        }
+    }
 }
 
 async function loadProducts(ids) {
@@ -686,10 +714,10 @@ async function loadProducts(ids) {
     }
 
     let idsCaluse = ''
-    ids.forEach(function(id) {
+    ids.forEach(function (id) {
         idsCaluse += `'${id}',`
     })
-    idsCaluse = idsCaluse.substring(0, idsCaluse.length-1)
+    idsCaluse = idsCaluse.substring(0, idsCaluse.length - 1)
     idsCaluse = `(${idsCaluse})`
 
     try {
@@ -750,10 +778,12 @@ async function loadProducts(ids) {
         products.forEach(product => {
             product.buyQuantity = 0
             product.isNewAdd = true
+            if (!product.spCost) {
+                product.spCost = 0
+            }
         })
         return products
-    }
-    catch(error) {
+    } catch (error) {
         logger.error(error)
         return []
     }
@@ -816,7 +846,7 @@ async function searchInboundOrders(params) {
         let pool = await db_pool.getPool(db_config)
         let orders = (await pool.query(sqlstrs[0])).recordset
         let totalCount = (await pool.query(sqlstrs[1])).recordset[0]['totalCount']
-        orders.forEach( order => {
+        orders.forEach(order => {
             order.rkje = order.rkje.toFixed(1) * 10 / 10
             try {
                 order.days = moment().diff(moment(order.rkrq), 'days')
@@ -830,8 +860,12 @@ async function searchInboundOrders(params) {
         }
     } catch (error) {
         logger.error(error)
-        return {message: '出错了', orders: [], totalCount: 0}
-    } 
+        return {
+            message: '出错了',
+            orders: [],
+            totalCount: 0
+        }
+    }
 }
 
 async function addOrUpdateOrder(order) {
@@ -847,7 +881,7 @@ async function addOrUpdateOrder(order) {
         let pool = await db_pool.getPool(db_config)
 
         //计算出出库金额，和每个商品的总额
-        let totalAmount = 0  //出库金额
+        let totalAmount = 0 //出库金额
         if (order.products && order.products.length > 0) {
             order.products.forEach(product => {
                 product.amount = parseFloat(product.buyQuantity) * parseFloat(product.price)
@@ -861,7 +895,7 @@ async function addOrUpdateOrder(order) {
             await pool.query(sql)
 
             //更新商品
-            sql =  `delete from yw_ckgl_cc_cmd where ckdh = '${order.id}' `
+            sql = `delete from yw_ckgl_cc_cmd where ckdh = '${order.id}' `
             await pool.query(sql)
 
             //更新图片
@@ -875,32 +909,32 @@ async function addOrUpdateOrder(order) {
 
             sql = `insert into yw_ckgl_cc (ckdh, zdr, zdrq, xshth, gnkhmc, seller, sellDate, [state], ckje)
                   values ('${id}', '111', '${now}', '${order.xshth}', '${order.clientName}', '${order.seller}', '${order.sellDate.substring(0, 10)}', '新制', ${totalAmount})`
-            
+
             logger.info(sql)
             await pool.query(sql)
-            
+
         }
 
         //插入商品
         let products = order.products
-        for(var i = 0; i < products.length; i++) {
+        for (var i = 0; i < products.length; i++) {
             let p = products[i]
             p.sphh = p.sphh || ''
             let ids = p.productId.split('_')
             sql = `
             insert into yw_ckgl_cc_cmd 
-            (spbm, hgbm, sphh, sphh_kh, spzwmc, spywmc, spgg, sldw, hsje, hsdj, wxdj, wxzj, ckdh, sjccsl, cxh, productId, currency, huilv, yrkdh, yrkxh, mxdbh)
+            (spbm, hgbm, sphh, sphh_kh, spzwmc, spywmc, spgg, sldw, hsje, hsdj, wxdj, wxzj, ckdh, sjccsl, cxh, productId, currency, huilv, yrkdh, yrkxh, mxdbh, spCost)
             values ('${p.spbm}', '${p.hgbm}', '${p.sphh}', '${p.sphh_kh}', '${p.name}', '${p.spywmc}', '${p.spgg}', '${p.sldw}',
              '${p.hsdj * p.buyQuantity}', ${p.hsdj},'${p.price}', ${p.price * p.buyQuantity} ,'${order.id}', 
-                '${p.buyQuantity}', '${i}', '${p.productId}', '${p.currency}', '${p.huilv}', '${ids[0]}', '${ids[1]}', '${p.mxdbh}')`
-            
+                '${p.buyQuantity}', '${i}', '${p.productId}', '${p.currency}', '${p.huilv}', '${ids[0]}', '${ids[1]}', '${p.mxdbh}', ${p.spCost})`
+
             logger.debug("product.id:" + p.productId)
             logger.info(sql)
             await pool.query(sql)
         }
         //插入合同图片
         let images = order.images
-        for(var i = 0; i < images.length; i++) {
+        for (var i = 0; i < images.length; i++) {
             let image = images[i]
             sql = `insert into yw_ckgl_cc_images 
                    (id, ckdh, imageurl) values ('${uuidv4()}', '${order.id}', '${image}')`
@@ -908,11 +942,11 @@ async function addOrUpdateOrder(order) {
             await pool.query(sql)
         }
         return order.id
-    } catch(error) {
+    } catch (error) {
         logger.error(error)
         return ''
     }
-    
+
 }
 
 async function getOrderById(id) {
@@ -951,15 +985,20 @@ async function getOrderById(id) {
 
         //加载商品
         sql = `select spbm, hgbm, sphh, sphh_kh,  spzwmc as name, spywmc, spgg, sldw, hsje, hsdj, wxdj as price, sjccsl as buyQuantity, currency, huilv,
-                    ckdh, cxh, productId, mxdbh from yw_ckgl_cc_cmd where ckdh = '${id}' order by cxh`
-       // logger.info(sql)
+                    ckdh, cxh, productId, mxdbh, spCost from yw_ckgl_cc_cmd where ckdh = '${id}' order by cxh`
+        // logger.info(sql)
         let products = (await pool.query(sql)).recordset
         order.products = products
-        order.products.forEach(product => product.id = product.ckdh + '_' + product.cxh)
+        order.products.forEach(product => {
+            product.id = product.ckdh + '_' + product.cxh
+            if (!product.spCost) {
+                product.spCost = 0
+            }
+        })
 
         //加载图片
         sql = `select imageUrl from yw_ckgl_cc_images where ckdh = '${id}' order by addtime`
-       // logger.info(sql)
+        // logger.info(sql)
         let images = (await pool.query(sql)).recordset
         order.images = images
 
@@ -969,7 +1008,7 @@ async function getOrderById(id) {
         order.payments = (await pool.query(sql)).recordset
 
         return order
-    } catch(error) {
+    } catch (error) {
         logger.error(error)
         return null
     }
@@ -982,7 +1021,7 @@ async function deleteOrder(id) {
         let pool = await db_pool.getPool(db_config)
         await pool.query(sql)
         return true
-    } catch(error) {
+    } catch (error) {
         logger.error(error)
         return false
     }
@@ -995,7 +1034,7 @@ async function settleOrder(id) {
         let pool = await db_pool.getPool(db_config)
         await pool.query(sql)
         return true
-    } catch(error) {
+    } catch (error) {
         logger.error(error)
         return false
     }
@@ -1039,7 +1078,7 @@ async function getInboundOrderById(id) {
         order.payments = (await pool.query(sql)).recordset
 
         return order
-    } catch(error) {
+    } catch (error) {
         logger.error(error)
         return null
     }
@@ -1061,7 +1100,7 @@ async function addOrUpdatePayment(payment) {
         let pool = await db_pool.getPool(db_config)
         await pool.query(sql)
         return payment.id
-    } catch(error) {
+    } catch (error) {
         logger.error(error)
         return ''
     }
@@ -1095,11 +1134,34 @@ async function login(username, password) {
             return null
         }
         return result[0]
-    } catch(error) {
+    } catch (error) {
         logger.error(error)
         return null
     }
 }
+
+async function checkCanAddPayment(userId, roleName) {
+    logger.debug(`userId = ${userId}`)
+    if (userId == `9900`) {
+        return true
+    }
+    if (userId == `admin`) {
+        return true
+    }
+    let sql = `select * 
+    from t_operator_role_base
+    where o_no = '${userId}' and role_no = '${roleName}'`
+    logger.debug(sql)
+    let pool = await db_pool.getPool(db_config)
+    let result = (await pool.query(sql)).recordset
+    //console.log(result)
+    if (result.length == 0) {
+        return false
+    }
+    return true;
+}
+
+
 
 async function changePassword(username, password, newPassword) {
     try {
@@ -1117,7 +1179,7 @@ async function changePassword(username, password, newPassword) {
         sql = `update rs_employee set varchar2 = '${newPasswordHash}' where e_no = '${username}'`
         await pool.query(sql)
         return ''
-    } catch(error) {
+    } catch (error) {
         logger.error(error)
         return ''
     }
@@ -1139,15 +1201,16 @@ module.exports = {
     searchOrders: searchOrders,
     getOrderById: getOrderById,
     deleteOrder: deleteOrder,
-    settleOrder:  settleOrder,
+    settleOrder: settleOrder,
 
     searchWaixiaoOrders,
     getWxOrderById,
-    
+
     changePassword,
     login,
     searchInboundOrders,
     addOrUpdatePayment,
     deletePayment,
-    getInboundOrderById
+    getInboundOrderById,
+    checkCanAddPayment
 }

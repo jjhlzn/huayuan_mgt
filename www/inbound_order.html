@@ -112,7 +112,7 @@
 
                         <!-- 付款明细 -->
                         <div class="overflow-x-auto mt-8">
-                            <button class="my-2 bg-transparent hover:bg-blue-500 text-blue-500 h-6 px-2 transition-colors duration-150 border border-blue-500 rounded
+                            <button v-if="canAddPayment" class="my-2 bg-transparent hover:bg-blue-500 text-blue-500 h-6 px-2 transition-colors duration-150 border border-blue-500 rounded
                                     focus:shadow-outline hover:bg-blue-500 hover:text-blue-100 text-sm" v-on:click="newItemClick">Add SP payment</button>
 
                             <table class="table-fixed w-full divide-y divide-gray-200 text-sm text-center " >
@@ -164,14 +164,14 @@
                                             leading-tight focus:outline-none focus:bg-white focus:border-blue-500" />
                                     </td>
                             
-                                    <td class="px-1 py-2" v-if="!item.edit">
+                                    <td class="px-1 py-2" v-if="!item.edit && canAddPayment">
                                         <a class="text-blue-700 hover:text-blue-900 mr-4 visited:text-blue-700" 
                                                         v-on:click="pressEdit(index)">Edit</a> 
                                         <a class="text-red-700 hover:text-red-900"
                                                         v-on:click="deleteItem(index)">Delete</a>
                             
                                     </td>                 
-                                    <td class="px-1 py-2" v-if="item.edit">
+                                    <td class="px-1 py-2" v-if="item.edit && canAddPayment">
                                         <a class="text-blue-700 hover:text-blue-900 mr-4 visited:text-blue-700"
                                                             v-on:click="confirmEdit(index)">确定</a>
                                         <a class="text-gray-700 hover:text-gray-900" v-on:click="cancelEdit(index)">取消</a>

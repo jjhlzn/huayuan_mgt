@@ -13,7 +13,8 @@ var app = new Vue({
         id: id,
         order: {
             products: []
-        }
+        },
+        canAddPayment: false
     },
 
     methods: {
@@ -140,8 +141,15 @@ var app = new Vue({
     }, 
 
     mounted: function() {
+        let that = this
         //this.loadProducts(ids)
         console.log('before load data')
+        axios.post('/checkcanaddpayment', {roleName: 'xx'}).then(function (response) {
+            console.log(response)
+            if (response.data.status == 0) {
+                that.canAddPayment = response.data.canAddPayment
+            }
+        })
         this.loadData(this.id)
     }
 })
