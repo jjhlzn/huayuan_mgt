@@ -1,5 +1,6 @@
 
 
+
 var query = parse_query_string(window.location.search.substr(1, window.location.search.length - 1))
 var id = query.id
 var selectedStr = query.selectedproducts || ''
@@ -23,10 +24,13 @@ var app = new Vue({
         id: id,
         xshth: '',
         state: '新制',
-        order: {}
+        order: {},
+        canAddPayment: false,
     },
 
     methods: {
+
+
         goToSelectProduct: function() {
             var selectedProducts = this.products.map(function(product) {return product.productId})
             window.location.href = "/orders/select_products.html?id="+this.id+"&selectedproducts="+selectedProducts.join('___')
@@ -409,8 +413,15 @@ var app = new Vue({
     }, 
 
     mounted: function() {
+        let that = this
         //this.loadProducts(ids)
         console.log('before load data')
+        axios.post('/checkcanaddpayment', {roleName: 'kr'}).then(function (response) {
+            console.log(response)
+            if (response.data.status == 0) {
+                that.canAddPayment = response.data.canAddPayment
+            }
+        })
         this.loadData(this.id, ids)
     }
 })
