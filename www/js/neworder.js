@@ -42,6 +42,28 @@ var app = new Vue({
             this.images = list
         },
 
+        computeTotal: function(prop) {
+            return this.products.map(function(order) {
+                if (!order[prop]) {
+                    return 0
+                }
+                if (typeof order[prop] === 'string') {
+                    return parseFloat(order[prop])
+                }
+                return order[prop]
+            }).reduce(function(a, b) {
+                return a + b;
+            }, 0)
+        },
+
+        computeAmountTotal: function() {
+            return this.products.map(function(item) {
+                return item.price * item.buyQuantity
+            }).reduce(function(a, b) {
+                return a + b;
+            }, 0)
+        },
+
         loadData: function(id, productIds) {
             var that = this
             var url = '/getorder'
