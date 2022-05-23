@@ -128,6 +128,12 @@
                                     <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
                                         Amount
                                     </th>
+                                    <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
+                                        Current Rate
+                                    </th>
+                                    <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24 digitType">
+                                        Amount(USD)
+                                    </th>
                                     <th class="px-2 text-center  font-medium text-gray-800  tracking-wider w-24">
                                         
                                     </th>
@@ -142,27 +148,52 @@
                                     </td>
 
                                     <td v-if="item.edit">
-                                        <select v-model="item.currency" class="w-20 block appearance-none  text-gray-600 bg-white border border-gray-200  px-1 py-1 rounded  
-                                                    leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
-                                            <option value="USD">USD</option> 
-                                            <option value="EUR">EUR</option> 
-                                            <option value="RMB">RMB </option> 
-                                        </select>
+                                        <div class="w-full mx-auto">
+                                            <select v-model="item.currency" class="w-20 block appearance-none  text-gray-600 bg-white border border-gray-200  px-1 py-1 rounded  
+                                                        leading-tight focus:outline-none focus:bg-white focus:border-blue-500">
+                                                <option value="USD">USD</option> 
+                                                <option value="EUR">EUR</option> 
+                                                <option value="RMB">RMB </option> 
+                                            </select>
+                                        </div>
+                                       
                                     </td>
                        
 
 
                                    
-                                    <td class="digitType" v-if="!item.edit">
-                                        {{item.amount.toFixed(2)}}
+                                    <td class="digitType text-center" v-if="!item.edit">
+                                        {{item.amount}}
                                     </td>
 
 
-                                    <td v-if="item.edit">
-                                        <input type="text" style="width: 70%;" v-model="item.amount"
-                                            class="appearance-none border border-gray-200 rounded w-full py-2 px-4 text-gray-700
+                                    <td v-if="item.edit" class="mx-auto">
+                                        <div class="mx-auto">
+                                            <input type="text" style="width: 70%;" v-model="item.amount"
+                                            class="block appearance-none border border-gray-200 rounded w-full py-2 px-4 text-gray-700
                                             leading-tight focus:outline-none focus:bg-white focus:border-blue-500" />
+                                        </div>
+                                        
                                     </td>
+
+                                    <td class="digitType text-center" v-if="!item.edit">
+                                        {{item.huilv}}
+                                    </td>
+
+
+                                    <td v-if="item.edit" class="mx-auto">
+                                        <div class="mx-auto">
+                                            <input type="text" style="width: 70%;" v-model="item.huilv"
+                                            class="block appearance-none border border-gray-200 rounded w-full py-2 px-4 text-gray-700
+                                            leading-tight focus:outline-none focus:bg-white focus:border-blue-500" />
+                                        </div>
+                                        
+                                    </td>
+
+                                    <td class="digitType text-center">
+                                        {{Number.isNaN(item.amount * item.huilv) ? '' : (item.amount * item.huilv).toFixed(2)}}
+                                    </td>
+
                             
                                     <td class="px-1 py-2" v-if="!item.edit && canAddPayment">
                                         <a class="text-blue-700 hover:text-blue-900 mr-4 visited:text-blue-700" 

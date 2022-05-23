@@ -554,6 +554,13 @@ function makeSearchMaolibiaosSql(queryobj) {
                         yw_ckgl_cc.jw_flag,   --Y
                         yw_ckgl_cc.seller,
                         yw_ckgl_cc.mxdbh,
+
+                        ISNULL((select top 1 xhmrj
+                            from t_currency_xchg
+                            where cu_type='USD' and
+                                  datediff(dd,xchg_date, yw_ckgl_cc.sellDate) >=0
+                                  order by xchg_date desc), 1) as toEurHuilv,
+
                         yw_ckgl_cc_cmd.spCost,
                         yw_ckgl_cc_cmd.spbm,   ---商品编码
                         yw_ckgl_cc_cmd.hgbm,  --海关编码

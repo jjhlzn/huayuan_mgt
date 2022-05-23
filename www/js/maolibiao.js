@@ -29,7 +29,7 @@ var app = new Vue({
         },
         totalAmount: function() {
             return this.orders.map(function(item) {
-                return (item.unitPrice) * item.sjccsl
+                return (item.unitPrice * item.toEurHuilv) * item.sjccsl
             }).reduce(function(a, b) {
                 return a + b;
             }, 0)
