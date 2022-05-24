@@ -97,7 +97,7 @@
                                 <td> <input type="text"  v-model="item.spCost" 
                                             class="appearance-none border border-gray-200 rounded w-2/3 py-1 px-2  text-gray-700 
                                             leading-tight focus:outline-none focus:bg-white focus:border-blue-500 block mx-auto text-right" /></td>
-                                <td class=" items-right"> <div class="w-2/3  block mx-auto text-right">{{ (item.price * item.buyQuantity - item.spCost).toFixed(2) }}</div></td>
+                                <td class=" items-right"> <div class="w-2/3  block mx-auto text-right">{{ (item.price * item.buyQuantity ).toFixed(2) }}</div></td>
                                 <td>
                                     <button class="text-red-500 hover:text-red-900" v-on:click="deleteItem(item.id)">Delete</button>
                                 </td>

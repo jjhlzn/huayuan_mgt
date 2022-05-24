@@ -582,7 +582,7 @@ function makeSearchMaolibiaosSql(queryobj) {
                         yw_ckgl_cc_cmd.wxdj, --销售单价
                         yw_ckgl_cc_cmd.wxzj, --销售金额      
                     ml=wxzj-(ISNULL((select top 1 ISNULL(wyf,0) + ISNULL(bf,0) from yw_ckgl_jc where yw_ckgl_jc.rkdh =  yw_ckgl_cc_cmd.yrkdh), 0) 
-                    / ISNULL((select sum(aa.sjrksl) from yw_ckgl_jc_cmd as aa where aa.rkdh =  yw_ckgl_cc_cmd.yrkdh), 1) + hsdj)*sjccsl---毛利
+                    / ISNULL((select sum(aa.sjrksl) from yw_ckgl_jc_cmd as aa where aa.rkdh =  yw_ckgl_cc_cmd.yrkdh), 1) + hsdj)*sjccsl - yw_ckgl_cc_cmd.spCost ---毛利
                     FROM yw_ckgl_cc,yw_ckgl_cc_cmd
                     WHERE ${whereClause} and  (yw_ckgl_cc.ckdh+'_'+yw_ckgl_cc_cmd.spbm) not in (
                         select top ${skipCount} yw_ckgl_cc.ckdh+'_'+yw_ckgl_cc_cmd.spbm as id 
