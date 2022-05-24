@@ -580,14 +580,17 @@ function makeSearchMaolibiaosSql(queryobj) {
                         yw_ckgl_cc_cmd.wxhth, --外销合同号
                         yw_ckgl_cc_cmd.wxht_spid, --外销合同ID
                         yw_ckgl_cc_cmd.wxdj, --销售单价
-                        yw_ckgl_cc_cmd.wxzj, --销售金额      
-                    ml=wxzj-(ISNULL((select top 1 ISNULL(wyf,0) + ISNULL(bf,0) from yw_ckgl_jc where yw_ckgl_jc.rkdh =  yw_ckgl_cc_cmd.yrkdh), 0) 
-                    / ISNULL((select sum(aa.sjrksl) from yw_ckgl_jc_cmd as aa where aa.rkdh =  yw_ckgl_cc_cmd.yrkdh), 1) + hsdj)*sjccsl - yw_ckgl_cc_cmd.spCost ---毛利
+                        yw_ckgl_cc_cmd.wxzj --销售金额      
+                  
                     FROM yw_ckgl_cc,yw_ckgl_cc_cmd
                     WHERE ${whereClause} and  (yw_ckgl_cc.ckdh+'_'+yw_ckgl_cc_cmd.spbm) not in (
                         select top ${skipCount} yw_ckgl_cc.ckdh+'_'+yw_ckgl_cc_cmd.spbm as id 
                         from yw_ckgl_cc,yw_ckgl_cc_cmd WHERE ${whereClause} ${orderClause}) 
                     ${orderClause}`
+
+                    //  ml=wxzj-
+                    // (ISNULL((select top 1 ISNULL(wyf,0) + ISNULL(bf,0) from yw_ckgl_jc where yw_ckgl_jc.rkdh =  yw_ckgl_cc_cmd.yrkdh), 0) 
+                    // / ISNULL((select sum(aa.sjrksl) from yw_ckgl_jc_cmd as aa where aa.rkdh =  yw_ckgl_cc_cmd.yrkdh), 1) + hsdj)*sjccsl - yw_ckgl_cc_cmd.spCost ---毛利
     logger.info(sqlstr)
     const statSqlstr = `select count(1) as totalCount from yw_ckgl_cc,yw_ckgl_cc_cmd where ${whereClause}
                        `
@@ -609,11 +612,12 @@ async function searchMaolibiaos(params) {
                 order.hsdj = 0
             }
             let rkAmount = (order.unitPrice * order.sjccsl).toFixed(2)
+            order.ml =  order.wxzj - order.unitPrice * order.toEurHuilv * order.sjccsl - order.spCost
             if (!order.ml) {
                 order.ml = 0
             }
             if (rkAmount != 0) {
-                order.mll = (order.ml.toFixed(2) / rkAmount * 100).toFixed(2)
+                order.mll = (order.ml.toFixed(2) / order.wxzj * 100).toFixed(2)
             } else {
                 order.mll = 100
             }
