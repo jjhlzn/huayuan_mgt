@@ -12,7 +12,8 @@ var app = new Vue({
     data: {
         id: id,
         order: {
-            products: []
+            products: [],
+            fyje: 0
         },
         canAddPayment: false
     },

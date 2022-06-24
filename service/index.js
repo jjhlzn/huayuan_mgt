@@ -833,7 +833,7 @@ function makeSearchInboundOrdersSql(queryobj) {
                 dhbh,
                 jhdwmc,
                 rkje, 
-                (ISNULL(wyf,0) + ISNULL(bf,0) + (Select sum(yw_ckgl_jc_cmd.sjrksl * yw_ckgl_jc_cmd.hsdj) 
+                (ISNULL(wyf,0) + ISNULL(bf,0) + ISNULL(fyje,0) +  + (Select sum(yw_ckgl_jc_cmd.sjrksl * yw_ckgl_jc_cmd.hsdj) 
                         from yw_ckgl_jc_cmd where yw_ckgl_jc_cmd.rkdh = yw_ckgl_jc.rkdh)) as cifTotalAmount,
                 (select sum(yw_ckgl_jc_cmd.sjrksl) from yw_ckgl_jc_cmd where yw_ckgl_jc_cmd.rkdh = yw_ckgl_jc.rkdh) as quantity,
                 convert(varchar, rkrq, 23) as rkrq,
@@ -1054,7 +1054,7 @@ async function settleOrder(id) {
 async function getInboundOrderById(id) {
     try {
         let sql = `select mxdbh, rkdh, jhdwmc, 
-        convert(varchar, rkrq, 20) as rkrq, wyf, bf
+        convert(varchar, rkrq, 20) as rkrq, wyf, bf, fyje,  fybz
         from yw_ckgl_jc where rkdh = '${id}'`
         logger.debug(sql)
         let pool = await db_pool.getPool(db_config)
@@ -1063,6 +1063,9 @@ async function getInboundOrderById(id) {
             return null
         }
         let order = orders[0]
+        if (!order.fyje) {
+            order.fyje = 0
+        }
         //加载productions
         sql = `select 
         wxhth,

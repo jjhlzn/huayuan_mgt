@@ -33,22 +33,31 @@
                         <div>
                             <div class="lg:flex lg:flex-wrap">
                                 <div class="flex w-full lg:w-1/2 py-2  items-center">
-                                    <div class="w-32 pr-2 text-right text-gray-700">Invoice No.:</div>
+                                    <div class="w-40 pr-2 text-right text-gray-700">Invoice No.:</div>
                                     <div>{{order.mxdbh}}</div>
                                 </div>
                                
                                 <div class="flex w-full lg:w-1/2 py-2">
-                                    <div class="w-32 pr-2 text-right text-gray-700">Shipping date:</div>
+                                    <div class="w-40 pr-2 text-right text-gray-700">Shipping date:</div>
                                     <div>{{order.rkrq ? order.rkrq.substring(0, 10) : ''}}</div>
                                 </div>
 
                                 <div class="flex w-full lg:w-1/2 py-2">
-                                    <div class="w-32 pr-2 text-right text-gray-700">Sea freight:</div>
+                                    <div class="w-40 pr-2 text-right text-gray-700">Sea freight:</div>
                                     <div>{{order.wyf}}</div>
                                 </div>
                                 <div class="flex w-full lg:w-1/2 py-2">
-                                    <div class="w-32 pr-2 text-right text-gray-700">Insurance fee:</div>
+                                    <div class="w-40 pr-2 text-right text-gray-700">Insurance fee:</div>
                                     <div>{{order.bf}}</div>
+                                </div>
+
+                                <div class="flex w-full lg:w-1/2 py-2">
+                                    <div class="w-40 pr-2 text-right text-gray-700">Other Fee Name:</div>
+                                    <div>{{order.fybz}}</div>
+                                </div>
+                                <div class="flex w-full lg:w-1/2 py-2">
+                                    <div class="w-40 pr-2 text-right text-gray-700">Fee Amount:</div>
+                                    <div>{{order.fyje.toFixed(2)}}</div>
                                 </div>
                             </div>
                         
